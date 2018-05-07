@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<title>AdmisionesUP</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--<link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />-->
+
+<!--CSS-->
+  <link rel="stylesheet" type="text/css" href="/recursos/jquery_ui_1_11_4/jquery-ui.css" />
+  <link rel="stylesheet" type="text/css" href="/recursos/bootstrap/bootstrap.css" />
+  <link rel="stylesheet" type="text/css" href="/recursos/flexigrid/flexigrid.css" />
+  <link rel="stylesheet" type="text/css" href="/recursos/normalize/normalize_3_0_3.css" />
+  <link rel="stylesheet" type="text/css" href="/recursos/font-awesome-4-6-3/css/font-awesome.css" />
+  <link rel="stylesheet" type="text/css" href="/css/comun.css" />
+  <link rel="stylesheet" type="text/css" href="/css/backend.css" />
+
+
+ <?php echo $this->headLink(); ?>
+ 
+</head>
+<body>
+<!--header-->
+<header id="header">
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">Principal</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="/ficha-aspirante/index">Ficha aspirante</a></li>
+        <li><a href="/ficha-aspirante/solicitud-cita">Solicitud</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+
+	<?php echo $this->layout()->content; ?>
+
+  <input type="hidden" name="_peticion" id="_peticion" value="<?php echo $this->peticion; ?>" />
+	<input type="hidden" name="_modulo" id="_modulo" value="<?php echo $this->modulo; ?>" />
+	<input type="hidden" name="_controlador" id="_controlador" value="<?php echo $this->controlador; ?>" />
+	<input type="hidden" name="_accion" id="_accion" value="<?php echo $this->accion; ?>" />
+
+
+  <!-- La carga de los scripts debe hacerse al final -->
+  <script src="/recursos/jquery_2_2_1/jquery2_2_1.js"></script>
+  <script src="/recursos/jquery_ui_1_11_4/jquery-ui.js"></script>
+  <script src="/recursos/bootstrap/bootstrap.js"></script>
+  <script src="/recursos/flexigrid/flexigrid.js"></script>
+  <script src="/recursos/jquery_form_3_18/ajaxforms.js"></script>
+  <script src="/recursos/jquery_validation_1_13_0/dist/jquery.validate.min.js"></script>    
+  <script src="/recursos/jquery_validation_1_13_0/dist/localization/messages_es.min.js"></script>    
+  
+  <?php echo $this->headScript(); ?>        
+  <script src="/js/backend/comun.js"></script>
+
+	<!--[if lt IE 9]>
+	    <div style='text-align:center'><a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode"><img src="http://storage.ie6countdown.com/assets/100/images/banners/warning_bar_0000_us.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." /></a></div>  
+	  <![endif]-->
+	<!--[if lt IE 9]><script src="../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+
+	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+	  <![endif]-->
+</body>
+</html>

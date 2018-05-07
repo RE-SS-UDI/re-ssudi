@@ -1,0 +1,62 @@
+<div class="panel panel-default" style="margin: 5px 0;">
+    <div class="pnl-heading-rojo-1 clearfix">
+        <h3 class="panel-title pull-left">Preguntas</h3>
+        <button type="button" onclick="agregarPregunta('/backend/preguntas/agregar', 0, 'frmPregunta','Registrar pregunta');" class="btn btn-sm btn-default pull-right <?php echo($this->puedeAgregar?"":"hide"); ?>">
+            <i class="fa fa-plus"></i>&nbsp;Agregar
+        </button>
+    </div>
+    <div class="panel-body">
+        <form name="frmFiltrosPreguntas" id="frmFiltrosPreguntas">
+            <div class="row margin-bottom-3">
+                
+                <div class="col-xs-3">
+                    <label for="fnombre" class="sr-only">Nombre</label>
+                    <input type="text" name="nombre" id="fnombre" class="form-control input-sm" value="" placeholder="Buscar descripción"/>
+                </div>
+                <div class="col-xs-3">
+                <label for="ftipo" class="sr-only">Tipos</label>
+                    <select id="ftipo" name="tipo" class="form-control input-sm">
+                        <option value="" selected>- Todos los tipos -</option>
+                <option value="1">Abierta corta</option>
+                <option value="2">Abierta larga</option>
+                <option value="3">Opción múltiple</option>
+                <option value="4">Múltiples repuestas</option>
+                    </select>
+                </div>
+                <div class="col-xs-3">
+                <label for="fcategoria" class="sr-only">Categoria</label>
+                    <select id="fcategoria" name="categoria" class="form-control input-sm">
+                        <option value="" selected>- Todos las categorías -</option>
+                        <?php foreach ($this->categorias as $categoria): ?>
+                            <option value="<?php echo $categoria->id; ?>"><?php echo $categoria->nombre; ?></option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
+                <div class="col-xs-3 text-right">
+                    <button class="btn btn-sm btn-default" type="button" onclick="filtrar('frmFiltrosPreguntas','/backend/preguntas/grid','/backend/preguntas/imprimir','/backend/preguntas/exportar');">
+                        <i class="fa fa-search"></i>&nbsp;Filtrar
+                    </button>
+                    <button class="btn btn-sm btn-default" type="button" onclick="limpiar('frmFiltrosPreguntas','/backend/preguntas/grid');">
+                        <i class="fa fa-eraser"></i>&nbsp;Limpiar
+                    </button>
+                </div>
+    	    </div>
+            <div class="row margin-bottom-3">
+                <div class="col-xs-3">
+                    <label for="fnombre_encuesta" class="sr-only">Nombre encuesta</label>
+                    <input type="text" name="nombre_encuesta" id="fnombre_encuesta" class="form-control input-sm" value="" placeholder="Buscar encuesta"/>
+                </div>
+                <div class="col-xs-3">
+                <label for="fstatus" class="sr-only">Estatus</label>
+                    <select id="fstatus" name="status" class="form-control input-sm">
+                        <option value="" selected>- Todos los estatus -</option>
+                        <option value="1">Habilitado</option>
+                        <option value="0">Deshabilitado</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="flexigrid"></div>
+<div class="height-5"></div>

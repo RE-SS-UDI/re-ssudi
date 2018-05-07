@@ -1,0 +1,72 @@
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+    color: black !important;
+}
+
+@media only screen and (max-width : 767px) {
+	h2, h1, h3{
+		font-size: 20px !important;
+	}
+    h3{
+    font-size: 16px !important;
+  }
+}
+
+
+.datos{
+    border: 2px solid #C6C6C6;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.texto-verde{
+    color: green;
+}
+
+.texto-naranja{
+    color: orange;
+}
+
+.texto-rojo{
+    color: red;
+}
+
+footer{
+    bottom:0px;
+
+    width: 100%;
+    position: relative;
+    
+}
+.head-sesion{
+    /*background-color: gray;*/
+}
+
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+  width: 100% !important;
+  margin: auto !important;
+  max-height: 350px;
+  height: 350px;
+}

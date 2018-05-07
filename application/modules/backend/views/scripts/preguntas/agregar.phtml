@@ -1,0 +1,82 @@
+<div id="es-1" name="es-1" class="alert alert-success hide" style="padding-bottom: 0;" role="alert">
+    Espere un momento, por favor...
+    <div class="progress">
+        <div class="progress-bar progress-bar-success progress-bar-striped active"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+            <span class="sr-only">100% Completo</span>
+        </div>
+    </div>
+</div>
+
+    <form id="frmPregunta" name="frmPregunta" class="form-horizontal" method="post" action="/backend/preguntas/guardar" role="form" enctype="multipart/form-data">    
+    <br/>  
+
+    <div class="col-xs-12 form-group"> 
+        <label for="descripcion" class="col-xs-2 control-label"><span class="naranja">*</span>Descripción:</label>
+        <div class="col-xs-10">
+            <textarea class="form-control input-sm required" rows="4" id="descripcion" name="descripcion" maxlength="1000"><?php echo $this->registro->descripcion ?></textarea>
+        </div>
+    </div>
+    <div class="col-xs-12 form-group">
+        <label for="encuesta_id" class="col-xs-2 control-label"><span class="naranja">*</span>Encuesta:</label>
+        <div class="col-xs-4">
+            <select id="encuesta_id" name="encuesta_id" class="form-control input-sm required">
+                <option value="" selected>Seleccione encuesta</option>
+                <?php foreach ($this->encuestas as $encuesta): ?>
+                    <option value="<?php echo $encuesta->id; ?>" <?php echo (($encuesta->id==$this->registro->encuesta_id)?'selected':'') ?>><?php echo $encuesta->nombre ?></option>
+                <?php endforeach ?>
+            </select>
+        </div>
+        <label for="status" class="col-xs-2 control-label"><span class="naranja"></span>Estatus:</label>
+        <div class="col-xs-4">
+            <select id="status" name="status" class="form-control input-sm">
+                <option value="1" selected>Habilitado</option>
+                <option value="0" >Deshabilitado</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-xs-12 form-group mb40px">
+        <label for="tipo" class="col-xs-2 control-label"><span class="naranja">*</span>Tipos:</label>
+        <div class="col-xs-4">
+            <select id="tipo" name="tipo" class="form-control input-sm required" onchange="cambiaTipo();">
+                <option value="" selected>Seleccione tipo</option>
+                <option value="1" <?php echo(($this->registro->tipo == 1)?'selected':''); ?>>Abierta corta</option>
+                <option value="2" <?php echo(($this->registro->tipo == 2)?'selected':''); ?>>Abierta larga</option>
+                <option value="3" <?php echo(($this->registro->tipo == 3)?'selected':''); ?>>Opción múltiple</option>
+                <option value="4" <?php echo(($this->registro->tipo == 4)?'selected':''); ?>>Múltiples repuestas</option>
+            </select>
+        </div>
+        <label id="etiqueta-cantidad" class="col-xs-2 control-label hide">Cantidad de opciones</label>
+        <div class="col-xs-1 hide" id="input-cantidad">
+            <input type="text" name="cantidad" id="cantidad" class="form-control input-sm">
+        </div>
+        <div class="col-xs-3 hide" id="btnAgregar">
+            <a class="btn btn-warning" id="agregar" onclick="agregaOpciones();"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Agregar</a>
+        </div>
+    </div>
+
+    <div class="col-xs-12 form-group mb40px">
+        <div id="opciones">
+            <?php foreach ($this->opciones as $opcion): ?>
+                <div id="opcion_<?php echo $opcion->id; ?>" class="col-xs-12 form-group">
+                    <label class="col-xs-2 control-label">Descripción:</label>
+                    <div class="col-xs-6">
+                        <input type="text" name="opciones[]" id="opcion_<?php echo $opcion->id; ?>" class="form-control input-sm required" maxlength="100" value="<?php echo $opcion->opcion; ?>">
+                    </div>
+                    <div class="col-xs-2">
+                        <a class="btn btn-danger" title="Eliminar" onclick="eliminarOpciones(<?php echo $opcion->id; ?>);"><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Eliminar</a>
+                    </div>
+                </div>
+            <?php endforeach ?>
+        </div>
+    </div>
+
+    <br>    
+    
+    <div class="col-xs-12 text-right">
+        <input type="hidden" name="id" id="id" value="<?php echo $this->registro->id; ?>" /> <!-- cuando no es nuevo -->
+        <button class="btn btn-rojo-1" onclick="guardar('frmPregunta','frmFiltrosPreguntas','/backend/preguntas/grid','/backend/preguntas/imprimir','/preguntas/exportar');" type="button" ><i class="fa fa-check-circle"></i> Aceptar</button>
+        <button class="btn btn-rojo-1" onclick="cancelar();" type="button" ><i class="fa fa-times-circle"></i> Cancelar</button>
+    </div>
+     
+
+</form>

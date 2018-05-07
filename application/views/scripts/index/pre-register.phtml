@@ -1,0 +1,97 @@
+<div class="container" style="padding: 20px; border: 1px solid gray;">
+<form class="form" name="frmPreRegistro" id="frmPreRegistro" method="post" action="/index/guardar-pre-registro">	
+	<div class="row">
+		<div class="col-md-12">
+			<h4 class="text-center">Formulario de pre-registro</h4>
+		</div>
+		<div class="col-md-3">
+			<h5>* Campos obligatorios</h5>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12 form-group">
+			<div class="col-md-1">
+				<label>*Nombre:</label>
+			</div>
+			<div class="col-md-3">
+				<input type="text" name="nombre" placeholder="Nombre" class="form-control required" maxlength="100">
+			</div>
+			<div class="col-md-1">
+				<label>*Apellido paterno:</label>
+				</div>
+			<div class="col-md-3">
+				<input type="text" name="apellido_pat" placeholder="Apellido paterno" class="form-control required" maxlength="50">
+			</div>
+			<div class="col-md-1">
+				<label>*Apellido materno:</label>
+			</div>
+			<div class="col-md-3">
+				<input type="text" name="apellido_mat" placeholder="Apellido materno" class="form-control required" maxlength="50">
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 form-group ">
+			<div class="col-md-1">
+				<label>*Fecha nacimiento:</label>
+			</div>
+			<div class="col-md-3">
+				<input type="text" name="fecha_nacimiento" readonly="readonly" id="fecha_nacimiento" placeholder="Fecha de nacimiento" class="form-control required" maxlength="15">
+			</div>
+			<div class="col-md-1">
+				<label>CURP:</label>
+			</div>
+			<div class="col-md-3">
+				<input type="text" name="curp" placeholder="CURP" class="form-control" maxlength="18">
+			</div>
+			<div class="col-md-1">
+				<label>RFC:</label>
+			</div>
+			<div class="col-md-3">
+				<input type="text" name="rfc" placeholder="XXXXYYMMDDXX" class="form-control " maxlength="12">
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 form-group">
+			<div class="col-md-1">
+				<label>*Género</label>
+			</div>
+			<div class="col-md-3">
+				<label class="radio-inline"><input type="radio" name="genero" class="required" value="1">M</label>
+				<label class="radio-inline"><input type="radio" name="genero" class="required" value="2">F</label>
+			</div>
+			<div class="col-md-1">
+				<label>*Tel&eacute;fono:</label>
+			</div>
+			<div class="col-md-3">
+				<input type="text" name="telefono" placeholder="Teléfono" class="form-control number required" maxlength="20">
+			</div>
+			<div class="col-md-1">
+				<label>Celular:</label>
+			</div>
+			<div class="col-md-3">
+				<input type="text" name="celular" placeholder="Celular" class="form-control number " maxlength="15">
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12 form-group">
+			<div class="col-md-1">
+				<label>*Correo electrónico</label>
+			</div>
+			<div class="col-md-3">
+				<input type="mail" name="correo" id="correo" class="form-control email required" placeholder="Correo electrónico" maxlength="100">
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="col-md-2 col-md-offset-5">
+				<a onclick="guardarPreRegistro('frmPreRegistro');" class="btn btn-primary"><i class="fa fa-check"></i> Enviar</a>
+			</div>
+		</div>
+	</div>
+</form>
+</div>

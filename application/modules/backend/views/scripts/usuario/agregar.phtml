@@ -1,0 +1,63 @@
+<div id="es-1" name="es-1" class="alert alert-success hide" style="padding-bottom: 0;" role="alert">
+    Espere un momento, por favor...
+    <div class="progress">
+        <div class="progress-bar progress-bar-success progress-bar-striped active"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+            <span class="sr-only">100% Completo</span>
+        </div>
+    </div>
+</div>
+
+<form id="frm1" name="frm1" class="form-horizontal" method="post" action="/backend/usuario/guardar" role="form" enctype="multipart/form-data">    
+    <br/>  
+    <div class="col-xs-12 form-group">
+        <label for="persona_id" class="col-xs-2 control-label"><span class="naranja">*</span>Persona:</label>
+        <div class="col-xs-4">
+            <?php if (!$this->bandera): ?>
+                <select class="form-control required" name="persona_id" id="persona_id">
+                    <option value="" selected>Selecciona a una persona</option>
+                    <?php foreach ($this->personas as $persona): ?>
+                        <option value="<?php echo $persona->id ?>"><?php echo $persona->nombre.' '.$persona->apellido_pat.' '.$persona->apellido_mat; ?></option>
+                    <?php endforeach ?>
+                </select>
+            <?php else: ?>
+            <input type="hidden" id="persona_id" name="persona_id" class="" value="<?php echo $this->registro->persona_id ?>" />
+                <label class="col-x s-4 control-label"><?php echo $this->personas->nombre.' '.$this->personas->apellido_pat.' '.$this->personas->apellido_mat; ?></label>
+            <?php endif ?>
+        </div>
+    </div>
+    <div class="col-xs-12 form-group"> 
+        <label for="usuario" class="col-xs-2 control-label"><span class="naranja">*</span>Usuario:</label>
+        <div class="col-xs-4">
+            <input type="text" id="usuario" name="usuario" class="form-control input-sm required" value="<?php echo $this->registro->usuario ?>"  maxlength="50" placeholder="Usuario" />
+        </div>
+
+        <label for="contrasena" class="col-xs-2 control-label"><span class="naranja">*</span>Contraseña:</label>
+        <div class="col-xs-4">
+            <input type="text" id="contrasena" name="contrasena" class="form-control input-sm required" value="<?php echo $this->registro->contrasena ?>" maxlength="50" minlength="2" placeholder="Contraseña" />
+        </div>
+    </div>  
+    
+    <div class="col-xs-12 form-group"> 
+        <label for="tipo_usuario" class="col-xs-2 control-label"><span class="naranja">*</span>Tipo de usuario:</label>
+        <div class="col-xs-4">
+            <select class="form-control required" name="tipo_usuario" id="tipo_usuario">
+                <option value="" selected>Selecciona un tipo de usuario</option>
+                <?php foreach ($this->tipos as $tipo): ?>
+                    <option value="<?php echo $tipo->id ?>" <?php echo (($tipo->id==$this->registro->tipo_usuario)?'selected':'') ?> ><?php echo $tipo->descripcion; ?></option>
+                <?php endforeach ?>
+            </select>
+        </div>
+    </div>
+    <div class="col-xs-12 form-group mb40px">
+    <input type="hidden" name="status" value="1">
+    </div>
+    <br>    
+    
+    <div class="col-xs-12 text-right"> 
+    <input type="hidden" name="id" id="id" value="<?php echo $this->registro->id; ?>" /> <!-- cuando no es nuevo -->
+    <button class="btn btn-rojo-1" onclick="guardar('frm1','frmFiltrosUsuario','/backend/usuario/grid','/backend/usuario/imprimir','/backend/usuario/exportar');" type="button" ><i class="fa fa-check-circle"></i> Aceptar</button>
+    <button class="btn btn-rojo-1" onclick="cancelar();" type="button" ><i class="fa fa-times-circle"></i> Cancelar</button>
+    </div>
+    <br/><br/><br/>  
+
+</form>

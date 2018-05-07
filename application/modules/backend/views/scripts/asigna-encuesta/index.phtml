@@ -1,0 +1,49 @@
+<div class="container">
+	<div class="panel-body">
+	    <form id="frmAsignar" name="frmAsignar" class="form-horizontal" method="post" action="/backend/asigna-encuesta/guardar" role="form" enctype="multipart/form-data">    
+	    <br/>
+	    <div class="col-xs-12">
+	    	<h4 class="text-center">Asignaci&oacute;n de encuestas por zonas</h4>
+	    </div>
+		    <div class="col-xs-12 form-group">
+		    	<label class="col-xs-2 control-label">Encuestas</label>
+		    	<div class="col-xs-4 cuerpo-lista-encuestas sinPadding">
+		    		<ul id="lista_encuestas" style="list-style-type: none;">
+		    			<?php foreach ($this->encuestas as $encuesta): ?>
+	                        <li class="col-xs-12 padding5px">
+	                            <div class="col-xs-1">
+	                                <input type="checkbox" name="encuesta[]" value="<?php echo $encuesta->id; ?>">
+	                            </div>
+	                            <div class="col-xs-10">
+	                                <p ><?php echo $encuesta->nombre ?></p>
+	                            </div>
+	                        </li>
+		    			<?php endforeach ?>
+		    		</ul>
+		    		<input type="hidden" id="encuestas_seleccionadas" value="">
+		    	</div>
+		    	<label class="col-xs-2 control-label">Selecciona una zona</label>
+		    	<div class="col-xs-4">
+			    	<select name="zona_id" id="zona_id" class="form-control input-sm required" onchange="cambiaZona();">
+			    		<option value="">Zonas</option>
+			    		<?php foreach ($this->zonas as $zona): ?>
+			    			<option value="<?php echo $zona->id ?>"><?php echo $zona->nombre; ?></option>
+			    		<?php endforeach ?>
+			    	</select>
+		    	</div>
+		    </div><br>
+		    <div class="col-xs-12 text-right mb40px">
+		        <button class="btn btn-rojo-1" onclick="guardarAsignacion('frmAsignar');" type="button" ><i class="fa fa-floppy-o"></i> Guardar</button>
+		        <button class="btn btn-rojo-1" onclick="limpiarAsinacion('frmAsignar');" type="button" ><i class="fa fa-eraser"></i> Limpiar</button>
+		    </div>
+		    <div class="col-xs-12 form-group">
+		    <br>
+		    	<h4 class="text-center">Zonas con encuestas</h4>
+		    </div>
+		    <div class="col-xs-12">
+		    	<div id="flexigrid"></div>
+		    </div>
+		    <br>
+		</form>	
+	</div>
+</div>

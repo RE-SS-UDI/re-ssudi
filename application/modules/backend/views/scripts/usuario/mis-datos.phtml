@@ -1,0 +1,96 @@
+<div id="es-1" name="es-1" class="alert alert-success hide" style="padding-bottom: 0;" role="alert">
+	Espere un momento, por favor...
+	<div class="progress">
+		<div class="progress-bar progress-bar-success progress-bar-striped active"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+			<span class="sr-only">100% Completo</span>
+		</div>
+	</div>
+</div>
+<form id="frm-1" name="frm-1" class="form-horizontal" method="post" action="/backend/usuario/guardar-usuario" role="form">
+	    <div class="col-xs-12 form-group"> 
+        <label for="nombre" class="col-xs-2 control-label"><span class="naranja">*</span>Nombre:</label>
+        <div class="col-xs-4">
+            <input readonly="readonly" type="text" id="nombre" name="nombre" class="form-control input-sm required" value="<?php echo $this->persona->nombre ?>"  maxlength="100" placeholder="Nombre" />
+        </div>
+        <label for="apellido_pat" class="col-xs-2 control-label"><span class="naranja">*</span>Apellido paterno:</label>
+        <div class="col-xs-4">
+            <input readonly="readonly" type="text" id="apellido_pat" name="apellido_pat" class="form-control input-sm required" value="<?php echo $this->persona->apellido_pat ?>"  maxlength="100" placeholder="Apellido paterno" />
+        </div>
+
+    </div>
+    <div class="col-xs-12 form-group"> 
+        <label for="apellido_mat" class="col-xs-2 control-label"><span class="naranja">*</span>Apellido materno:</label>
+        <div class="col-xs-4">
+            <input readonly="readonly" type="text" id="apellido_mat" name="apellido_mat" class="form-control input-sm required" value="<?php echo $this->persona->apellido_mat ?>" maxlength="100" placeholder="Nombre" />
+        </div>
+        <label for="genero" class="col-xs-2 control-label"><span class="naranja">*</span>Genero:</label>
+        <div class="col-xs-4">
+            <select class="form-control required" name="genero" id="genero" readonly="readonly">
+                <option value="1" <?php echo (($this->persona->genero==1)?'selected':'') ?> >Masculino</option>
+                <option value="2" <?php echo (($this->persona->genero==2)?'selected':'') ?> >Femenino</option>
+            </select>
+        </div>
+    </div>  
+    <div class="col-xs-12 form-group"> 
+        <label for="fecha_nacimiento" class="col-xs-2 control-label"><span class="naranja">*</span>Fecha de nacimiento:</label>
+        <div class="col-xs-4">
+            <input type="text" name="fecha_nacimiento" id="fecha_nacimiento" class="form-control input-sm required" value="<?php echo date_format($this->persona->fecha_nacimiento,'Y-m-d') ?>" placeholder="Fecha de nacimiento">
+        </div>
+        <label for="curp" class="col-xs-2 control-label"><span class="naranja">*</span>CURP:</label>
+        <div class="col-xs-4">
+            <input type="text" id="curp" name="curp" class="form-control input-sm required" value="<?php echo $this->persona->curp ?>" maxlength="20" placeholder="CURP" />
+        </div>
+    </div>  
+    <div class="col-xs-12 form-group"> 
+        <label for="rfc" class="col-xs-2 control-label"><span class="naranja">*</span>RFC:</label>
+        <div class="col-xs-4">
+            <input type="text" id="rfc" name="rfc" class="form-control input-sm required" value="<?php echo $this->persona->rfc ?>" maxlength="20" placeholder="RFC" />
+        </div>
+        <label for="correo" class="col-xs-2 control-label"><span class="naranja">*</span>Correo electr&oacute;nico:</label>
+        <div class="col-xs-4">
+            <input type="text" id="correo" name="correo" class="form-control input-sm required" value="<?php echo $this->persona->correo ?>" maxlength="100" placeholder="Correo" />
+        </div>
+    </div>  
+    <div class="col-xs-12 form-group"> 
+        <label for="telefono" class="col-xs-2 control-label"><span class="naranja">*</span>Tel&eacute;fono:</label>
+        <div class="col-xs-4">
+            <input type="text" id="telefono" name="telefono" class="form-control input-sm required" value="<?php echo $this->persona->telefono ?>" maxlength="20" placeholder="Teléfono" />
+        </div>
+        <label for="celular" class="col-xs-2 control-label"><span class="naranja">*</span>Celular:</label>
+        <div class="col-xs-4">
+            <input type="text" id="celular" name="celular" class="form-control input-sm required" value="<?php echo $this->persona->celular ?>" maxlength="100" placeholder="Celular" />
+        </div>
+    </div>  
+
+    <div class="col-xs-12 form-group">
+        <label for="nombre" class="col-xs-2 control-label"><span class="naranja">*</span>Usuario: <?php echo $this->registro->nombre ?></label>
+        <div class="col-xs-4">
+            <input type="text" id="usuario" name="usuario" class="form-control input-sm required" value="<?php echo $this->registro->usuario ?>" maxlength="100" placeholder="Usuario" />
+        </div>
+    </div>
+    
+    <div class="col-xs-12 form-group">
+            <label for="contrasena" class="col-xs-2 control-label"><span class="naranja">*</span>Cambiar Contraseña:</label>
+            <div class="col-xs-4">
+                <input type="text" id="contrasena" name="contrasena" class="form-control input-sm required" value="<?php echo $this->registro->contrasena ?>" maxlength="10" placeholder="Contrasena" />
+            </div>
+            <label for="contrasena" class="col-xs-2 control-label"><span class="naranja">*</span>Validar Contraseña:</label>
+            <div class="col-xs-4">
+                <input type="text" id="confirmar" name="confirmar" class="form-control input-sm required" value="<?php echo $this->registro->contrasena ?>" maxlength="10" placeholder="Contrasena" />
+            </div>
+
+    </div>
+    
+    
+    <input type="hidden" name="id" id="id" value="<?php echo $this->registro->id; ?>" />
+    
+    <div class="text-right"> 
+    <input type="hidden" name="persona_id" id="persona_id" value="<?php echo $this->persona->id; ?>" /> <!-- cuando no es nuevo -->
+    <input type="hidden" name="id" id="id" value="<?php echo $this->registro->id; ?>" /> <!-- cuando no es nuevo -->
+        <button class="btn btn-rojo-1" onclick="guardar_usuario();" type="button"  style="margin-top: 15px;"><i class="fa fa-floppy-o"></i> Guardar</button>
+        <!--<button class="btn btn-rojo-1" onclick="cancelar();" type="button" ><i class="fa fa-times-circle"></i> Cancelar</button>-->
+    </div>
+    <br/><br/>
+    
+    
+</form>

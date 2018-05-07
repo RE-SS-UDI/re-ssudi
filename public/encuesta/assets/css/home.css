@@ -1,0 +1,252 @@
+html{
+	margin:0;
+	padding:0;
+	height:100%;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+    height: 100%;
+	font-family: 'source-sans-pro', Candara, Helvetica, sans-serif;
+    color: #545554;
+    font-size: 1.2em;
+    background:url(images/bg.gif) repeat top left #FFFFFF;
+}
+
+p{
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -ms-user-select:none;
+    text-align: justify;
+}
+
+img{
+    user-drag: none; 
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
+#cabecera{
+    color:darkgrey;
+    background: linear-gradient(darkgrey, rgba(0,0,0,0)); /* Standard syntax */
+    width: 100%;
+    height:inherit;
+    z-index: 100;
+    color: whitesmoke;
+    text-shadow: 2px 2px 4px #000000;
+    position: absolute;
+}
+
+.demo_wrapper {
+	width: 100%;
+	margin: 0 0;
+}
+
+#slider{
+    position:sticky;
+}
+
+#main-title {
+    font-size: 3em;
+    text-align: left;
+    margin: 15px 10px 10px 20px;
+}
+
+#main-title img{
+    height: 130px;
+}
+
+#logo{
+    color: rebeccapurple;
+    font-size: 3em;
+    text-align: left;
+    float: left;
+    margin: 15px 10px 10px 20px;
+}
+
+.logincontainer{
+    width: 80px;
+    height: 50px;
+    float: right;
+    margin: 10px 0px 0px 0px;
+}
+
+.login {
+    font-size: 1.3em;
+    float: right;
+    margin: 15px 10px 10px 10px;
+    text-decoration: none;
+}
+
+.logincontainer a, .logincontainer a:link, .logincontainer a:visited {
+    color: whitesmoke;
+}
+
+.top-bar .a, .top-bar  a:link, .top-bar a:visited {
+    color: whitesmoke;
+}
+
+.logincontainer a:hover {
+    color: #00aa8a;
+    text-shadow: 1px 2px 4px #368878;
+}
+
+.vertical a, .vertical a, .vertical a:visited{
+    color: #00aa8a;
+}
+
+.top-bar, .top-bar .menu li{
+    background: #00aa8a;
+}
+
+.menu a:hover{
+    color: dimgray;
+}
+
+
+#wrapper {
+    min-height: 100%;
+    position:relative;  
+}
+
+article{
+    margin: auto;
+    margin-top: 10px;
+    padding-bottom:440px; /* Height of the footer element */
+}
+
+.upfooter{
+    background:#f0f0f0;
+	width:100%;
+	height:410px;
+	position:absolute;
+	bottom:0;
+	left:0;
+}
+
+footer {
+	background:#00aa8a;
+	width:100%;
+	height:70px;
+	position:absolute;
+	bottom:0;
+	left:0;
+}
+
+.fimage{
+    height: 100px;
+    margin-bottom: 30px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-image-width: auto;
+}
+
+.upfooter p{
+    width: auto;
+    margin: 0;
+    text-align: center;
+    color: #368878;
+    font-size: 2em;
+}
+
+.breadcrumbs{
+    font-size: 1em;
+    text-align: center;
+}
+
+.breadcrumbs a{
+    text-align: center;
+    color: whitesmoke;
+}
+
+.cop{
+    text-align: left;
+    font-size: 16px;
+}
+
+.is-drilldown{
+    width: auto;
+    height: auto;
+    min-height: auto;
+}
+
+.is-drilldown-submenu-parent > a::after {
+    border-color: transparent transparent transparent #00aa8a;
+}
+
+nav{
+    height: auto;
+}
+
+element.style {
+    min-height: auto;
+    max-width: auto;
+}
+
+@media only screen and (max-width: 950px) {
+    
+    #main-title {
+        width: 90%;
+        font-size: 2.7em;
+        text-align: center;
+        margin: auto;
+    }
+
+    .logincontainer{
+        width: 40%;
+        height: 50px;
+        margin: 0px 0px 0px 0px;
+    }
+    
+    #logo{
+        width: 50%;
+        height: 50px;
+        font-size: 1.3em;
+        margin: 0px 0px 0px 0px;
+    }
+    .fimage{
+        margin-top: 30px;
+    height: 70px;
+}
+}
+
+
+
+@media only screen and (max-width: 480px) {
+    
+    #main-title {
+        width: 100%;
+        font-size: 1.3em;
+        text-align: center;
+        margin: 10px 0 0px 0;
+    }
+
+    .logincontainer{
+        height: 50px;
+        margin: 0px 0px 0px 0px;
+    }
+    
+    #logo{
+        width: 50%;
+    }
+    
+    #login {
+        font-size: 1em;
+    }
+    
+    .is-drilldown{
+        width: auto;
+        height: auto;
+    }
+    
+    #main-title img{
+    height: 80px;
+}
+
+}

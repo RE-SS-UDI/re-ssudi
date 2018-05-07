@@ -1,0 +1,39 @@
+<div class="panel panel-default" style="margin: 5px 0;">
+    <div class="pnl-heading-rojo-1 clearfix">
+        <h3 class="panel-title pull-left">Personas</h3>
+        <button type="button" onclick="agregar('/backend/persona/agregar', 0, 'frmPersona','Registrar Persona');" class="btn btn-sm btn-default pull-right <?php echo($this->puedeAgregar?"":"hide"); ?>">
+            <i class="fa fa-plus"></i>&nbsp;Agregar
+        </button>
+    </div>
+    <div class="panel-body">
+        <form name="frmFiltrosPersona" id="frmFiltrosPersona">
+            <div class="row margin-bottom-3">
+                
+                <div class="col-xs-3">
+                    <label for="fnombre" class="sr-only">Nombre</label>
+                    <input type="text" name="nombre" id="fnombre" class="form-control input-sm" value="" placeholder="Buscar nombre"/>
+                </div>
+                <div class="col-xs-3">
+                    <label for="fpaterno" class="sr-only">Paterno</label>
+                    <input type="text" name="paterno" id="fpaterno" class="form-control input-sm" value="" placeholder="Buscar apellido paterno"/>
+                </div>
+                <div class="col-xs-3">
+                    <label for="fmaterno" class="sr-only">Materno</label>
+                    <input type="text" name="materno" id="fmaterno" class="form-control input-sm" value="" placeholder="Buscar apellido materno"/>
+                </div>
+                <div class="col-xs-3 text-right">
+                    <button class="btn btn-sm btn-default" type="button" onclick="filtrar('frmFiltrosPersona','/backend/persona/grid','/backend/persona/imprimir','/backend/persona/exportar');">
+                        <i class="fa fa-search"></i>&nbsp;Filtrar
+                    </button>
+                    <button class="btn btn-sm btn-default" type="button" onclick="limpiar('frmFiltrosPersona','/backend/persona/grid');">
+                        <i class="fa fa-eraser"></i>&nbsp;Limpiar
+                    </button>
+                </div>
+    	    </div>
+            <div class="row margin-bottom-3">
+            </div>
+        </form>
+    </div>
+</div>
+<div id="flexigrid"></div>
+<div class="height-5"></div>

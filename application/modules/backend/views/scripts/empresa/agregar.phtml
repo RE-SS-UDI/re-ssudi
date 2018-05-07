@@ -1,0 +1,106 @@
+<div id="es-1" name="es-1" class="alert alert-success hide" style="padding-bottom: 0;" role="alert">
+    Espere un momento, por favor...
+    <div class="progress">
+        <div class="progress-bar progress-bar-success progress-bar-striped active"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+            <span class="sr-only">100% Completo</span>
+        </div>
+    </div>
+</div>
+
+    <form id="frmEmpresa" name="frmEmpresa" class="form-horizontal" method="post" action="/backend/empresa/guardar" role="form" enctype="multipart/form-data">    
+    <br/>  
+
+    <div class="col-xs-12 form-group"> 
+        <label for="nombre" class="col-xs-2 control-label"><span class="naranja">*</span>Nombre:</label>
+        <div class="col-xs-4">
+            <input type="text" id="nombre" name="nombre" class="form-control input-sm required" value="<?php echo $this->registro->nombre ?>"  maxlength="100" placeholder="Nombre" />
+        </div>
+        <label for="razon_social" class="col-xs-2 control-label"><span class="naranja">*</span>Razón social:</label>
+        <div class="col-xs-4">
+            <input type="text" id="razon_social" name="razon_social" class="form-control input-sm required" value="<?php echo $this->registro->razon_social ?>"  maxlength="100" placeholder="Razón social" />
+        </div>
+    </div>
+    <div class="col-xs-12 form-group"> 
+        <label for="calle" class="col-xs-2 control-label"><span class="naranja">*</span>Calle:</label>
+        <div class="col-xs-4">
+            <input type="text" id="calle" name="calle" class="form-control input-sm required" value="<?php echo $this->registro->calle ?>"  maxlength="100" placeholder="Calle" />
+        </div>
+        <label for="numExterior" class="col-xs-2 control-label"><span class="naranja">*</span>Núm. Ext:</label>
+        <div class="col-xs-1">
+            <input type="text" id="numExterior" name="numExterior" class="form-control input-sm number required" value="<?php echo $this->registro->numExterior ?>" maxlength="10" placeholder="#" />
+        </div>
+        <label for="numInterior" class="col-xs-2 control-label"><span class="naranja"></span>Núm. Int:</label>
+        <div class="col-xs-1">
+            <input type="text" id="numInterior" name="numInterior" class="form-control input-sm number " value="<?php echo $this->registro->numInterior ?>" maxlength="10" placeholder="#" />
+        </div>
+    </div>
+    <div class="col-xs-12 form-group"> 
+        <label for="contacto" class="col-xs-2 control-label"><span class="naranja">*</span>Contacto:</label>
+        <div class="col-xs-4">
+            <input type="text" name="contacto" id="contacto" class="form-control input-sm required" value="<?php echo $this->registro->contacto ?>" placeholder="Contacto" maxlength="100">
+        </div>
+        <label for="telefono" class="col-xs-2 control-label"><span class="naranja">*</span>Teléfono:</label>
+        <div class="col-xs-4">
+            <input type="text" id="telefono" name="telefono" class="form-control input-sm number required" value="<?php echo $this->registro->telefono ?>" maxlength="20" placeholder="Teléfono" />
+        </div>
+    </div>  
+    <div class="col-xs-12 form-group"> 
+        <label for="email" class="col-xs-2 control-label"><span class="naranja">*</span>E-mail:</label>
+        <div class="col-xs-4">
+            <input type="mail" id="email" name="email" class="form-control input-sm email required" value="<?php echo $this->registro->email ?>" maxlength="100" placeholder="E-mail" />
+        </div>
+        <label for="colonia" class="col-xs-2 control-label"><span class="naranja">*</span>Colonia:</label>
+        <div class="col-xs-4">
+            <input type="text" id="colonia" name="colonia" class="form-control input-sm required" value="<?php echo $this->registro->colonia ?>" maxlength="100" placeholder="Colonia" />
+        </div>
+    </div>  
+    <div class="col-xs-12 form-group"> 
+        <label for="estado_id" class="col-xs-2 control-label"><span class="naranja">*</span>Estado:</label>
+        <div class="col-xs-4">
+            <select name="estado_id" class="form-control required" id="estado_id" onchange="cambiaEstado(this.value);">
+                <option value="" selected>Escoge un estado</option>
+                <?php foreach ($this->estados as $estado): ?>
+                    <option value="<?php echo $estado->id_estado ?>" <?php echo (($this->registro->estado_id==$estado->id_estado)?'selected':'') ?>><?php echo utf8_encode($estado->estado) ?></option>
+                <?php endforeach ?>
+            </select>
+        </div>
+        <label for="municipio_id" class="col-xs-2 control-label"><span class="naranja">*</span>Municipio:</label>
+        <div class="col-xs-4">
+            <select name="municipio_id" class="form-control required" id="municipio_id">
+                <option value="" selected>Escoge un municipio</option>
+                <?php if (is_object($this->muni)): ?>
+                    <option value="" selected><?php echo $this->muni->nombre_municipio; ?></option>
+                <?php endif ?>
+                
+            </select>
+        </div>
+    </div>  
+    <div class="col-xs-12 form-group"> 
+        <label for="codigoPostal" class="col-xs-2 control-label"><span class="naranja">*</span>Código Postal:</label>
+        <div class="col-xs-4">
+            <input type="text" id="codigoPostal" name="codigoPostal" class="form-control input-sm number required" value="<?php echo $this->registro->codigoPostal ?>" maxlength="10" placeholder="Código Postal" />
+        </div>
+        <label for="rfc" class="col-xs-2 control-label"><span class="naranja">*</span>RFC:</label>
+        <div class="col-xs-4">
+            <input type="text" id="rfc" name="rfc" class="form-control input-sm required" value="<?php echo $this->registro->rfc ?>" maxlength="14" placeholder="RFC" />
+        </div>
+    </div>  
+    <div class="col-xs-12 form-group">
+        <label for="status" class="col-xs-2 control-label"><span class="naranja"></span>Estatus:</label>
+        <div class="col-xs-4">
+                <select id="status" name="status" class="form-control input-sm">
+                    <option value="1" selected>Habilitado</option>
+                    <option value="0" >Deshabilitado</option>
+                </select>
+        </div>
+    </div>
+    <br>    
+    
+    <div class="col-xs-12 text-right mb40px">
+        <input type="hidden" name="id" id="id" value="<?php echo $this->registro->id; ?>" /> <!-- cuando no es nuevo -->
+        <button class="btn btn-rojo-1" onclick="guardar('frmEmpresa','frmFiltrosEmpresa','/backend/empresa/grid','/backend/empresa/imprimir','/empresa/exportar');" type="button" ><i class="fa fa-check-circle"></i> Aceptar</button>
+        <button class="btn btn-rojo-1" onclick="cancelar();" type="button" ><i class="fa fa-times-circle"></i> Cancelar</button>
+    </div>
+     
+
+</form>

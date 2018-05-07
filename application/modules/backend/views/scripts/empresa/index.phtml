@@ -1,0 +1,56 @@
+<div class="panel panel-default" style="margin: 5px 0;">
+    <div class="pnl-heading-rojo-1 clearfix">
+        <h3 class="panel-title pull-left">Empresas</h3>
+        <button type="button" onclick="agregar('/backend/empresa/agregar', 0, 'frmEmpresa','Registrar empresa');" class="btn btn-sm btn-default pull-right <?php echo($this->puedeAgregar?"":"hide"); ?>">
+            <i class="fa fa-plus"></i>&nbsp;Agregar
+        </button>
+    </div>
+    <div class="panel-body">
+        <form name="frmFiltrosEmpresa" id="frmFiltrosEmpresa">
+            <div class="row margin-bottom-3">
+                
+                <div class="col-xs-3">
+                    <label for="frazon_social" class="sr-only">Nombre</label>
+                    <input type="text" name="razon_social" id="frazon_social" class="form-control input-sm" value="" placeholder="Buscar razón social"/>
+                </div>
+                <div class="col-xs-3">
+                    <label for="fcalle" class="sr-only">Calle</label>
+                    <input type="text" name="calle" id="fcalle" class="form-control input-sm" value="" placeholder="Buscar calle"/>
+                </div>
+                <div class="col-xs-3">
+                    <label for="fcontacto" class="sr-only">Contacto</label>
+                    <input type="text" name="contacto" id="fcontacto" class="form-control input-sm" value="" placeholder="Buscar contacto"/>
+                </div>
+            
+                <div class="col-xs-3 text-right">
+                    <button class="btn btn-sm btn-default" type="button" onclick="filtrar('frmFiltrosEmpresa','/backend/empresa/grid','/backend/empresa/imprimir','/backend/empresa/exportar');">
+                        <i class="fa fa-search"></i>&nbsp;Filtrar
+                    </button>
+                    <button class="btn btn-sm btn-default" type="button" onclick="limpiar('frmFiltrosEmpresa','/backend/empresa/grid');">
+                        <i class="fa fa-eraser"></i>&nbsp;Limpiar
+                    </button>
+                </div>
+    	    </div>
+            <div class="row margin-bottom-3">
+                <div class="col-xs-3">
+                    <label for="festado" class="sr-only">Estado</label>
+                    <input type="text" name="estado" id="festado" class="form-control input-sm" value="" placeholder="Buscar estado"/>
+                </div>
+                <div class="col-xs-3">
+                    <label for="fmunicipio" class="sr-only">Municipio</label>
+                    <input type="text" name="municipio" id="fmunicipio" class="form-control input-sm" value="" placeholder="Buscar municipio"/>
+                </div>
+                <div class="col-xs-3">
+                <label for="fstatus" class="sr-only">Estatus</label>
+                    <select id="fstatus" name="status" class="form-control input-sm">
+                        <option value="">- Todos los estatus -</option>
+                        <option value="1">Habilitado</option>
+                        <option value="0">Deshabilitado</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div id="flexigrid"></div>
+<div class="height-5"></div>

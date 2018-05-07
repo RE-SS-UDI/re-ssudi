@@ -1,0 +1,24 @@
+<div class="container" style="margin: 0 auto; ">
+	<form class="form" rol="form" id="frmLogin" name="frmLogin" action="/index/valida-usuario" method="POST">
+		<div class="col-xs-offset-4 col-xs-4" style="margin-top: 100px;">
+			<div class="row datos">
+				<div class="col-xs-12 head-sesion">
+					<h4>Inicio de sesión</h4>
+				</div>
+				<div class="col-xs-12 cuerpo-login">
+	                  <div class="input-group margin-bottom-sm">
+	                  	<span class="input-group-addon"><i class="fa fa-user fa-lg" style="width: 20px;"></i></span>
+		                <input type="text"  id="usuario" name="usuario" class="form-control input-sm required" value="" placeholder="Usuario"/>
+	                  </div>
+	                  <div class="input-group margin-bottom-sm">
+	                  	<span class="input-group-addon"><i class="fa fa-lock fa-lg" style="width: 20px;"></i></span>
+		                <input type="text"  id="contrasena" name="contrasena" class="form-control input-sm required" value="" placeholder="Contraseña"/>
+	                  </div>
+				</div>
+				<div class="col-xs-5 pull-right" style="margin-top: 15px;">
+					<a type="button" onclick="inicioSesion();" class="btn btn-success" ><i class="fa fa-share fa-lg"></i> Entrar</a>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
