@@ -7,10 +7,11 @@ class Conexion
 	
 	public static function abreConexion()
 	{
-		    $user = 'Admin';
-            $pass = 'admin123';
+		    $user = 'alex';
+            $pass = 'alexaltair360';
             $database = 'ca02_db';  
-            $serverName = "XHIROX\SQLEXPRESS"; //serverName\instanceName
+            // $serverName = "XHIROX\SQLEXPRESS"; //serverName\instanceName
+            $serverName = "DESKTOP-3J92RIG\SQLEXPRESS"; //serverName\instanceName
             $connectionInfo = array( "Database"=>$database, "UID"=>$user, "PWD"=>$pass);
             $conn = sqlsrv_connect( $serverName, $connectionInfo);
 

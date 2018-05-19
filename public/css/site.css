@@ -9,6 +9,16 @@ body {
     padding-right: 15px;
 }
 
+.carousel-inner {
+    border-radius: 25px;
+    background-color: rgba(0,0,0,0);
+    overflow: hidden;
+}
+
+.well {
+    background-color: rgba(245, 245, 245, 0.4);
+ }
+
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */

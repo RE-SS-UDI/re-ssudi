@@ -1,19 +1,19 @@
 <?php
-class Backend_MisDatosController extends Zend_Controller_Action{
+class Backend_MiCurriculumController extends Zend_Controller_Action{
     public function init(){
         $this->view->headScript()->appendFile('/js/backend/usuario.js');
        
     }//function
  
-    public function misDatosAction(){
+    public function miCurriculumAction(){
 //        $this->_helper->layout->disableLayout();
-
-
         $this->view->registro = My_Comun::obtenerSQL("usuario", "id", Zend_Auth::getInstance()->getIdentity()->id);
         $this->view->persona = My_Comun::obtenerSQL("persona", "id", $this->view->registro->persona_id);
     }
 
+
     public function guardarUsuarioAction(){
+        console.log("usuario");
 
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(TRUE);
@@ -30,13 +30,13 @@ class Backend_MisDatosController extends Zend_Controller_Action{
             $data = array();
             $data2 = array();
 
-            $data['nombre'] = strtoupper($_POST['nombre']);
-            $data['apellido_pat'] = strtoupper($_POST['apellido_pat']);
-            $data['apellido_mat'] = strtoupper($_POST['apellido_mat']);
+            $data['nombre'] = $_POST['nombre'];
+            $data['apellido_pat'] = $_POST['apellido_pat'];
+            $data['apellido_mat'] = $_POST['apellido_mat'];
             $data['genero'] = $_POST['genero'];
             $data['fecha_nacimiento'] = $_POST['fecha_nacimiento'];
-            $data['curp'] = strtoupper($_POST['curp']);
-            $data['rfc'] = strtoupper($_POST['rfc']);
+            $data['curp'] = $_POST['curp'];
+            $data['rfc'] = $_POST['rfc'];
             $data['telefono'] = $_POST['telefono'];
             $data['celular'] = $_POST['celular'];
             $data['id'] = $_POST['persona_id'];

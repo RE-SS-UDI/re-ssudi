@@ -119,11 +119,11 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
             $pre_registro = My_Comun::obtenerSQL('pre_registro','id',$_POST['id']);            
 
             $data = array();
-            $data['nombre'] = $_POST['nombre'];
-            $data['apellido_pat'] = $_POST['apellido_pat'];
-            $data['apellido_mat'] = $_POST['apellido_mat'];
-            $data['rfc'] = $_POST['rfc'];
-            $data['curp'] = $_POST['curp'];
+            $data['nombre'] = strtoupper($_POST['nombre']);
+            $data['apellido_pat'] = strtoupper($_POST['apellido_pat']);
+            $data['apellido_mat'] = strtoupper($_POST['apellido_mat']);
+            $data['rfc'] = strtoupper($_POST['rfc']);
+            $data['curp'] = strtoupper($_POST['curp']);
             $data['fecha_nacimiento'] = $_POST['fecha_nacimiento'];
             $data['genero'] = $_POST['genero'];
             $data['correo'] = $_POST['correo'];

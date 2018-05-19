@@ -8,8 +8,8 @@
     </div>
 </div>
 <div class="container">
-<h3 class="text-center">Mis datos</h3>
-<form id="frm-1" name="frm-1" class="form-horizontal" method="post" action="/backend/mis-datos/guardar-usuario" role="form">
+    <h3 class="text-center">Mi curriculum</h3>
+    <form id="frm-1" name="frm-1" class="form-horizontal" method="post" action="/backend/mi-curriculum/guardar-usuario" role="form">
         <br/>
         <div class="col-xs-12 form-group">
             <label for="nombre" class="col-xs-2 control-label">
@@ -37,8 +37,8 @@
                 <span class="naranja">*</span>Genero:</label>
             <div class="col-xs-4">
                 <select class="form-control required" name="genero" id="genero" readonly="readonly">
-                    <option value="1" <?php echo (($this->persona->genero==1)?'selected':'') ?> >MASCULINO</option>
-                    <option value="2" <?php echo (($this->persona->genero==2)?'selected':'') ?> >FEMENINO</option>
+                    <option value="1" <?php echo (($this->persona->genero==1)?'selected':'') ?> >Masculino</option>
+                    <option value="2" <?php echo (($this->persona->genero==2)?'selected':'') ?> >Femenino</option>
                 </select>
             </div>
         </div>
@@ -66,7 +66,7 @@
             <label for="correo" class="col-xs-2 control-label">
                 <span class="naranja">*</span>Correo electr&oacute;nico:</label>
             <div class="col-xs-4">
-                <input type="email" id="correo" name="correo" class="form-control input-sm required" value="<?php echo $this->persona->correo ?>"
+                <input type="text" id="correo" name="correo" class="form-control input-sm required" value="<?php echo $this->persona->correo ?>"
                     maxlength="100" placeholder="Correo" />
             </div>
         </div>
@@ -109,11 +109,8 @@
             <div class="col-xs-4">
                 <input type="password" id="confirmar" name="confirmar" class="form-control input-sm required" value="<?php echo $this->registro->contrasena ?>"
                     maxlength="10" placeholder="Contrasena" />
-                    <!-- An element to toggle between password visibility -->
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" onclick="showPasswordUsr(document)" id="contraCheck">
-                        <label class="form-check-label" for="contraCheck">Mostrar contraseña</label>
-                    </div>
+                     <!-- An element to toggle between password visibility -->
+                     <input type="checkbox" class="form-check-input" onclick="showPasswordUsr(document)">Show Password
             </div>
 
             <div class="col-xs-12 form-group">

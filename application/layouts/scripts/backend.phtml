@@ -16,19 +16,33 @@
 	<?php echo $this->headLink(); ?>
     </head>
     <body>
+	<div class="container-floud">
         
+	<div class="container-floud">
         <header class="banner"> 	
             <div class="encabezado">
+			<div class="container">
                 <figure class="pull-left">
-                    <img src="/img/logo_ca.png" class="logo" alt="" title="" />
+                    <img src="/img/logo_ca.png" class="logo img-rounded" alt="" title="" />
                 </figure>
-                <div class="row col-xs-4">
+			
+                <!-- <div class="row col-xs-4"> -->
                     <!--<h1 class="mt60px bold f24px text-center">RESSUDI</h1>-->
-                </div>
+                <!-- </div> -->
 	
                 <div class="btn-group pull-right menu">
-					<?php if(My_Comun::tienePermiso("VER_MIS_DATOS")){ ?><a class="btn btn-default" href="/backend/mis-datos/mis-datos"> <i class="fa fa-user"></i>&nbsp;Mi Perfil &nbsp; </a><?php } ?>
-<!--					<?php if(My_Comun::tienePermiso("VER_MIS_DATOS")){ ?><a class="btn btn-default" href="javascript:_usuario('<?php echo Zend_Auth::getInstance()->getIdentity()->id ?>')"> <i class="fa fa-user"></i>&nbsp;Mi Perfil &nbsp; </a><?php } ?> -->
+
+				<div class="btn-group">
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i>&nbsp;Mi Perfil<span class="caret"></span></button>
+							<ul class="dropdown-menu text-left" role="menu">
+								<?php if(My_Comun::tienePermiso("VER_MIS_DATOS")){ ?><li><a href="/backend/mis-datos/mis-datos"> <i class="fa fa-user-o"></i>&nbsp;Datos básicos &nbsp; </a></li> <?php } ?>
+								<?php if(My_Comun::tienePermiso("VER_MI_CURRICULUM")){ ?><li><a href="/backend/mi-curriculum/mi-curriculum"> <i class="fa fa-address-card"></i>&nbsp;Currículum  &nbsp; </a></li> <?php } ?>
+								</ul>
+                </div>
+	
+
+					<!-- <?php if(My_Comun::tienePermiso("VER_MIS_DATOS")){ ?><a class="btn btn-default " href="/backend/mis-datos/mis-datos"> <i class="fa fa-user"></i>&nbsp;Mi Perfil &nbsp; </a><?php } ?> -->
+					<!-- <?php if(My_Comun::tienePermiso("VER_MIS_DATOS")){ ?><a class="btn btn-default" href="javascript:_usuario('<?php echo Zend_Auth::getInstance()->getIdentity()->id ?>')"> <i class="fa fa-user"></i>&nbsp;Mi Perfil &nbsp; </a><?php } ?> -->
 					<?php if(My_Comun::tienePermiso("VER_MI_EMPRESA")){ ?><a class="btn btn-default" href="/backend/mi-empresa/empresa-usuario"><i class="fa fa-building-o"></i>&nbsp;Mi Empresa &nbsp;</a><?php } ?>
 	                <div class="btn-group">
 						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="fa fa-list-alt"></i>&nbsp;Administraci&oacute;n<span class="caret"></span></button>
@@ -41,7 +55,7 @@
 	                    	</ul>
 					</div>
 	                <div class="btn-group">
-						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="fa fa-list-alt"></i>&nbsp;Empresas<span class="caret"></span></button>
+						<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="fa fa-industry"></i>&nbsp;Empresas<span class="caret"></span></button>
 							<ul class="dropdown-menu text-left" role="menu">
 								<?php if(My_Comun::tienePermiso("VER_EMPRESA")){ ?><li><a href="/backend/empresa"><i class="fa fa-building-o"></i>&nbsp;Registro</a></li> <?php } ?>
 	                    	</ul>
@@ -59,10 +73,14 @@
 	                    	</ul>
 					</div>
 	                <a class="btn btn-default" href="http://<?php echo $_SERVER["SERVER_NAME"] ?>/backend/ingreso/salir">Salir &nbsp; <i class="fa fa-sign-out"></i> </a>
+			
+				</div>
+				</div>
             </div>
 	</header>
+	</div>
 
-	<div class="container">
+	<div class="container-floud">
             <div class="row"><div class="col-xs-24"><?php echo $this->layout()->content; ?></div></div>
     </div>
 
@@ -101,4 +119,8 @@
 	<script src="/js/backend/comun.js"></script>
 	<?php echo $this->headScript(); ?>        
     </body>
+	</div>
+	<footer class="footer">
+        <p>© 2018 UTJ, edu.</p>
+      </footer>
 </html>

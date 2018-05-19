@@ -196,6 +196,22 @@ function guardar_usuario(){
     $("#frm-1").submit();    
 }
 
+function showPasswordUsr(document) {
+    var x = document.getElementById("confirmar");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+
+    var x = document.getElementById("contrasena");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+}
+
 function permiteNumerosConDecimal(evt, obj)
 {
     
