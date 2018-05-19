@@ -63,9 +63,9 @@
     </div>  
 
     <div class="col-xs-12 form-group">
-        <label for="nombre" class="col-xs-2 control-label"><span class="naranja">*</span>Usuario: <?php echo $this->registro->nombre ?></label>
+        <label for="nombre" class="col-xs-2 control-label"><span class="naranja"></span>Usuario: <?php echo $this->registro->nombre ?></label>
         <div class="col-xs-4">
-            <input type="text" id="usuario" name="usuario" class="form-control input-sm required" value="<?php echo $this->registro->usuario ?>" maxlength="100" placeholder="Usuario" />
+            <input type="text" id="usuario" name="usuario" class="form-control input-sm readonly" value="<?php echo $this->registro->usuario ?>" maxlength="100" placeholder="Usuario" readonly="readonly"/>
         </div>
     </div>
     

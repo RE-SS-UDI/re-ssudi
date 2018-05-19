@@ -35,6 +35,12 @@ $(document).ready(function(){
 			}) //ajaxSubmit
 		} //submitHandler
 	}) //validate
+
+
+
+
+
+    
 });
 
 function recupera(){

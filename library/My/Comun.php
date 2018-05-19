@@ -4,9 +4,46 @@ class My_Comun{
 	function __construct(){}
 
 	// rutas
-    const CORREO = 'esau_tolosa@avansys.com.mx';
+    const CORREO = 'esau.toc@hotmail.com';
 
-	public static function mensaje($numero){
+
+
+public static function obtenersiguienteId(){
+		$conec = new Conexion;
+        $conexion = $conec->abreConexion();
+		$sql = "SELECT (MAX(ID)+1) AS id FROM empresa_proyecto
+				";
+		$stmt = sqlsrv_query( $conexion, $sql);
+		$datos = array();
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+        	$datos[] = $obj;		     
+        }
+		return $datos;
+}
+
+
+public static function obtenerFiltroSQLMensajes($idPer){
+		$conec = new Conexion;
+        $conexion = $conec->abreConexion();
+		$sql = "
+				if exists(select permisos from usuario where id = ".$idPer."
+				and permisos like '%VER_INICIO%')
+				select u.usuario, m.id, m.persona_origen_id, 
+				m.persona_destino_id, m.mensaje, m.status, m.asunto, 
+				m.duedate_at, m.created_at, m.updated_at from mensaje m 
+				join usuario u on m.persona_origen_id = u.id 
+				where GETDATE() <= duedate_at and m.status=1 
+				and (persona_destino_id= ".$idPer." or persona_destino_id = 0)
+				order by m.created_at desc";
+		$stmt = sqlsrv_query( $conexion, $sql);
+		$datos = array();
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+        	$datos[] = $obj;		     
+        }
+		return $datos;
+}
+
+public static function mensaje($numero){
 
 		switch($numero)
 		{
@@ -21,7 +58,243 @@ class My_Comun{
 			default     : return "No se encontró la descripción del error. ".$numero; break;    
 		}
 	}
-        
+     
+public static function obtenerFiltroSqlUsuariosMensajes($tipo_usuario,$id_zona){
+		$conec = new Conexion;
+        $conexion = $conec->abreConexion();
+		$sql = "
+
+			if exists(SELECT * from usuario WHERE tipo_usuario= ".$tipo_usuario." ) 
+				select RetVal=1, concat(p.nombre,' ',p.apellido_pat,' ',apellido_mat) as persona, 
+				u.usuario, u.id, p.nombre, e.nombre, z.nombre 
+				from usuario u join persona p on u.persona_id = p.id join empresa e 
+				on p.empresa_id = e.id join zona z on e.zona_id = z.id 
+				WHERE tipo_usuario= ".$tipo_usuario." and z.id = ".$id_zona."
+				else if (".$tipo_usuario." != 0) 
+				select RetVal=0
+				else if (".$tipo_usuario." = 0)
+				select RetVal=2"
+				;
+		$stmt = sqlsrv_query( $conexion, $sql);
+		$datos = array();
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+        	$datos[] = $obj;		     
+        }
+		return $datos;
+	}
+
+
+public static function obtenerFiltroSqlUsuariosMensajesAdmins($tipo_usuario){
+		$conec = new Conexion;
+        $conexion = $conec->abreConexion();
+		$sql = "
+
+			if exists(SELECT * from usuario WHERE tipo_usuario= ".$tipo_usuario." ) 
+				select RetVal=1, concat(p.nombre,' ',p.apellido_pat,' ',apellido_mat) as persona, 
+			    u.usuario, u.id, p.nombre, e.nombre 
+				from usuario u join persona p on u.persona_id = p.id join empresa e 
+				on p.empresa_id = e.id  
+				WHERE tipo_usuario= ".$tipo_usuario."
+				else if (".$tipo_usuario." != 0) 
+				select RetVal=0
+				else if (".$tipo_usuario." = 0)
+				select RetVal=2";
+		$stmt = sqlsrv_query( $conexion, $sql);
+		$datos = array();
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+        	$datos[] = $obj;		     
+        }
+		return $datos;
+	}
+
+	
+//obtener mensajes para usuarios especificos y para todos
+	public static function obtenerTipoMsje($id){
+		$conec = new Conexion;
+        $conexion = $conec->abreConexion();
+		$sql = " 
+				if exists(select tu.id as tipo_usuario_id, tu.descripcion as desc_tu, m.id, m.persona_origen_id, 
+					m.persona_destino_id, u.usuario, m.mensaje, m.status, m.asunto, m.duedate_at, m.created_at, 
+					m.updated_at from mensaje m
+					join usuario u 
+					on m.persona_destino_id = u.id
+					join tipo_usuario tu
+					on tu.id = u.tipo_usuario
+					where m.id = ".$id." )
+select tu.id as tipo_usuario_id, tu.descripcion as desc_tu, m.id, m.persona_origen_id, 
+					m.persona_destino_id, u.usuario, m.mensaje, m.status, m.asunto, m.duedate_at, m.created_at, 
+					m.updated_at from mensaje m
+					join usuario u 
+					on m.persona_destino_id = u.id
+					join tipo_usuario tu
+					on tu.id = u.tipo_usuario
+					where m.id = ".$id." 
+else select			0 as tipo_usuario_id, 0 as desc_tu , m.id, m.persona_origen_id, 
+					m.persona_destino_id, 'todos' as usuario, m.mensaje, m.status, m.asunto, m.duedate_at, m.created_at, 
+					m.updated_at from mensaje m
+					where m.id = ".$id;
+		$stmt = sqlsrv_query( $conexion, $sql);
+		$datos = array();
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+        	$datos[] = $obj;		     
+        }
+		return $datos;
+	}
+	
+	public static function obtenerFiltroSQLCategorias($id){
+		$conec = new Conexion;
+        $conexion = $conec->abreConexion();
+		$sql = " select distinct c.id, c.nombre  
+				from categoria c
+				join encuesta e
+				on e.categoria_id = c.id
+				join zona_encuesta ze
+				on ze.encuesta_id = e.id
+				join zona z
+				on z.id = ze.zona_id
+				where z.id =
+				 ".$id;
+		$stmt = sqlsrv_query( $conexion, $sql);
+		$datos = array();
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+        	$datos[] = $obj;		     
+        }
+		return $datos;
+	}
+	
+public static function obtenerFiltroSQLConcentradoEncuestas($filtro_zona,$filtro_categoria){
+		$conec = new Conexion;
+        $conexion = $conec->abreConexion();
+		$sql = "
+				select e.id, e.nombre, e.status, e.categoria_id from encuesta e
+				join zona_encuesta ze
+				on ze.encuesta_id = e.id
+				where e.status = 1 ".$filtro_categoria.$filtro_zona."
+				order by nombre asc";
+		$stmt = sqlsrv_query( $conexion, $sql);
+		$datos = array();
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+        	$datos[] = $obj;		     
+        }
+		return $datos;
+	}
+	public static function obtenerFiltroSQLConcentrado($filtro_zona,$filtro_nombre){
+		$conec = new Conexion;
+        $conexion = $conec->abreConexion();
+		$sql = "
+		select e.nombre as empresa, p.id, p.nombre, p.apellido_pat, p.apellido_mat, e.zona_id from persona p
+		join empresa e
+		on p.empresa_id = e.id
+		join zona z 
+		on z.id = e.zona_id
+		where p.status = 1 ".$filtro_zona.$filtro_nombre."
+		 order by p.nombre asc";
+		$stmt = sqlsrv_query( $conexion, $sql);
+		$datos = array();
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+        	$datos[] = $obj;		     
+        }
+		return $datos;
+	}
+
+     //FILTROS ZONA PERSONA
+public static function obtenerFiltroSQLEmpresaRoot(){
+		$conec = new Conexion;
+        $conexion = $conec->abreConexion();
+		$sql ="select * from empresa";
+		$stmt = sqlsrv_query( $conexion, $sql);
+		$datos = array();
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+        	$datos[] = $obj;		     
+        }
+		return $datos;
+	}
+
+public static function obtenerFiltroSQLEmpresa($zonaUser){
+		$conec = new Conexion;
+        $conexion = $conec->abreConexion();
+		$sql ="Select * from empresa where zona_id=".$zonaUser;
+		$stmt = sqlsrv_query( $conexion, $sql);
+		$datos = array();
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+        	$datos[] = $obj;		     
+        }
+		return $datos;
+	}
+
+
+
+     //zonas para root en empresa
+public static function obtenerFiltroSQLZonasAdmin(){
+		$conec = new Conexion;
+        $conexion = $conec->abreConexion();
+		$sql = "
+				select * from zona";
+		$stmt = sqlsrv_query( $conexion, $sql);
+		$datos = array();
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+        	$datos[] = $obj;		     
+        }
+		return $datos;
+	}
+
+    //obtener el tipo de usuario
+	public static function obtenertipoUSer($idPer){
+		$conec = new Conexion;
+        $conexion = $conec->abreConexion();
+		$sql = "
+				select * from usuario where persona_id=".$idPer;
+		$stmt = sqlsrv_query( $conexion, $sql);
+		$datos = array();
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+        	$datos[] = $obj;		     
+        }
+		return $datos;
+	}
+
+
+
+//obtener zona para cualquier usuario
+	public static function obtenerFiltroSQLZonas($idZona){
+		$conec = new Conexion;
+        $conexion = $conec->abreConexion();
+		$sql = "
+				select * from zona where id=".$idZona;
+		$stmt = sqlsrv_query( $conexion, $sql);
+		$datos = array();
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+        	$datos[] = $obj;		     
+        }
+		return $datos;
+	}
+
+
+
+
+
+//obtener el id de la zona a la que pertenece el usuario
+    public static function obtenerZonas($id){
+		$conec = new Conexion;
+        $conexion = $conec->abreConexion();
+		$sql = "
+				select z.id as id
+				from usuario u
+				join persona p
+				on u.persona_id = p.id
+				join empresa e
+				on p.empresa_id = e.id
+				join zona z
+				on e.zona_id = z.id 
+				where u.id = ".$id;
+
+
+		$stmt = sqlsrv_query( $conexion, $sql);
+		$datos = array();
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+        	$datos[] = $obj;		     
+        }
+		return $datos;
+	}    
     function aleatorio($maximo){
 		
 		$permitidos = "1234567890abcdefghijklmnopqrstuvwxyz";
@@ -697,7 +970,8 @@ class My_Comun{
         	$dato2[] = $obj;
 			      
         }
-
+//print_r($sql);
+//exit;
 		$registros['registros'] = $dato2;
 //		$registros['registros'] = My_Comun::crearQuery(null, $consulta);
 		$registros['pagina'] = $page;  
@@ -1015,10 +1289,11 @@ class My_Comun{
 
 		return $result;
 	}
+
 	public static function correoElectronico($titulo, $cuerpo, $de, $de_nombre, $para, $para_nombre, $copia = "", $adjunto = ""){
 
 	$config = array("auth" => "login", "username" => "ressudi@utj.edu.mx", "password" => "adminca02", "port" => 587);
-	$transport = new Zend_Mail_Transport_Smtp("mail.utj.edu.mx", $config);
+	$transport = new Zend_Mail_Transport_Smtp("mail.utj.com.mx", $config);
       
   	$cuerpo_ = "
                     <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
@@ -1070,12 +1345,83 @@ class My_Comun{
 		$mail->setSubject(utf8_decode($titulo));
 
 	try{
-//		$mail->send();
-		$mail->send($transport);
+		$mail->send();
+//		$mail->send($transport);
 	}catch(Exception $e){
 		echo("$e error");
 	}//try
 		return 1;
 	}
+
+	public static function envioCorreo($titulo, $cuerpo, $de, $de_nombre, $para, $para_nombre, $copia = "", $adjunto = ""){
+
+	$config = array("auth" => "login", "username" => "ressudi@utj.edu.mx", "password" => "adminca02", "port" => 587);
+	$transport = new Zend_Mail_Transport_Smtp("mail.utj.com.mx", $config);
+
+  	$cuerpo_ = "
+                    <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
+                    <html xmlns=\"http://www.w3.org/1999/xhtml\">
+                    <head><title>Sinergia</title></head>
+                    <body>
+                        
+                        <table style=\"width: 100%; font-family: Tahoma, Arial; font-size: 12px; border: none 0; border-spacing: 0; border-collapse: collapse; padding: 0;\" border=\"0\">
+                            <tr>
+                                <td style=\"height:3px; background-color: #ed3023;\"></td>
+                            </tr>
+                            
+                            <tr>
+                            	<td align=\"left\" style=\"padding: 10px;\">
+								<img src=\"http://ca02.utj.edu.mx/public/img/logo_ca.png\" alt=\"Sinergia\" title=\"Sinergia\"/></td>
+                            </tr>
+                            
+                            <tr>
+                                <td style=\"height:3px; background-color: #0079c2;\"></td>
+                            </tr>
+                            
+                            <tr>
+                                <td align=\"left\" valign=\"middle\" style=\"padding:10px; color:#14374A; font-size:18px;\">
+                                    ".$titulo."
+				</td>
+                            </tr>
+                            
+                            <tr>
+                                <td align=\"left\" valign=\"top\" style=\"padding:20px; color:#444444; font-size:12px;\">
+                                    ".$cuerpo."
+				</td>
+                            </tr>
+                            
+                            <tr>
+                                <td align=\"left\" valign=\"top\" style=\"color:#444444; font-size:10px;\">
+                                    Este correo electrónico ha sido enviado de la página de Sinergia.
+                                </td>
+                            </tr>
+                            <tr><td style=\"height:3px; background-color: #14374A;\"></td></tr>
+			</table>
+                    </body>
+		</html>";
+/*
+		$mail = new Zend_Mail("UTF-8"); //Usaremos codificación UTF-8 para el mensaje
+		$mail->setFrom("ressudi@utj.edu.mx", "RESSUDI") //Cuenta de correo del remitente y nombre del remitente amostrar
+		     ->setSubject($titulo) //Asunto
+		     ->setBodyHtml($cuerpo_) //Cuerpo del mensaje indicando que será HTML y no texto plano. Usaríamos setBodyText() para texto plano
+		     ->addTo($para); //Añadimos un destinatario
+//		     ->addCc("copy@calat.com") //Añadimos un destinatario en copia
+//		     ->addBcc("blind@calat"); //Añadimos un destinatario en copia oculta	
+*/
+ 		$mail = new Zend_Mail();
+		$mail->setBodyHtml(utf8_decode($cuerpo_));
+		$mail->setFrom($de,  utf8_decode($de_nombre));
+		$mail->addTo($para, utf8_decode($para_nombre));	
+		$mail->setSubject(utf8_decode($titulo));
+
+		try {
+		    $mail->send($transport);
+		    return 1;
+		} catch (Zend_Exception $e) {
+		    return $e->getMessage();
+		}
+    }
+
+
 }
 ?>

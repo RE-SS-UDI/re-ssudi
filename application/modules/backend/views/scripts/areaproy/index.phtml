@@ -1,0 +1,42 @@
+<div class="panel panel-default" style="margin: 5px 0;">
+    <div class="pnl-heading-rojo-1 clearfix">
+        <h3 class="panel-title pull-left">Areas de Proyectos</h3>
+        <button type="button" onclick="agregar('/backend/areaproy/agregar', 0, 'frmAreaproy','Registrar Area de Proyecto');" class="btn btn-sm btn-default pull-right <?php echo($this->puedeAgregar?"":"hide"); ?>">
+            <i class="fa fa-plus"></i>&nbsp;Agregar
+        </button>
+    </div>
+    <div class="panel-body">
+        <form name="frmFiltrosAreaProyecto" id="frmFiltrosAreaProyecto">
+            <div class="row margin-bottom-3">
+                
+                <div class="col-xs-3">
+                    <label for="fdescripcion" class="sr-only">Descripcion</label>
+                    <input type="text" name="descripcion" id="fdescripcion" class="form-control input-sm" value="" placeholder="Buscar descripcion"/>
+                </div>
+
+
+                
+                <div class="col-xs-3">
+                <label for="fstatus" class="sr-only">Estatus</label>
+                    <select id="fstatus" name="status" class="form-control input-sm">
+                        <option value="">- Todos los estatus -</option>
+                        <option value="1">Habilitado</option>
+                        <option value="0">Deshabilitado</option>
+                    </select>
+                </div>
+                <div class="col-xs-3 text-right">
+                    <button class="btn btn-sm btn-default" type="button" onclick="filtrar('frmFiltrosAreaProyecto','/backend/areaproy/grid','/backend/areaproy/imprimir','/backend/areaproy/exportar');">
+                        <i class="fa fa-search"></i>&nbsp;Filtrar
+                    </button>
+                    <button class="btn btn-sm btn-default" type="button" onclick="limpiar('frmFiltrosAreaProyecto','/backend/areaproy/grid');">
+                        <i class="fa fa-eraser"></i>&nbsp;Limpiar
+                    </button>
+                </div>
+    	    </div>
+            <div class="row margin-bottom-3">
+            </div>
+        </form>
+    </div>
+</div>
+<div id="flexigrid"></div>
+<div class="height-5"></div>

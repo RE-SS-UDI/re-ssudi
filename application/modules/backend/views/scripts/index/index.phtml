@@ -1,1 +1,54 @@
-<center><h2><b> Bienvenido <?php echo Zend_Auth::getInstance()->getIdentity()->nombre; ?></b></h2></center>
+<center><h3><b> Bienvenido 
+<br>
+<?php echo($this->persona->nombre." ".$this->persona->apellido_pat." ".$this->persona->apellido_mat); ?></b></h2></center>
+
+<div id="es-1" name="es-1" class="alert alert-success hide" style="padding-bottom: 0;" role="alert">
+	Espere un momento, por favor...
+	<div class="progress">
+		<div class="progress-bar progress-bar-success progress-bar-striped active"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+			<span class="sr-only">100% Completo</span>
+		</div>
+	</div>
+</div>
+
+    <div class="<?php echo($this->puedeVer?"":"hide"); ?>">
+        <h3 class="text-center">Mensajes Recientes</h3>    
+    </div>
+    
+
+
+<?php 
+
+
+    foreach($this->mensajes as $mensaje)
+        
+    {   
+    
+        echo "<form id='frm-2' name='frm-2' class='form-horizontal' method='post' role='form'>";
+            echo "<div class='container-fluid'>";
+                echo "<div class='row'>";
+                    echo "<div class='col-sm-4'>";
+                        echo "<br>";
+                        echo "<div style='position: relative; left: 300px;'>";
+                            echo "<span><b>Fecha de mensaje: </b></span>";
+                            echo "<span>".date_format($mensaje->created_at,"Y-m-d")."</span>";
+                        echo "</div>";   
+                        echo "<span><b>Enviado por: </b></span>";
+                        echo "<span>".$mensaje->usuario."<span><br>";
+                        echo "<span><b>Asunto: </b></span>";
+                        echo "<span>".$mensaje->asunto."<span><br>";
+                        echo "<span><b>Mensaje: </b></span>";
+                        echo "<span>".$mensaje->mensaje."<span><br>";
+             
+                    echo "</div>";                
+                echo "</div>";
+            echo "</div>";
+        echo "</form>";
+        echo "<br>";                            
+    }
+ ?>
+
+
+
+<div id="flexigrid"></div>
+<div class="height-5"></div>

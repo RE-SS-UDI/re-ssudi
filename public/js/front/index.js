@@ -3,7 +3,7 @@ $(document).ready(function() {
         dateFormat: 'yy-mm-dd',
         changeMonth: true,
         changeYear: true,
-        maxDate: "+0d",
+        yearRange: "-87:-15",//rango del calendario seleccionable
         dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
         dayNamesShort: ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
         monthNames: 

@@ -1,0 +1,54 @@
+<div id="es-1" name="es-1" class="alert alert-success hide" style="padding-bottom: 0;" role="alert">
+    Espere un momento, por favor...
+    <div class="progress">
+        <div class="progress-bar progress-bar-success progress-bar-striped active"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+            <span class="sr-only">100% Completo</span>
+        </div>
+    </div>
+</div>
+
+    <form id="frmAreaproy" name="frmAreaproy" class="form-horizontal" method="post" action="/backend/areaproy/guardar" role="form" enctype="multipart/form-data">    
+    <br/>  
+
+    <div class="col-xs-12 form-group"> 
+        <label for="nombre" class="col-xs-2 control-label"><span class="naranja">*</span>Descripcion:</label>
+        <div class="col-xs-4">
+            <input type="text" id="descripcion" name="descripcion" class="form-control input-sm required" value="<?php echo $this->registro->descripcion ?>"  maxlength="100" placeholder="Descripcion" />
+        </div>
+        <label for="status" class="col-xs-2 control-label"><span class="naranja"></span>Estatus:</label>
+        <div class="col-xs-4">
+                <select id="status" name="status" class="form-control input-sm">
+                    <option value="1" selected>Habilitado</option>
+                    <option value="0" >Deshabilitado</option>
+                </select>
+        </div>
+    </div>
+
+
+    <div class="col-xs-12 form-group"> 
+        <label for="status" class="col-xs-2 control-label"><span class="naranja">*</span>Zona: </label>
+            <div class="col-xs-4">
+                <select class="form-control required" name="zona_id" id="zona_id" >
+                    <option value="" selected>-- Seleccione zona --</option>
+                    <?php foreach ($this->zonas as $zona): ?>
+                        
+                        <option value="<?php echo $zona->id ?>" <?php echo (($this->registro->zona_id == $zona->id)?'selected':'') ?>><?php echo utf8_encode($zona->nombre) ?></option>
+
+                    <?php endforeach ?>
+
+                </select>
+            </div>
+    </div>
+
+
+    <br>    
+    <div class="col-xs-12 text-right">
+    
+
+
+    <input type="hidden" name="id" id="id" value="<?php echo $this->registro->id; ?>" /> <!-- cuando no es nuevo -->
+    <button class="btn btn-rojo-1" onclick="guardar('frmAreaproy','frmFiltrosAreaProyecto','/backend/areaproy/grid','/backend/areaproy/imprimir','/areaproy/exportar');" type="button" ><i class="fa fa-check-circle"></i> Aceptar</button>
+    <button class="btn btn-rojo-1" onclick="cancelar();" type="button" ><i class="fa fa-times-circle"></i> Cancelar</button>
+    </div>
+    <br/><br/><br/>  
+</form>

@@ -1,7 +1,8 @@
 <?php
 class backend_UsuarioController extends Zend_Controller_Action{
     public function init(){
-        $this->view->headScript()->appendFile('/js/backend/usuario.js');
+        $this->view->headScript()->appendFile('/js/backend/comun.js?');
+        $this->view->headScript()->appendFile('/js/backend/usuario.js?'.time());
        
     }//function
  
@@ -69,14 +70,14 @@ class backend_UsuarioController extends Zend_Controller_Action{
         for ($k=0; $k < count($registros['registros']); $k++) 
         {
                 $grid[$i]['nombre']=$registros['registros'][$k]->nombre.' '.$registros['registros'][$k]->apellido_pat.' '.$registros['registros'][$k]->apellido_mat;
-                $grid[$i]['usuario']=$registros['registros'][$k]->usuario;
+//                $grid[$i]['usuario']=$registros['registros'][$k]->usuario;
                 $grid[$i]['tipo']=$registros['registros'][$k]->descripcion;
                 $grid[$i]['zona']=$registros['registros'][$k]->zona;
                 $grid[$i]['empresa']=$registros['registros'][$k]->empresa;
 
             if($registros['registros'][$k]->status == 0)
             {
-                $grid[$i]['permisos'] = '<i class="boton fa fa-check fa-lg text-danger"></i>';   
+                //$grid[$i]['permisos'] = '<i class="boton fa fa-check fa-lg text-danger"></i>';   
                 $grid[$i]['editar'] = '<i class="boton fa fa-pencil fa-lg text-danger"></i>';
                 
                 if($eliminar)
@@ -121,14 +122,47 @@ class backend_UsuarioController extends Zend_Controller_Action{
 
         $this->view->tipos = My_Comun::obtenerFiltroSQL('tipo_usuario', ' WHERE status = 1 ', ' descripcion asc');
         $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', ' WHERE status = 1 ', ' nombre asc');
-			
+		
+
+
+        $idPer = Zend_Auth::getInstance()->getIdentity()->id;
+
+        $this->view->tipoUser = My_Comun::obtenertipoUSer($idPer);
+        $this->view->zonaUser = My_Comun::obtenerZonas($idPer);
+
+        if($this->view->tipoUser[0]->tipo_usuario == 3){
+
+            $this->view->tipos = My_Comun::obtenerFiltroSQL('tipo_usuario', ' WHERE status = 1 ', ' descripcion asc');
+        }else {
+
+            $this->view->tipos = My_Comun::obtenerFiltroSQL('tipo_usuario', ' WHERE id = 5 or id = 6  ', ' descripcion asc');
+        } 
+
+
+
         if($_POST["id"]!="0"){
             $this->view->registro=My_Comun::obtenerSQL("usuario", "id", $_POST["id"]);
+
+
             $this->view->personas = My_Comun::obtenerSQL("persona", "id", $this->view->registro->persona_id);
             $this->view->bandera = true;
+
+
         }else{
-            $this->view->personas = Persona::obtenerPersonas();
-            $this->view->bandera = false;
+
+
+            if($this->view->tipoUser[0]->tipo_usuario == 3){
+
+                $this->view->personas = Persona::obtenerPersonas();
+                $this->view->bandera = false;
+
+            }else {
+
+                $this->view->personas = Persona::obtenerPersonasZonas($this->view->zonaUser[0]->id);
+                $this->view->bandera = false;
+            } 
+
+
         }
 
     }//function

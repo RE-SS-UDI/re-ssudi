@@ -1,7 +1,8 @@
 <?php
 class Backend_MiEmpresaController extends Zend_Controller_Action{
     public function init(){
-        $this->view->headScript()->appendFile('/js/backend/empresa.js');
+        $this->view->headScript()->appendFile('/js/backend/comun.js?');
+        $this->view->headScript()->appendFile('/js/backend/empresa.js?'.time());
        
     }//function
  

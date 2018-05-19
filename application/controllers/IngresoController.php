@@ -50,14 +50,30 @@ class IngresoController extends Zend_Controller_Action
         $persona = My_Comun::obtenerSQL('persona', 'correo', $_POST['correo_electronico'], ' and status = 1');
         $usuario = My_Comun::obtenerSQL('usuario', 'persona_id', $persona->id, ' and status = 1');
 
-        $titulo = "Recuperar contraseña";
+        $titulo = "Ressudi UTJ";
         $cuerpo = "
+            Hola ".$persona->nombre.",
+
+            <p>El modelo del navegador de Skandia plantea que el valor de mercado de una compañía  viene determinado por un capital financiero y unos valores ocultos que, en su conjunto, se denominan capital intelectual.</p>
+
+            <p>A partir de esta consideración se proponen la manera de medirlo, teniendo en cuenta que cualquier valoración  que se haga no solo debe contener indicadores pertinentes sino también presentar esas medidas en una forma que sea fácilmente inteligible, aplicable y comparable con otras empresas. Además de llevar en conjunto a producir un significado comprensible de la capacidad futura y sostenible de producir beneficios. Así como detectar cualquier excitación de la empresa, agotamiento, tensión, debilidad y enfermedad.</p>
+
+            <p>Para lo que se le solicita, de la manera más atenta, responder las encuestas que se encuentran en el sistema, con el usuario y contraseña de acceso que a continuación se le proporcionan.</p>
+            <br><br>
+ 
+
+            <p><strong>Sistema Administrativo RESSUDI</strong></p>
+
+ 
+
+            <a href=\"http://ca02.utj.edu.mx/\">http://ca02.utj.edu.mx/</a>
+
             Usuario:&nbsp;".$usuario->usuario."
             <br />
             Contrase&ntilde;a:&nbsp;".$usuario->contrasena."
         ";
 
-        echo My_Comun::correoElectronico($titulo, $cuerpo,'esau.toc@hotmail.com','Sinergia', $usuario->correo, $usuario->nombre);
+        echo My_Comun::envioCorreo($titulo, $cuerpo,'ressudi@utj.edu.mx','Sinergia', $usuario->correo, $persona->nombre);
     }
 
     public function salirAction(){

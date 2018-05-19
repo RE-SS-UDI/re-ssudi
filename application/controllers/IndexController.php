@@ -3,7 +3,7 @@
 class IndexController extends Zend_Controller_Action{
 
     public function init(){
-        $this->view->headScript()->appendFile('/js/front/index.js');
+        $this->view->headScript()->appendFile('/js/front/index.js?'.time());
        
     }//function
  
@@ -26,7 +26,7 @@ class IndexController extends Zend_Controller_Action{
 
     public function preRegisterAction()
     {
-      
+      $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', ' WHERE status = 1 ', ' nombre asc');
     }
 
     public function guardarPreRegistroAction()

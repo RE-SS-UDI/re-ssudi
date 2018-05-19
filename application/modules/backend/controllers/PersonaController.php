@@ -1,7 +1,8 @@
 <?php
 class Backend_PersonaController extends Zend_Controller_Action{
     public function init(){
-        $this->view->headScript()->appendFile('/js/backend/persona.js');
+        $this->view->headScript()->appendFile('/js/backend/comun.js?');
+        $this->view->headScript()->appendFile('/js/backend/persona.js?'.time());
        
     }//function
  
@@ -19,28 +20,64 @@ class Backend_PersonaController extends Zend_Controller_Action{
         
         $filtro=" 1=1 ";
 
+
+        //Verificamos el tipo d usurio
+        if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario != 3){
+            $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->id);
+            $filtro .= " AND e.zona_id = ".$zona->id." ";
+        }
+
         $nombre=$this->_getParam('nombre');
+        $paterno=$this->_getParam('paterno');
+        $materno=$this->_getParam('materno');
         $status=$this->_getParam('status');
         
         
         if($this->_getParam('status')!="")
             $filtro.=" AND status=".$this->_getParam('status');
         
-        if($nombre!='')
+        if($nombre!='' )
         {
             $nombre=explode(" ", trim($nombre));
             for($i=0; $i<=$nombre[$i]; $i++)
             {
                 $nombre[$i]=trim(str_replace(array("'","\"",),array("�","�"),$nombre[$i]));
         		if($nombre[$i]!="")
-                    $filtro.=" AND (p.nombre LIKE '%".$nombre[$i]."%') OR (p.apellido_pat LIKE '%".$nombre[$i]."%') OR (p.apellido_mat LIKE '%".$nombre[$i]."%') ";
+                    $filtro.=" AND (p.nombre LIKE '%".$nombre[$i]."%')";
             }//for
         }//if
 
+        if($paterno!='' )
+        {
+            $paterno=explode(" ", trim($paterno));
+            for($i=0; $i<=$paterno[$i]; $i++)
+            {
+                $paterno[$i]=trim(str_replace(array("'","\"",),array("�","�"),$paterno[$i]));
+                if($paterno[$i]!="")
+                    $filtro.=" AND (p.apellido_pat LIKE '%".$paterno[$i]."%') ";
+            }//for
+        }//if
+
+        if($materno!='' )
+        {
+            $materno=explode(" ", trim($materno));
+            for($i=0; $i<=$materno[$i]; $i++)
+            {
+                $materno[$i]=trim(str_replace(array("'","\"",),array("�","�"),$materno[$i]));
+                if($materno[$i]!="")
+                    $filtro.=" AND (p.apellido_mat LIKE '%".$materno[$i]."%') ";
+            }//for
+        }//if
+
+
+
         $consulta = "SELECT p.id, p.nombre, p.apellido_pat, p.apellido_mat, p.correo, p.telefono, p.status
                       FROM persona p
+                      JOIN empresa e
+                      ON e.id = p.empresa_id
                       WHERE ".$filtro;
-    
+
+  
         $registros = My_Comun::registrosGridQuerySQL($consulta);
         $grid=array();
     	$i=0;
@@ -54,7 +91,7 @@ class Backend_PersonaController extends Zend_Controller_Action{
                 $grid[$i]['apellido_pat'] =$registros['registros'][$k]->apellido_pat;
                 $grid[$i]['apellido_mat'] =$registros['registros'][$k]->apellido_mat;
                 $grid[$i]['correo'] =$registros['registros'][$k]->correo;
-                $grid[$i]['telefono'] =$registros['registros'][$k]->telefono;
+//                $grid[$i]['telefono'] =$registros['registros'][$k]->telefono;
                 $grid[$i]['status']=(($registros['registros'][$k]->status)?'Habilitado':'Inhabilitado');
                
             if($registros['registros'][$k]->status == 0)
@@ -92,7 +129,22 @@ class Backend_PersonaController extends Zend_Controller_Action{
     public function agregarAction(){
         $this->_helper->layout->disableLayout();
         $this->view->llave = My_Comun::aleatorio(20);
+
+
+        $idPer = Zend_Auth::getInstance()->getIdentity()->id;
+        $this->view->zonaUser = My_Comun::obtenerZonas($idPer);
+        $this->view->tipoUser = My_Comun::obtenertipoUSer($idPer);
+
+        if($this->view->tipoUser[0]->tipo_usuario == 3){
+
+            $this->view->empresas = My_Comun::obtenerFiltroSQLEmpresaRoot();
+        }else {
+
+            $this->view->empresas = My_Comun::obtenerFiltroSQLEmpresa($this->view->zonaUser[0]->id);
+        }  
+
 		
+        //$this->view->empresas = My_Comun::obtenerFiltroSQL('empresa', ' WHERE status = 1 ', ' nombre asc ');
 
         if($_POST["id"]!="0"){
             $this->view->registro=My_Comun::obtenerSQL("persona", "id", $_POST["id"]);

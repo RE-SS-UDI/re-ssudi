@@ -1,6 +1,18 @@
 urlEliminar='/backend/persona/eliminar';
 
 $(document).ready(function(){
+    var value = __obtenerTiempo ();
+    $('#mainContent').idle({
+       onIdle: function(){
+        $.ajax({url: "ingreso/salir", success: function(result){
+                        __mensajeSinBoton('#_mensaje-1',  'Cerrando aplicacion por falta de actividad...');
+                        __delayRefreshPage(600);
+        }});
+          },
+          idle: value  //10 segundos
+        })
+
+
 	var filtro="/backend/persona/grid";
 	if($("#fnombre").val()!="")       filtro+="/nombre/"+$("#fnombre").val();
 	if($("#fpaterno").val()!="")       filtro+="/paterno/"+$("#fpaterno").val();
@@ -13,8 +25,8 @@ $(document).ready(function(){
 			{display: "Nombre",           name:"p.nombre",       width: 200, sortable: true, align: "center"},
 			{display: "Apellido paterno",name:"p.apellido_pat",       width: 200, sortable: true, align: "center"},			
 			{display: 'Apellido materno',         name:"p.apellido_mat",     width: 200, sortable : false, align: 'center'},
-			{display: 'Correo',         name:"p.correo",     width: 200, sortable : false, align: 'center'},
-			{display: 'Tel&eacute;fono',         name:"p.telefono",     width: 200, sortable : false, align: 'center'},
+			{display: 'Correo',         name:"p.correo",     width: 240, sortable : false, align: 'center'},
+//			{display: 'Tel&eacute;fono',         name:"p.telefono",     width: 160, sortable : false, align: 'center'},
 			{display: 'Estatus',           name:"p.status",       width: 100, sortable : false, align: 'center'},
 			{display: 'Editar',           name:"editar",       width: 100, sortable : false, align: 'center'},
             {display: 'Habilitar/deshabilitar',         name:"eliminar",     width: 150, sortable : false, align: 'center'}
@@ -32,6 +44,7 @@ $(document).ready(function(){
 	});
 
 });
+
 
 function agregar(urlDestino, identificador, form, titulo)
 {

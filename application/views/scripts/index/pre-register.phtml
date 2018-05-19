@@ -82,7 +82,18 @@
 				<label>*Correo electrónico</label>
 			</div>
 			<div class="col-md-3">
-				<input type="mail" name="correo" id="correo" class="form-control email required" placeholder="Correo electrónico" maxlength="100">
+				<input type="email" name="correo" id="correo" class="form-control mail required" placeholder="Correo electrónico" maxlength="100">
+			</div>
+			<div class="col-md-1">
+				<label>*Zona</label>
+			</div>
+			<div class="col-md-3">
+				<select class="form-control required" name="zona_id">
+					<option value="" selected>Seleccione su zona</option>
+					<?php foreach ($this->zonas as $zona): ?>
+						<option value="<?php echo $zona->id; ?>"><?php echo $zona->nombre; ?></option>
+					<?php endforeach ?>
+				</select>
 			</div>
 		</div>
 	</div>

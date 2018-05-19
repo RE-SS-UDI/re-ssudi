@@ -4,8 +4,6 @@ html
 	background-image: url('/img/fondoUTJ1.jpg');
 	background-position: center;
 	background-repeat: repeat;
-	background-size: cover;
-	background-attachment: fixed;
 	height: 100%;
 }
 #contenedor_imagen{
@@ -260,4 +258,22 @@ footer{
 }
 .margen-top{
 	margin-top: 15px;
+}
+.ajuste-etiqueta{
+	word-wrap: break-word;
+    text-align: left !important;
+}
+
+.ancho-celda{
+	width: 200px;
+}
+.cuerpo-concentrado{
+	max-width: 1200px;
+	width: 1200px;
+	overflow-x: scroll;
+	background-color: #fff;
+}
+
+.cursor-modificado{
+	cursor: pointer;
 }

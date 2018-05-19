@@ -4,8 +4,8 @@ class Backend_IngresoController extends Zend_Controller_Action
 {
 
     public function init(){
-
-        $this->view->headScript()->appendFile('/js/backend/ingreso.js');
+$this->view->headScript()->appendFile('/js/backend/comun.js?');
+        $this->view->headScript()->appendFile('/js/backend/ingreso.js?'.time());
     }
 
     public function indexAction(){

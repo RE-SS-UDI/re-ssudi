@@ -63,23 +63,18 @@ class Bitacora{
 	public static function grid($usuarioId, $modelo, $accion, $referencia, $desde, $hasta){
 
 		$consulta = "
-            select
-                usuario.nombre 	as usuario
-                ,bitacora.modelo as modelo
-                ,bitacora.accion 	as accion
-                ,bitacora.referencia 	as referencia
-                ,bitacora.tabla_id 	as tabla_id
-                ,bitacora.created_at 	as fecha
-            from
-                bitacora
-                inner join usuario
-                	on bitacora.usuario_id = usuario.id
-            where
-                1 = 1
+            select concat(persona.nombre,' ',persona.apellido_pat, ' ',persona.apellido_mat) as usuario ,bitacora.id as id ,bitacora.modelo as modelo ,
+				bitacora.accion as accion ,bitacora.referencia as referencia ,bitacora.updated_at as fecha 
+				from bitacora bitacora 
+				inner join usuario usuario 
+				on bitacora.usuario_id = usuario.id 
+				inner join persona persona
+				on persona.id = usuario.persona_id
+				where 1 = 1
         ";
 
         if($usuarioId != "")
-            $consulta .= " and usuario.id = ".$usuarioId;
+            $consulta .= " and usuario.persona_id = ".$usuarioId;
 
         if($modelo != "")
             $consulta .= " and bitacora.modelo like '%".$modelo."%'";
@@ -93,16 +88,17 @@ class Bitacora{
         if($desde != ""){
 
             $desde = str_replace(array("'", "\""), array("´", "´"), $desde);
-            $consulta .= " and bitacora.created_at >= '".$desde." 00:00:00'";
+            $consulta .= " and bitacora.updated_at >= cast('".$desde."T00:00:00' as datetime)";
         }
         
         if($hasta != ""){
 
             $hasta = str_replace(array("'", "\""), array("´", "´"), $hasta);
-            $consulta .= " and bitacora.created_at <= '".$hasta." 23:59:59'";
+            $consulta .= " and bitacora.updated_at <= cast('".$hasta."T23:59:59' as datetime) ";
         }
-
-        return My_Comun::registrosGridQuery($consulta);
+//        echo $consulta;
+//        exit;
+        return My_Comun::registrosGridQuerySQL($consulta);
 	}
 
 	public static function usuarios($seleccionado){

@@ -1,0 +1,166 @@
+<div id="es-1" name="es-1" class="alert alert-success hide" style="padding-bottom: 0;" role="alert">
+    Espere un momento, por favor...
+    <div class="progress">
+        <div class="progress-bar progress-bar-success progress-bar-striped active"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+            <span class="sr-only">100% Completo</span>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    
+function validars (){
+    $("#frmProyEmp").validate({
+        submitHandler: function(form){
+            $(form).ajaxSubmit({
+                success: function(respuesta){
+                    if(!isNaN(respuesta)){   
+                        $("#_dialogo-1").dialog("close");
+                        _mensajeSinBoton('#_mensaje-1',  'Actualizando Pagina...');
+                        delayRefreshPage(400);
+                    }else{                       
+                        _mensaje("#_mensaje-1",  respuesta );
+                    }                        
+                } //success
+                ,error: function(respuesta){
+                    _mensaje("#_mensaje-1", "Ocurri&oacute; un error inesperado, int&eacute;ntelo de nuevo");
+                } //error
+            }) //ajaxSubmit
+        } //submitHandler
+    }) //validate
+    $("#frmProyEmp").submit();
+}
+
+function refreshPage() {
+    //ensure reloading from server instead of cache
+    location.reload(true);
+}
+function delayRefreshPage(mileSeconds) {
+    window.setTimeout(refreshPage, mileSeconds);
+}
+
+function _mensajeSinBoton(id, texto){
+    $(id).html(texto); 
+    $(id).dialog({              
+        width: "auto",
+        height: "80",
+        title: "En proceso",
+        resizable: false,
+        draggable:false,
+        modal: true,
+    }); //dialog
+}
+
+
+</script>
+
+    <form id="frmProyEmp" name="frmProyEmp" class="form-horizontal" method="post" action="/backend/concentradoProy/guardarproyectoempresa" role="form" enctype="multipart/form-data">    
+        <div class="col-xs-12 form-group"> 
+        <label class="col-xs-1 control-label">Id:</label>
+        <div class="col-xs-1">
+            <input type="text" id="id" name="id" disabled class="form-control input-sm" value="<?php echo $this->registroProyectoEmpresa->id ?>"/>
+        </div>
+
+
+        <label for="status" class="col-xs-2 control-label"><span class="naranja">*</span>Estatus Proyecto:</label>
+            <div class="col-xs-2">
+                <select class="form-control required" name="status" id="status" >
+                    <option value="0" <?php echo (($this->registroProyectoEmpresa->status==0)?'selected':'') ?> >Sin asignar</option>
+                    <option value="1" <?php echo (($this->registroProyectoEmpresa->status==1)?'selected':'') ?> >En curso</option>
+                    <option value="2" <?php echo (($this->registroProyectoEmpresa->status==2)?'selected':'') ?> >Finalizado</option>
+                </select>
+            </div>
+
+            <label for="periodo" class="col-xs-1 control-label"><span class="naranja">*</span>Periodo:</label>
+            <div class="col-xs-3">              
+                <select class="form-control required" name="periodo" id="periodo" >
+                    <option value="1" <?php echo (($this->registroProyectoEmpresa->periodo==1)?'selected':'') ?> >Enero - Abril</option>
+                    <option value="2" <?php echo (($this->registroProyectoEmpresa->periodo==2)?'selected':'') ?> >Mayo - Agosto</option>
+                    <option value="3" <?php echo (($this->registroProyectoEmpresa->periodo==3)?'selected':'') ?> >Septiembre - Diciembre</option>
+                </select>
+            </div>
+
+            <div class="col-xs-2">              
+                <select class="form-control required" name="ano" id="ano" >
+                     <?php for ($i=2017; $i <2026 ; $i++): ?>
+                        <option value="<?php echo $i ?>" <?php echo (($this->registroProyectoEmpresa->ano==$i)?'selected':'') ?> ><?php echo $i ?></option>
+                    <?php endfor ?>                    
+                </select>
+            </div>
+    </div> 
+
+
+    <br><br><br>
+    <div class="col-xs-12 form-group">
+
+           <label for="nombre_proyecto" class="col-xs-2 control-label"><span class="naranja">*</span>Nombre del proyecto:</label>
+            <div class="col-xs-4">
+                <input type="text" id="nombre_proyecto" name="nombre_proyecto" class="form-control input-sm required" value="<?php echo $this->registroProyectoEmpresa->nombre_proyecto ?>"  maxlength="100" placeholder="Nombre del proyecto" />
+            </div>
+ 
+
+       <label for="apellidop_alumno" class="col-xs-2 control-label"><span class="naranja">*</span>Apellido paterno:</label>
+            <div class="col-xs-4">
+                <input type="text" id="apellidop_alumno" name="apellidop_alumno" class="form-control input-sm required" value="<?php echo $this->registroProyectoEmpresa->apellidop_alumno ?>"  maxlength="100" placeholder="Apellido paterno del alumno" />
+            </div>
+   </div>
+
+        <div class="col-xs-12 form-group">
+           <label for="nombre_alumno" class="col-xs-2 control-label"><span class="naranja">*</span>Nombre del alumno:</label>
+            <div class="col-xs-4">
+                <input type="text" id="nombre_alumno" name="nombre_alumno" class="form-control input-sm required" value="<?php echo $this->registroProyectoEmpresa->nombre_alumno ?>"  maxlength="100" placeholder="Nombre del alumno" />
+            </div>
+
+           <label for="apellidom_alumno" class="col-xs-2 control-label"><span class="naranja">*</span>Apellido materno:</label>
+            <div class="col-xs-4">
+                <input type="text" id="apellidom_alumno" name="apellidom_alumno" class="form-control input-sm required" value="<?php echo $this->registroProyectoEmpresa->apellidom_alumno ?>"  maxlength="100" placeholder="Apellido materno del alumno" />
+            </div>
+        </div>
+
+        <div class="col-xs-12 form-group">
+
+
+           <label for="observaciones" class="col-xs-2 control-label">Observaciones:</label>
+            <div class="col-xs-10">
+                <input type="text" id="observaciones" name="observaciones" class="form-control input-sm" value="<?php echo $this->registroProyectoEmpresa->observaciones ?>"  maxlength="100" placeholder="Observaciones" />
+            </div>
+
+        </div>
+
+
+
+        <div class="col-xs-12 form-group">
+            <br>
+           <label for="nombre_alumno" class="col-xs-2 control-label">Adjuntar archivo<br><span class="naranja">*Solo archivos .zip Max. 20 MB.</span></label>
+            <div class="col-xs-4">
+                <input type="file" id="file" name="file" />
+                <br>
+                <div style='color:blue;'>
+                    <?php
+                if ($this->registroProyectoEmpresa->tiene_archivos == 1) {
+                    $idP =  $this->registroProyectoEmpresa->id;
+                    $titulo = $this->registroProyectoEmpresa->nombre_proyecto;
+                    $url =  "../public/proyectos/".$idP.".zip";                    
+                    echo "<a style='color:blue;' href='".$url."' download='".$titulo."'>".$titulo.".zip  <i align='right' class='fa fa-download fa-lg'></i></a>";
+                }
+                ?>
+                </div>
+                
+            </div>
+        </div>
+
+    </div>
+    <br>    
+    <div class="col-xs-12 text-right">
+        <!-- faltan de llenar -->
+    <input type="hidden" name="tiene_archivos" id="tiene_archivos" value="<?php echo $this->registroProyectoEmpresa->tiene_archivos ?>" />    
+    <input type="hidden" name="id" id="id" value="<?php echo $this->registroProyectoEmpresa->id ?>" />
+    <input type="hidden" name="siguienteId" id="siguienteId" value="<?php echo $this->siguienteId[0]->id ?>" />
+    <input type="hidden" name="empresa_id" id="empresa_id" value="<?php echo $this->idEmp->id; ?>" />
+    <input type="hidden" name="proyecto_id" id="proyecto_id" value="<?php echo $this->idProy->id; ?>" />
+    <button type="button" onclick="validars();" class="btn btn-rojo-1 <?php echo($this->puedeAgregar?"":"hide"); ?>"><i class="fa fa-check-circle"></i> Aceptar</button>
+   <button class="btn btn-rojo-1" onclick="cancelar();" type="button" ><i class="fa fa-times-circle"></i> Cancelar</button>
+    </div>
+    <br/><br/><br/>  
+</form>

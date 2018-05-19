@@ -1,7 +1,8 @@
 <?php
 class Backend_AsignaEncuestaController extends Zend_Controller_Action{
     public function init(){
-        $this->view->headScript()->appendFile('/js/backend/asigna-encuesta.js');
+        $this->view->headScript()->appendFile('/js/backend/comun.js?');
+        $this->view->headScript()->appendFile('/js/backend/asigna-encuesta.js?'.time());
        
     }//function
  

@@ -1,4 +1,16 @@
 $(document).ready(function() {
+    var value = __obtenerTiempo ();
+    $('#mainContent').idle({
+       onIdle: function(){
+        $.ajax({url: "ingreso/salir", success: function(result){
+                        __mensajeSinBoton('#_mensaje-1',  'Cerrando aplicacion por falta de actividad...');
+                        __delayRefreshPage(600);
+        }});
+          },
+          idle: value  //10 segundos
+        })
+
+
 		var filtro = '/backend/asigna-encuesta/grid';
         $("#flexigrid").flexigrid({
 		url: filtro,
@@ -19,6 +31,8 @@ $(document).ready(function() {
         ,height: 300
 	});		
 });
+
+
 
 function cambiaZona(){
 	var filtro2 = '/backend/asigna-encuesta/grid';

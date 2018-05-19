@@ -1,7 +1,8 @@
 <?php
 class Backend_BitacoraController extends Zend_Controller_Action{
     public function init(){
-        $this->view->headScript()->appendFile('/js/backend/bitacora.js');
+        $this->view->headScript()->appendFile('/js/backend/comun.js?');
+        $this->view->headScript()->appendFile('/js/backend/bitacora.js?'.time());
         
     }//function
   
@@ -10,7 +11,7 @@ class Backend_BitacoraController extends Zend_Controller_Action{
     	$sess=new Zend_Session_Namespace('permisos');
         print_r($sess->permisos);
     	$this->view->puedeAgregar=strpos($sess->cliente->permisos,"AGREGAR_USUARIO")!==false;
-        $this->view->usuarios=My_Comun::obtenerFiltroSQL("Usuario"," where 1=1"," usuario ASC");
+        $this->view->usuarios=My_Comun::obtenerFiltroSQL("persona"," where 1=1"," nombre ASC");
 
     }//function
 
@@ -20,7 +21,8 @@ class Backend_BitacoraController extends Zend_Controller_Action{
         $this->_helper->viewRenderer->setNoRender(TRUE);
         $sess=new Zend_Session_Namespace('permisos');
         
-        $filtro=" 1=1 ";
+        //Iniciamos filtro
+        $filtro=" WHERE 1=1 ";
 
         $usuario=$this->_getParam('usuario');
         $modelo=$this->_getParam('modelo');
@@ -29,14 +31,14 @@ class Backend_BitacoraController extends Zend_Controller_Action{
         $desde=$this->_getParam('desde');
         $hasta=$this->_getParam('hasta');
        
-        if($usuario!='')
+/*        if($usuario!='')
         {
             $nombre=explode(" ", trim($usuario));
             for($i=0; $i<=$usuario[$i]; $i++)
             {
                 $usuario[$i]=trim(str_replace(array("'","\"",),array("�","�"),$usuario[$i]));
-        		if($nombre[$i]!="")
-                    $filtro.=" AND (Bitacora.Usuario.id = '".$usuario[$i]."')  ";
+                if($nombre[$i]!="")
+                    $filtro.=" AND (bitacora.usuario_id = '".$usuario[$i]."')  ";
             }//for
         }//if
 
@@ -48,7 +50,7 @@ class Backend_BitacoraController extends Zend_Controller_Action{
             {
                 $modelo[$i]=trim(str_replace(array("'","\"",),array("�","�"),$modelo[$i]));
                 if($modelo[$i]!="")
-                    $filtro.=" AND (modelo LIKE '%".$modelo[$i]."%')  ";
+                    $filtro.=" AND (bitacora.modelo LIKE '%".$modelo[$i]."%')  ";
             }//for
         }//if
 
@@ -59,7 +61,7 @@ class Backend_BitacoraController extends Zend_Controller_Action{
             {
                 $accion[$i]=trim(str_replace(array("'","\"",),array("�","�"),$accion[$i]));
                 if($accion[$i]!="")
-                    $filtro.=" AND (accion LIKE '%".$accion[$i]."%')  ";
+                    $filtro.=" AND (bitacora.accion LIKE '%".$accion[$i]."%')  ";
             }//for
         }//if
 
@@ -70,7 +72,7 @@ class Backend_BitacoraController extends Zend_Controller_Action{
             {
                 $referencia[$i]=trim(str_replace(array("'","\"",),array("�","�"),$referencia[$i]));
                 if($referencia[$i]!="")
-                    $filtro.=" AND (referencia LIKE '%".$referencia[$i]."%')  ";
+                    $filtro.=" AND (bitacora.referencia LIKE '%".$referencia[$i]."%')  ";
             }//for
         }//if
 
@@ -79,62 +81,34 @@ class Backend_BitacoraController extends Zend_Controller_Action{
             $desde = $desde." 00:00:00";
             $hasta = $hasta." 23:59:59";
 
-            $filtro.=" AND (updated_at >= '".$desde."') AND (updated_at <= '".$hasta."') ";
+            $filtro.=" AND (bitacora.updated_at >= '".$desde."') AND (bitacora.updated_at <= '".$hasta."') ";
         }//if
+*/
+
+        $registros = Bitacora::grid($usuario,$modelo,$accion,$referencia,$desde,$hasta);
 
 
-
-   
-        $registros = My_Comun::registrosGrid("Bitacora", $filtro);
+//        $registros = My_Comun::registrosGrid("bitacora", $filtro,$alias,$modelos);
         $grid=array();
-    	$i=0;
+        $i=0;
 
-        $permisos = My_Comun::tienePermiso("PERMISOS_USUARIO");
         $editar = My_Comun::tienePermiso("EDITAR_USUARIO");
-    	$eliminar = My_Comun::tienePermiso("ELIMINAR_USUARIO");
-            
-    	foreach($registros['registros'] as $registro)
+        $eliminar = My_Comun::tienePermiso("ELIMINAR_USUARIO");
+//            print_r($registros);
+//            exit;
+        for($k=0;$k < count($registros['registros']); $k++)
         {
-                $grid[$i]['updated_at']=$registro->updated_at;
-                $grid[$i]['usuario']=$registro->Usuario->nombre;
-                $grid[$i]['modelo']=$registro->modelo;
-                $grid[$i]['accion']=$registro->accion;
-                $grid[$i]['referencia']=$registro->referencia;
-                $grid[$i]['bit_id']=$registro->id;
+                $grid[$i]['updated_at']=date_format($registros['registros'][$k]->fecha,"d-m-Y H:i:s");
+                $grid[$i]['usuario']=$registros['registros'][$k]->usuario;
+                $grid[$i]['modelo']=$registros['registros'][$k]->modelo;
+                $grid[$i]['accion']=$registros['registros'][$k]->accion;
+                $grid[$i]['referencia']=$registros['registros'][$k]->referencia;
+                $grid[$i]['bit_id']=$registros['registros'][$k]->id;
                 
-               
-/*            if($registro->status == 0)
-            {
-                $grid[$i]['permisos'] = '<i class="boton fa fa-check fa-lg text-danger"></i>';   
-                $grid[$i]['editar'] = '<i class="boton fa fa-pencil fa-lg text-danger"></i>';
-                
-                if($eliminar)
-                    $grid[$i]['eliminar'] = '<span onclick="eliminar('.$registro->id.','.$registro->status.');" title="Eliminar"><i class="boton fa fa-times-circle fa-lg azul"></i></span>';
-                else
-                    $grid[$i]['eliminar'] = '<i class="boton fa fa-times-circle text-danger fa-lg "></i>';
-           }
- */ /*           else
-            {
-
-                if($permisos)
-                    $grid[$i]['permisos'] = '<span onclick="permisos('.$registro->id.');" title="Permisos"><i class="boton fa fa-check fa-lg azul"></i></span>';
-                else
-                    $grid[$i]['permisos'] = '<i class="boton fa fa-check text-danger fa-lg"></i>';
-                    
-                if($editar)
-                    $grid[$i]['editar'] = '<span onclick="agregar(\'/usuario/agregar\','.$registro->id.', \'frm-1\' );" title="Editar"><i class="boton fa fa-pencil fa-lg azul"></i></span>';
-                else
-                    $grid[$i]['editar'] = '<i class="boton fa fa-pencil fa-lg text-danger"></i>';
-
-                if($eliminar)
-                    $grid[$i]['eliminar'] = '<span onclick="eliminar('.$registro->id.','.$registro->status.');" title="Deshabilitar / Habilitar"><i class="boton fa fa-times-circle fa-lg azul"></i></i></span>';
-                else
-                    $grid[$i]['eliminar'] = '<i class="boton fa fa-times-circle fa-lg text-danger"></i>';						
-           }
-  */   				
+                            
             $i++;
-    	}//foreach
-    	My_Comun::armarGrid($registros,$grid);
+        }//foreach
+        My_Comun::armarGrid($registros,$grid);
     }//function
     
     public function agregarAction(){

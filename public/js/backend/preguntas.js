@@ -1,6 +1,18 @@
 urlEliminar='/backend/preguntas/eliminar';
 
 $(document).ready(function(){
+	var value = __obtenerTiempo ();
+    $('#mainContent').idle({
+       onIdle: function(){
+        $.ajax({url: "ingreso/salir", success: function(result){
+                        __mensajeSinBoton('#_mensaje-1',  'Cerrando aplicacion por falta de actividad...');
+                        __delayRefreshPage(600);
+        }});
+          },
+          idle: value  //10 segundos
+        })
+
+
 	var filtro="/backend/preguntas/grid";
 	if($("#fnombre").val()!="")       filtro+="/nombre/"+$("#fnombre").val();
 	if($("#fstatus").val()!="")      filtro+="/status/"+$("#fstatus").val();
@@ -12,15 +24,15 @@ $(document).ready(function(){
 		url: filtro,
 		dataType: "xml",
 		colModel: [
+			{display: 'Editar',           name:"editar",       width: 100, sortable : false, align: 'center'},
+			{display: 'Habilitar/deshabilitar',         name:"eliminar",     width: 150, sortable : false, align: 'center'},
 			{display: "Descripción",           name:"p.descripcion",       width: 400, sortable: true, align: "center"},
-			{display: "Tipo",           name:"p.tipo",       width: 240, sortable: true, align: "center"},
+			{display: "Tipo",           name:"p.tipo",       width: 180, sortable: true, align: "center"},
 			{display: "Encuesta",           name:"e.nombre",       width: 250, sortable: true, align: "center"},
 			{display: "Categor&iacute;a",           name:"c.nombre",       width: 250, sortable: true, align: "center"},
-			{display: 'Estatus',           name:"p.status",       width: 100, sortable : false, align: 'center'},
-			{display: 'Editar',           name:"editar",       width: 100, sortable : false, align: 'center'},
-			{display: 'Habilitar/deshabilitar',         name:"eliminar",     width: 150, sortable : false, align: 'center'}
+			{display: 'Estatus',           name:"p.status",       width: 100, sortable : false, align: 'center'}
 		],
-		sortname: "p.descripcion"
+		sortname: "p.id"
 		,sortorder: "asc"
 		,usepager: true
         ,useRp: false
@@ -33,6 +45,7 @@ $(document).ready(function(){
 	});
 
 });
+
 
 function agregarPregunta(urlDestino, identificador, form, titulo)
 {
@@ -111,6 +124,20 @@ function eliminarOpciones(id)
 			if (res == 'El registro fue eliminado') {
 				$('#opcion_'+id).remove();
 			} 
+		}
+	});
+	
+}
+
+function obtieneEncuestas()
+{
+	$.ajax({
+		url: '/backend/preguntas/obtiene-encuestas',
+		type: 'POST',
+		data: {id: $('#fcategoria').val()},
+		success: function(res)
+		{
+			$('#fnombre_encuesta').html(res);
 		}
 	});
 	

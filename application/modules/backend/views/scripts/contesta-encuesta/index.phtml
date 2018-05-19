@@ -2,7 +2,7 @@
 	<div class="panel-body">
 	    <br/>  
 	    <div class="col-md-12">
-	    <h3>Encuestas</h3>
+	    <h3>Indicadores</h3>
 	          	
 	      <!-- tabs left -->
 	      <div class="tabbable tabs-left">
@@ -10,7 +10,7 @@
 	        	<?php $contador = 0; ?>
 			<?php foreach ($this->encuestas as $encuesta){ ?>
 
-		        <li class="<?php echo (($contador == $this->num_encuesta)?'active':''); ?>"><a href="#_<?php echo $encuesta->id; ?>" data-toggle="tab"><?php echo $encuesta->nombre; ?></a></li>
+		        <li class="<?php echo (($contador == $this->num_encuesta)?'active':''); ?>"><a href="#_<?php echo $encuesta->id; ?>" data-toggle="tab" title="<?php echo $encuesta->nombre; ?>"><?php echo substr($encuesta->nombre, 0,15).'...'; ?></a></li>
 		        <?php $contador++; ?>
 			<?php } ?>
 <!--	          <li><a href="#a" data-toggle="tab">One</a></li>
@@ -27,7 +27,9 @@
 			         <?php $preguntas = Preguntas::obtienePreguntasEncuesta($encuesta->id); ?>
 			         <?php foreach ($preguntas as $pregunta): ?>
 			         	<div class="col-xs-6 form-group">
-			         		<label class="col-xs-12"><?php echo $pregunta->descripcion; ?></label>
+			         		<div class="col-xs-12">
+				         		<label class="ajuste-etiqueta control-label"><?php echo $pregunta->descripcion; ?></label>
+			         		</div>
 			         		<div class="col-xs-12">
 			         			<?php $respuesta = Respuesta::obtieneRespuesta(Zend_Auth::getInstance()->getIdentity()->persona_id, $pregunta->id); ?>
 			         			<?php if ($pregunta->tipo == 1): //pregunta corta ?>

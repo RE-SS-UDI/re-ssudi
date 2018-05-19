@@ -1,7 +1,8 @@
 <?php
 class Backend_ZonasController extends Zend_Controller_Action{
     public function init(){
-        $this->view->headScript()->appendFile('/js/backend/zonas.js');
+        $this->view->headScript()->appendFile('/js/backend/comun.js?');
+        $this->view->headScript()->appendFile('/js/backend/zonas.js?'.time());
        
     }//function
  
@@ -118,14 +119,14 @@ class Backend_ZonasController extends Zend_Controller_Action{
         
 			
         $bitacora = array();
-        $bitacora[0]["modelo"] = "CategoZonaría";
+        $bitacora[0]["modelo"] = "zona";
         $bitacora[0]["campo"] = "nombre";
         $bitacora[0]["id"] = $_POST["id"];
         $bitacora[0]["eliminar"] = "Eliminar zona";
         $bitacora[0]["deshabilitar"] = "Deshabilitar zona";
         $bitacora[0]["habilitar"] = "Habilitar zona";
 			
-        echo My_Comun::eliminarSQL("categoria", $_POST["id"], $bitacora);
+        echo My_Comun::eliminarSQL("zona", $_POST["id"], $bitacora);
     }//function
 
 }//class

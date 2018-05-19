@@ -1,0 +1,75 @@
+
+<thead>
+
+    <tr class="">
+        <th class="text-center ancho-celda">Empresa</th>
+        <?php foreach ($this->areaproyectos as $areaproyecto): ?>
+            <th class="text-center ancho-celda"><?php echo $areaproyecto->descripcion; ?></th>
+        <?php endforeach ?>
+        <!--<th class="text-center">Exportar</th>-->
+    </tr>
+</thead>
+<tbody>
+    <?php foreach ($this->empresas as $empresa): ?>
+        <tr>
+        <?php $contador = 0; ?>
+            <td><?php echo $empresa->nombre; ?></td>
+            <?php foreach ($this->areaproyectos as $areaproyecto): ?>
+                <?php $proyectsArea = Proyecto::devolverProyectoGeneral($areaproyecto->id)?>
+
+                <td class="text-center ancho-celda">
+                        <?php $contador = 1; ?>
+                        <?php foreach ($proyectsArea as $proyectA): ?><p>
+                            <div  class="row">
+                              <div class="col-sm-12">
+                                <ul style="list-style-type: none; margin:0;padding-left: 0;">
+
+
+                                    <!--NUEVO -->
+                                    <?php if (empresaProyecto::verificaStatusEmpresaProyecto($proyectA->id, $empresa->id)[0]->status == 0): ?> 
+
+                                        <?php if($this->tipo_usuario != 6): ?>
+                                            
+                                            <?php $contador = 1; ?>
+                                            <?php echo  $proyectA->descripcion; ?><br>
+                                                <a onclick="agregarProyEmp('/backend/concentradoProy/agregar-proy-empresa', 0, 'frmProyEmp','Asignar Proyecto a Empresa','<?php echo $proyectA->id; ?>','<?php echo $empresa->id; ?>');">
+                                                    <i style="text-decorations:none; color:green;" class="fa fa-check-circle-o" ></i>
+                                                </a>
+                                            <i style="color:gray;" class="fa fa-clock-o" aria-hidden="true"></i>
+                                            <i style="color:gray;" class="fa fa-times-circle-o" aria-hidden="true"></i>
+                                        <?php endif; ?>
+
+                                    <?php endif; ?>      
+
+                                    <!--REGISTRADO -->
+                                    <?php if (empresaProyecto::verificaStatusEmpresaProyecto($proyectA->id, $empresa->id)[0]->status == 1): ?>
+                                        <?php $contador = 1; ?>
+                                        <?php echo  $proyectA->descripcion; ?><br>
+                                        <i style="color:gray;" class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                        <a onclick="agregarProyEmp('/backend/concentradoProy/agregar-proy-empresa',<?php echo empresaProyecto::verificaStatusEmpresaProyecto($proyectA->id, $empresa->id)[0]->id; ?>, 'frmProyEmp','Editar proyecto asignado a empresa','<?php echo $proyectA->id; ?>','<?php echo $empresa->id; ?>');">
+                                            <i style="text-decorations:none; color:blue;" class="fa fa-clock-o" aria-hidden="true"></i>
+                                            </a>                                        
+                                        <i style="color:gray;" class="fa fa-times-circle-o" aria-hidden="true"></i>
+                                    <?php endif; ?>
+                                    <!--FINALIZADO -->
+                                    <?php if (empresaProyecto::verificaStatusEmpresaProyecto($proyectA->id, $empresa->id)[0]->status == 2): ?>
+                                        <?php $contador = 1; ?>
+                                            <?php echo  $proyectA->descripcion; ?><br>
+                                            <i style="color:gray;" class="fa fa-check-circle-o" aria-hidden="true"></i>
+                                            <i style="color:gray;" class="fa fa-clock-o" aria-hidden="true"></i>
+                                                <a onclick="agregarProyEmp('/backend/concentradoProy/agregar-proy-empresa',<?php echo empresaProyecto::verificaStatusEmpresaProyecto($proyectA->id, $empresa->id)[0]->id; ?>, 'frmProyEmp','Editar proyecto asignado a empresa','<?php echo $proyectA->id; ?>','<?php echo $empresa->id; ?>');">
+                                                    <i style="text-decorations:none; color:red;" class="fa fa-times-circle-o" aria-hidden="true"></i>
+                                                </a>
+                                    <?php endif; ?>
+                                </ul>
+                            </div>
+                        </div> 
+                        </p>
+                        <?php endforeach ?>
+                </td>
+            <?php endforeach ?>
+        </tr>
+    <?php endforeach ?>                   
+</tbody>
+
+

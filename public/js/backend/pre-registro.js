@@ -1,6 +1,16 @@
 urlEliminar='/backend/pre-registro/eliminar';
 
 $(document).ready(function(){
+	var value = __obtenerTiempo ();
+    $('#mainContent').idle({
+       onIdle: function(){
+        $.ajax({url: "ingreso/salir", success: function(result){
+                        __mensajeSinBoton('#_mensaje-1',  'Cerrando aplicacion por falta de actividad...');
+                        __delayRefreshPage(600);
+        }});
+          },
+          idle: value  //10 segundos
+        })
 	var filtro="/backend/pre-registro/grid";
 	if($("#fnombre").val()!="")       filtro+="/nombre/"+$("#fnombre").val();
 	if($("#fpaterno").val()!="")       filtro+="/paterno/"+$("#fpaterno").val();
@@ -10,14 +20,12 @@ $(document).ready(function(){
 		url: filtro,
 		dataType: "xml",
 		colModel: [
-			{display: "Nombre",           name:"pr.nombre",       width: 200, sortable: true, align: "center"},
-			{display: "Apellido paterno",name:"pr.apellido_pat",       width: 200, sortable: true, align: "center"},			
-			{display: 'Apellido materno',         name:"pr.apellido_mat",     width: 200, sortable : false, align: 'center'},
-			{display: 'Correo',         name:"pr.correo",     width: 200, sortable : false, align: 'center'},
+			{display: "Nombre",           name:"pr.nombre",       width: 440, sortable: true, align: "center"},
+			{display: 'Correo',         name:"pr.correo",     width: 250, sortable : false, align: 'center'},
 			{display: 'Tel&eacute;fono',         name:"pr.telefono",     width: 200, sortable : false, align: 'center'},
 			{display: 'Estatus',           name:"pr.status",       width: 100, sortable : false, align: 'center'},
 			{display: 'Visualizar',           name:"editar",       width: 100, sortable : false, align: 'center'},
-			{display: 'Eliminar',         name:"eliminar",     width: 140, sortable : false, align: 'center'}
+			{display: 'Eliminar',         name:"eliminar",     width: 100, sortable : false, align: 'center'}
 		],
 		sortname: "pr.nombre"
 		,sortorder: "asc"

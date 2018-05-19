@@ -22,5 +22,10 @@ class OpcionPregunta
 	    }
 
 	}
+
+	public static function obtieneRespuestas()
+	{
+		
+	}
 }
  ?>

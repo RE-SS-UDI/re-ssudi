@@ -1,7 +1,8 @@
 <?php
 class Backend_TipoUsuarioController extends Zend_Controller_Action{
     public function init(){
-        $this->view->headScript()->appendFile('/js/backend/tipo-usuario.js');
+        $this->view->headScript()->appendFile('/js/backend/comun.js?');
+        $this->view->headScript()->appendFile('/js/backend/tipo-usuario.js?'.time());
        
     }//function
  
@@ -114,6 +115,12 @@ class Backend_TipoUsuarioController extends Zend_Controller_Action{
             $preId = My_Comun::guardarSQL("tipo_usuario", $_POST, $_POST["id"], $bitacora);
 
             TipoUsuario::guardarPermisos($_POST['permisos'],$preId);
+
+            $usuarios = My_Comun::obtenerFiltroSQL('usuario', ' WHERE status = 1 and tipo_usuario = '.$preId, 'id asc');
+
+            foreach ($usuarios as $usuario) {
+                Usuario::guardarPermisos($_POST['permisos'],$usuario->id);
+            }
 
             echo($preId);
     }//guardar

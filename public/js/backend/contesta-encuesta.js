@@ -1,6 +1,21 @@
 $(document).ready(function() {
-	//alert('aqui');
+    
+    var value = __obtenerTiempo ();
+    var server = window.location.hostname;
+    var link = "http://"+server+"/backend/ingreso/salir";
+
+    $('#mainContent').idle({
+       onIdle: function(){
+        $.ajax({url: link, success: function(result){
+                        __mensajeSinBoton('#_mensaje-1',  'Cerrando aplicacion por falta de actividad...');
+                        __delayRefreshPage(600);
+        }});
+          },
+          idle: value  //10 segundos
+        })
 });
+
+
 function guardarEncuesta(formulario,encuesta)
 {
     $("#"+formulario).validate({

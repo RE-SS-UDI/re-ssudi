@@ -7,15 +7,14 @@
         <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
         <meta name="description" content="Toma Nota">
         <title>Sistema::Administrativo</title>
-        <link rel="stylesheet" type="text/css" href="/recursos/jquery_ui_1_11_4/jquery-ui.css" />
-        <link rel="stylesheet" type="text/css" href="/recursos/bootstrap/bootstrap.css" />
-        <link rel="stylesheet" type="text/css" href="/recursos/flexigrid/flexigrid.css" />
-        <link rel="stylesheet" type="text/css" href="/recursos/normalize/normalize_3_0_3.css" />
-        <link rel="stylesheet" type="text/css" href="/recursos/font-awesome-4-6-3/css/font-awesome.css" />
-        <link rel="stylesheet" type="text/css" href="/css/comun.css" />
-        <link rel="stylesheet" type="text/css" href="/css/backend.css" />
-        <link rel="stylesheet" type="text/css" href="/css/404.css" />
-        <link href='https://fonts.googleapis.com/css?family=Anton|Passion+One|PT+Sans+Caption' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="/recursos/jquery_ui_1_10_4_custom/css/custom-theme/jquery-ui-1.10.4.custom.min.css" />
+        <link rel="stylesheet" type="text/css" href="/recursos/bootstrap_3_2_0/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="/recursos/flexigrid_1_1/css/flexigrid.css" />
+        <link rel="stylesheet" type="text/css" href="/recursos/normalize_2_1_3/normalize.css" />
+        <link rel="stylesheet" type="text/css" href="/recursos/font_awesome_4_1_0/css/font-awesome.min.css" />
+        <link rel="stylesheet" type="text/css" href="/recursos/jquery_multiselect_1_13/jquery.multiselect.css" />
+        <link rel="stylesheet" type="text/css" href="/css/default.css" />
+        <link rel="stylesheet" type="text/css" href="/css/personalizado.css" />
         <?php echo $this->headLink(); ?>
 
         <link rel="apple-touch-icon" sizes="180x180" href="/imagenes/apple-touch-icon.png">
@@ -32,7 +31,7 @@
     </head>
     <body>
         <section role="main">
-            <div class="container-floud">
+            <div class="container">
                 <?php echo $this->layout()->content; ?>
             </div>                                
         </section>
@@ -49,18 +48,15 @@
         <div id="_mensaje-2" class="display-none"></div>
         
         <!-- La carga de los scripts debe hacerse al final -->
-        <script src="/recursos/jquery_2_2_1/jquery2_2_1.js"></script>
-        <script src="/recursos/jquery_ui_1_11_4/jquery-ui.js"></script>
-        <script src="/recursos/bootstrap/bootstrap.js" />
-        <script src="/recursos/flexigrid/flexigrid.js"></script>
+        <script src="/recursos/jquery_2_0_3/jquery-2.0.3.min.js"></script>
+        <script src="/recursos/jquery_ui_1_10_4_custom/js/jquery-ui-1.10.4.custom.min.js"></script>
+        <script src="/recursos/bootstrap_3_2_0/js/bootstrap.min.js"></script>
         <script src="/recursos/jquery_form_3_18/ajaxforms.js"></script>
         <script src="/recursos/jquery_validation_1_13_0/dist/jquery.validate.min.js"></script>    
-        <script src="/recursos/jquery_validation_1_13_0/dist/localization/messages_es.min.js"></script>   
-        <script src="/js/backend/comun.js"></script>
-        <script src="/js/backend/ingreso.js"></script>
-        <script src="/recursos/404/numbers.js"></script>
-        <?php echo $this->headScript(); ?>      
-
-
+        <script src="/recursos/jquery_validation_1_13_0/dist/localization/messages_es.min.js"></script>    
+        <script src="/recursos/flexigrid_1_1/js/flexigrid.js"></script>
+        <script src="/recursos/jquery_multiselect_1_13/jquery.multiselect.min.js"></script>
+        <script src="/js/default/comun.js"></script>
+        <?php echo $this->headScript(); ?>               
     </body>
 </html>
