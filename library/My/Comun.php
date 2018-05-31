@@ -688,7 +688,7 @@ public static function obtenerFiltroSQLZonasAdmin(){
 
 				// print_r($consulta." //*");
 //				exit;
-				$ consulta .= "; SELECT Scope_Identity() as id;";
+				$consulta .= "; SELECT Scope_Identity() as id;";
 					
 					$s = sqlsrv_prepare($conexion, $consulta);
 
