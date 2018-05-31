@@ -50,7 +50,7 @@
                                 <?php if(My_Comun::tienePermiso("VER_MENSAJE")){  ?><li><a href="/backend/mensaje"><i class="fa fa-envelope"></i>&nbsp;Mensaje &nbsp;</a></li> <?php } ?>
 									<?php if(My_Comun::tienePermiso("VER_BITACORA")){ ?><li><a href="/backend/bitacora"><i class="fa fa-th-list"></i>&nbsp;Bit&aacute;cora</a></li> <?php } ?>
 									
-									<?php if(My_Comun::tienePermiso("VER_TIPO_USUARIO")){ ?><li><a href="/backend/tipo-usuario"><i class="fa fa-street-view"></i>&nbsp; Cat&aacute;logo Usuarios</a></li> <?php } ?>
+									<?php if(My_Comun::tienePermiso("VER_TIPO_USUARIO")){ ?><li><a href="/backend/tipo-usuario"><i class="fa fa-street-view"></i>&nbsp; Tipo usuarios</a></li> <?php } ?>
 									
 									
 									
@@ -145,6 +145,7 @@
     <div id="_mensaje-3" class="display-none"></div>
 		
 	<!-- La carga de los scripts debe hacerse al final -->
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 	<script src="/recursos/jquery_2_2_1/jquery2_2_1.js"></script>
 	<script src="/recursos/jquery_ui_1_11_4/jquery-ui.js"></script>
 	<script src="/recursos/bootstrap/bootstrap.js"></script>
@@ -154,6 +155,38 @@
 	<script src="/recursos/jquery_validation_1_13_0/dist/localization/messages_es.min.js"></script>    
 	<script src="/recursos/idle/jquery.idle.js"></script>
 	<script src="/js/backend/comun.js"></script>
+
+	<script type="text/javascript">
+	$(window).load(function(){
+
+	$('.menu li a').click(function (e) {     
+		//get selected href
+		var href = $(this).attr('href');    
+		// console.log(href);
+
+		$('.tabs-left').hide();
+		$('.tabs-left'+href).show();
+		
+		//set all nav tabs to inactive
+		// $('.nav-tabs li').removeClass('active');
+		// $('.nav-tabs li a[href="'+href+'"]').addClass('active');
+		
+		//get all nav tabs matching the href and set to active
+		// $('.tabs-left [href="'+href+'"]').addClass('active');
+		// $('.tabs-left li a[href="'+href+'"]').addClass('active');
+
+		//active tab
+		// $('.tabs-left').removeClass('active');
+		// $('.tabs-left'+href).addClass('active');
+	})
+	});
+	</script>
+
+
+
+
+
+
 	<?php echo $this->headScript(); ?>   
 	</div>     
     </body>

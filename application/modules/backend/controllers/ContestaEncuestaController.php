@@ -8,7 +8,10 @@ class Backend_ContestaEncuestaController extends Zend_Controller_Action{
  
     public function indexAction(){
 //        $this->view->puedeObtenerTodos=strpos($sess->cliente->permisos,"PERMISOS_CONTESTA_ENCUESTA")!==false;
-        $this->view->encuestas = ContestaEncuesta::obtieneEncuestasUsuario(Zend_Auth::getInstance()->getIdentity()->id);
+        // $this->view->encuestas = ContestaEncuesta::obtieneEncuestasUsuario(Zend_Auth::getInstance()->getIdentity()->id);
+        $this->view->encuestas = ContestaEncuesta::obtieneEncuestasUsuarioZona(Zend_Auth::getInstance()->getIdentity()->id);
+        $this->view->zonasName = ContestaEncuesta::obtieneZona_UsuarioZona(Zend_Auth::getInstance()->getIdentity()->id);
+
 //        print_r($this->view->encuestas);
 //        exit;
         if ($this->_getParam('encuesta') != '') {
@@ -94,7 +97,10 @@ class Backend_ContestaEncuestaController extends Zend_Controller_Action{
     {
         $sess=new Zend_Session_Namespace('permisos');
         $this->view->puedeObtenerTodos=strpos($sess->cliente->permisos,"PERMISOS_CONTESTA_ENCUESTA")!==false;
-        $this->view->encuestas = ContestaEncuesta::obtieneEncuestasUsuario(Zend_Auth::getInstance()->getIdentity()->id);
+        $this->view->encuestas = ContestaEncuesta::obtieneEncuestasUsuarioZona(Zend_Auth::getInstance()->getIdentity()->id);
+        $this->view->zonasName = ContestaEncuesta::obtieneZona_UsuarioZona(Zend_Auth::getInstance()->getIdentity()->id);
+
+        // $this->view->encuestas = ContestaEncuesta::obtieneEncuestasUsuario(Zend_Auth::getInstance()->getIdentity()->id);
     }
 
 

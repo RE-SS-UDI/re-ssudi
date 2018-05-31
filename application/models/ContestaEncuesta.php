@@ -55,5 +55,83 @@ class ContestaEncuesta
         return $datos;
     }//funcion
 
+    public static function obtieneEncuestasUsuarioZona($usuario_id)
+    {
+        $conec = new Conexion;
+        $conexion = $conec->abreConexion();
+        
+         $sql = "SELECT e.id,e.nombre,z.id as 'zona_id', z.nombre as 'zona_nombre'
+                FROM encuesta e
+                INNER JOIN zona_encuesta ze
+                on e.id = ze.encuesta_id
+                INNER JOIN zona z
+                on z.id = ze.zona_id
+                INNER JOIN persona_zona em
+                on z.id = em.zona_id        
+                INNER JOIN usuario u
+                on u.id = em.usuario_id
+                WHERE u.id = '".$usuario_id."'
+              ";
+        $stmt = sqlsrv_query( $conexion, $sql);
+        $datos = array();
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+        
+            $datos[] =  $obj;       
+        }
+        return $datos;
+    }//funcion
+
+    public static function obtieneEncuestas_UsuarioZonaById($usuario_id,$zona_id)
+    {
+        $conec = new Conexion;
+        $conexion = $conec->abreConexion();
+        
+         $sql = "SELECT e.id,e.nombre,z.nombre as 'Zona_nombre'
+                FROM encuesta e
+                INNER JOIN zona_encuesta ze
+                on e.id = ze.encuesta_id
+                INNER JOIN zona z
+                on z.id = ze.zona_id
+                INNER JOIN persona_zona em
+                on z.id = em.zona_id        
+                INNER JOIN usuario u
+                on u.id = em.usuario_id
+                WHERE u.id = '".$usuario_id."' and z.id = '".$zona_id."'
+              ";
+        $stmt = sqlsrv_query( $conexion, $sql);
+        $datos = array();
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+        
+            $datos[] =  $obj;       
+        }
+        return $datos;
+    }//funcion
+
+    public static function obtieneZona_UsuarioZona($usuario_id)
+    {
+        $conec = new Conexion;
+        $conexion = $conec->abreConexion();
+        
+         $sql = "SELECT DISTINCT z.id,z.nombre as 'zona_nombre'
+                FROM encuesta e
+                INNER JOIN zona_encuesta ze
+                on e.id = ze.encuesta_id
+                INNER JOIN zona z
+                on z.id = ze.zona_id
+                INNER JOIN persona_zona em
+                on z.id = em.zona_id        
+                INNER JOIN usuario u
+                on u.id = em.usuario_id
+                WHERE u.id = '".$usuario_id."'
+              ";
+        $stmt = sqlsrv_query( $conexion, $sql);
+        $datos = array();
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+        
+            $datos[] =  $obj;       
+        }
+        return $datos;
+    }//funcion
+
 }
  ?>

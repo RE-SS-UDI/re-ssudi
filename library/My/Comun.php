@@ -294,7 +294,25 @@ public static function obtenerFiltroSQLZonasAdmin(){
         	$datos[] = $obj;		     
         }
 		return $datos;
-	}    
+	}
+
+	public static function obtenerZonasNew($id){
+		$conec = new Conexion;
+        $conexion = $conec->abreConexion();
+		$sql = "
+				select p.zona_id as id
+				from persona_zona p
+				where p.usuario_id = ".$id;
+
+
+		$stmt = sqlsrv_query( $conexion, $sql);
+		$datos = array();
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+        	$datos[] = $obj;		     
+        }
+		return $datos;
+	}
+
     function aleatorio($maximo){
 		
 		$permitidos = "1234567890abcdefghijklmnopqrstuvwxyz";
@@ -665,9 +683,10 @@ public static function obtenerFiltroSQLZonasAdmin(){
 				$columnas .= ",[created_at],[updated_at])";
 				$valores .= ",GETDATE(),GETDATE())";
 
+
 				$consulta .= $columnas." values ".$valores;
 
-//				print_r($consulta);
+				// print_r($consulta." //*");
 //				exit;
 				$consulta .= "; SELECT Scope_Identity() as id;";
 					
@@ -707,7 +726,7 @@ public static function obtenerFiltroSQLZonasAdmin(){
 				
 			if( $r === false ) {
 				//descomentar de ser necesario para saber que errores hay
-			    //die( print_r( sqlsrv_errors(), true));
+			    // die( print_r( sqlsrv_errors(), true));
 			    return "¡ATENCIÓN! Ocurrió un error inesperado. Contactar al equipo de soporte de RESSUDI.";
 			}else{
 				//$stmt = sqlsrv_query( $conexion, $consulta);
@@ -798,6 +817,174 @@ public static function obtenerFiltroSQLZonasAdmin(){
 			}
 		}
 	}
+
+
+	public static function guardarSQLpersonaZona($modelo, $datos = array(), $id = 0, $bitacora = array())
+	{
+
+		$conec = new Conexion;
+        $conexion = $conec->abreConexion();
+
+		$iddevuelto = 0;
+		//Guardando nuevo
+		if(!is_numeric($id) || $id==0 || $id=="0"){
+
+			$consulta ="INSERT INTO dbo.".$modelo;
+			$columnas = " ([";
+			$valores = "(";
+
+			foreach ($datos as $key => $value) {
+				if ($key=='id') {
+					continue;
+				}
+				$columnas .= $key."],[";
+				$valores .= ((!is_numeric($value))?"'".$value."'":$value).",";
+				
+			}
+ 
+				$columnas = substr($columnas,0,-2); 
+				$valores = trim($valores,","); 
+				//borrados para persona zona
+				// $columnas .= ",[created_at],[updated_at])";
+				// $valores .= ",GETDATE(),GETDATE())";
+				$columnas .= ")";
+				$valores .= ")";
+
+				$consulta .= $columnas." values ".$valores;
+
+				print_r($consulta." //*");
+//				exit;
+				//borrados para persona zona
+				// $consulta .= "; SELECT Scope_Identity() as id;";
+					
+					$s = sqlsrv_prepare($conexion, $consulta);
+
+					//ejecutamos la consulta
+					try {
+						sqlsrv_execute($s);
+						if( ($errors = sqlsrv_errors() ) != null) {
+					        foreach( $errors as $error ) {
+					        	if ($error[ 'code']==2601) {
+						            return "¡ATENCIÓN! Ya existe un registro con la misma información.";
+					        	}
+					        	if ($error[ 'code']==2627) {
+						            return "¡ATENCIÓN! Ya existe un registro con la misma información.";
+					        	}
+				//descomentar de ser necesario para saber que errores hay
+//					            echo "SQLSTATE: ".$error[ 'SQLSTATE']."<br />";
+//					            echo "code: ".$error[ 'code']."<br />";
+//					            echo "message: ".$error[ 'message']."<br />";
+					        }
+					    }
+						sqlsrv_next_result($s);
+
+					$r = sqlsrv_fetch_array($s, SQLSRV_FETCH_ASSOC);
+					} catch (Exception $e) {
+				//descomentar de ser necesario para saber que errores hay
+						// print_r($e);
+						exit;
+					}
+//				print_r($consulta);
+//				exit;
+				
+				//$stmt = sqlsrv_query( $s, $consulta);
+//				print_r($r['id']);
+				
+				
+			if( $r === false ) {
+				//descomentar de ser necesario para saber que errores hay
+			    die( print_r( sqlsrv_errors(), true));
+			    return "¡ATENCIÓN! Ocurrió un error inesperado. Contactar al equipo de soporte de RESSUDI.";
+			}else{
+				//$stmt = sqlsrv_query( $conexion, $consulta);
+				$iddevuelto = $r['id'];
+			}
+
+		}else{//Actualizando
+			$consulta = "UPDATE dbo.".$modelo;
+			$a_actualizar = " SET ";
+
+			foreach ($datos as $key => $value) {
+				if ($key=='id') {
+					continue;
+				}
+				$a_actualizar .= $key ."=".((!is_numeric($value))?"'".$value."'":$value).",";
+			}
+			$a_actualizar = trim($a_actualizar,",");
+			$consulta .= $a_actualizar." WHERE id = ".$id;
+			
+//			$consulta .= "; SELECT Scope_Identity() as id;";
+//			print_r($consulta);
+//			exit;
+
+			$s = sqlsrv_prepare($conexion, $consulta);
+//			print_r($s);
+//			exit;
+			try {
+				sqlsrv_execute($s);
+			} catch (Exception $e) {
+				print_r($e);
+				exit;
+			}
+			//sqlsrv_next_result($s);
+
+			//$r = sqlsrv_fetch_array($s, SQLSRV_FETCH_ASSOC);
+
+			
+				
+			if( $s === false ) {
+			    die( print_r( sqlsrv_errors(), true));
+			}else{
+				//$stmt = sqlsrv_query( $conexion, $consulta);
+				$iddevuelto = $id;
+			}
+		}
+
+		
+
+		try{
+
+			
+			foreach($bitacora as $bitacora_){
+				
+				if($bitacora_["id"] == "")
+					Bitacora::guardar( $bitacora_["modelo"], $bitacora_["agregar"], $bitacora_["campo"]);
+				else{
+
+					$registro = My_Comun::obtenerSQL($bitacora_["modelo"], "id", $bitacora_["id"]);
+					
+					Bitacora::guardar( $bitacora_["modelo"], $bitacora_["editar"], $registro->$bitacora_["campo"]);
+				}
+			}
+		return $iddevuelto;
+			
+		}catch(Exception $e)
+		{
+			if($e->getPortableCode()==-5)
+			{
+				$m=$e->getMessage();
+
+				preg_match_all('/".*?"/', str_replace("'", "\"", $m), $matches);
+
+
+				$campo=explode("_",$matches[0][1]);
+
+				return "El registro no pudo ser insertado porque el valor <b>".$matches[0][0]."</b> está repetido.";
+			}
+			else
+			{
+				try
+				{
+					return My_Comun::mensaje($e->getPortableCode()); 
+				}
+				catch(Exception $e1)
+				{
+					return My_Comun::mensaje(-100); 
+				}
+			}
+		}
+	}
+
 
 	public static function registrosGrid($modelo, $filtro,$aliasrecibido,$modelos)
 	{
@@ -909,6 +1096,7 @@ public static function obtenerFiltroSQLZonasAdmin(){
 		return $registros;
 	}
 
+
 	public static function registrosGridQuerySQL($consulta){
 		$conec = new Conexion;
         $conexion = $conec->abreConexion();
@@ -933,11 +1121,8 @@ public static function obtenerFiltroSQLZonasAdmin(){
 //exit;
 		$datos = array();
         while( $obj = sqlsrv_fetch_object($stmt)) {
-        	
         	$datos[] = $obj;
-			      
         }
-
 
 		$registros['total'] = count($datos);
 
@@ -979,6 +1164,7 @@ public static function obtenerFiltroSQLZonasAdmin(){
 		return $registros;
 	}
 
+
 	public static function armarGrid($registros, $grid){
 
 		if(count($grid)>0){
@@ -1003,9 +1189,7 @@ public static function obtenerFiltroSQLZonasAdmin(){
 				}
 			}
 			$xml .= '</row>';
-			
 		}
-		
 		echo $xml.="</rows>";        
 	}
 
@@ -1085,6 +1269,8 @@ public static function obtenerFiltroSQLZonasAdmin(){
         $conexion = $conec->abreConexion();
 		//Verificamos si el registro ya está deshabilitado para entonces habilitarlo
 		$registro=My_Comun::obtenerSQL($modelo, "id", $id);
+
+		echo '<script>console.log("'.$registro->id.'");</script>';
 
 		if($registro->status==0)
 		{
@@ -1202,6 +1388,46 @@ public static function obtenerFiltroSQLZonasAdmin(){
 			}
 		}
 	}
+
+	public static function eliminarSQLPersonaZona($modelo, $id, $bitacora = array())
+	{   
+		$conec = new Conexion;
+        $conexion = $conec->abreConexion();
+		//Verificamos si el registro ya está deshabilitado para entonces habilitarlo
+		$registro=My_Comun::obtenerSQL($modelo, "id", $id);
+			try
+			{
+				// foreach($bitacora as $bitacora_){
+				// 	$registro = My_Comun::obtenerSQL($bitacora_["modelo"], "id", $bitacora_["id"]);
+				// }
+
+				$consulta = "DELETE ".$modelo." WHERE id = '".$id."'";
+				$s = sqlsrv_prepare($conexion, $consulta);
+	//			print_r($s);
+	//			exit;
+				
+					$stmt = sqlsrv_execute($s);
+						// foreach($bitacora as $bitacora_){
+						
+						// 	Bitacora::guardar($bitacora_["modelo"], $bitacora_["eliminar"], $registro->$bitacora_["campo"]);
+						// }
+				return My_Comun::mensaje(1);
+
+			}
+			catch (Exception $e)
+			{
+
+				//echo $e->getMessage();
+				
+				if($e->getPortableCode()=="-3")
+				{ // Error de integridad referencial
+				
+					return My_Comun::mensaje($e->getPortableCode()); 
+				}
+			}
+			return My_Comun::mensaje(1);
+	}
+
 
 	public static function deshabilitar($modelo, $id, $bitacora = array()){
 

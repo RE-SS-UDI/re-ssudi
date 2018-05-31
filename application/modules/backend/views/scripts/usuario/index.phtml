@@ -4,6 +4,9 @@
         <button type="button" onclick="agregar('/backend/usuario/agregar', 0, 'frm-1','Usuario');" class="btn btn-sm btn-default pull-right <?php echo($this->puedeAgregar?"":"hide"); ?>">
             <i class="fa fa-plus"></i>&nbsp;Agregar
         </button>
+        <!-- <button type="button" onclick="agregar('/backend/usuario/agregar-zona', 0, 'frm-1','Agregar Zonas');" class="btn btn-sm btn-default pull-right <?php echo($this->puedeAgregar?"":"hide"); ?>">
+            <i class="fa fa-plus"></i>&nbsp;Agregar Zonas
+        </button> -->
     </div>
     <div class="panel-body">
         <form name="frmFiltrosUsuario" id="frmFiltrosUsuario">
@@ -23,7 +26,7 @@
                 </div>
                 
                 <div class="col-xs-4 col-xs-offset-2 text-right">
-                 <!--   <button class="btn btn-sm btn-default" type="button" onclick="filtrar('frmFiltrosUsuario','/backend/usuario/grid','/backend/usuario/imprimir','/backend/usuario/exportar');">
+                   <button class="btn btn-sm btn-default" type="button" onclick="filtrar('frmFiltrosUsuario','/backend/usuario/grid','/backend/usuario/imprimir','/backend/usuario/exportar');">
                         <i class="fa fa-search"></i>&nbsp;Filtrar
                     </button>
                     <button class="btn btn-sm btn-default" type="button" onclick="limpiar('frmFiltrosUsuario','/backend/usuario/grid');">
@@ -34,7 +37,7 @@
                     </a>
                     <a id="btnExportar" target="_blank" href="/backend/usuario/exportar" class="btn btn-sm btn-default"  >
                         <i class="fa fa-eraser"></i>&nbsp;Exportar
-                    </a>-->
+                    </a>
                 </div>
     	    </div>
         </form>

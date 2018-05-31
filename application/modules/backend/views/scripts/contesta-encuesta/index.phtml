@@ -1,79 +1,127 @@
 <div class="container">
 	<div class="panel-body">
-	    <br/>  
-	    <div class="col-md-12">
-	    <h3>Indicadores</h3>
-	          	
-	      <!-- tabs left -->
-	      <div class="tabbable tabs-left">
-	        <ul class="nav nav-tabs">
-	        	<?php $contador = 0; ?>
-			<?php foreach ($this->encuestas as $encuesta){ ?>
-
-		        <li class="<?php echo (($contador == $this->num_encuesta)?'active':''); ?>"><a href="#_<?php echo $encuesta->id; ?>" data-toggle="tab" title="<?php echo $encuesta->nombre; ?>"><?php echo substr($encuesta->nombre, 0,15).'...'; ?></a></li>
-		        <?php $contador++; ?>
+		<br/>
+		<h3>Zonas</h3>
+		<ul class="nav nav-tabs menu  col-md-12" role="tablist">
+			<?php foreach ($this->zonasName as $zname){ ?>
+			<li role="presentation" class="<?php echo (($zname->id == $this->num_encuesta)?'active':''); ?>">
+				<a href="#set<?php echo $zname->id; ?>"  title="<?php echo $zname->zona_nombre; ?>" role="tab" data-toggle="tab" ><?php echo substr($zname->zona_nombre, 0,15).'...'; ?></a>
+			</li>
 			<?php } ?>
-<!--	          <li><a href="#a" data-toggle="tab">One</a></li>
-	          <li class="active"><a href="#b" data-toggle="tab">Two</a></li>
-	          <li><a href="#c" data-toggle="tab">Twee</a></li>
--->	        </ul>
-	        <div class="tab-content">
-	        <?php $contador2 = 0; ?>
-	        <?php foreach ($this->encuestas as $encuesta): ?>
-		         <div class="tab-pane <?php echo (($contador2 == $this->num_encuesta)?'active':''); ?>" id="_<?php echo $encuesta->id; ?>">
-		         	<form name="frmEncuesta<?php echo $encuesta->id; ?>" id="frmEncuesta<?php echo $encuesta->id; ?>" role="form" method="POST" action="/backend/contesta-encuesta/guardar" class="form-horizontal">
-			         <div class="col-xs-10 cuerpo-encuesta">
-			         	<h3 class="col-xs-12 text-center"><?php echo $encuesta->nombre; ?></h3>
-			         <?php $preguntas = Preguntas::obtienePreguntasEncuesta($encuesta->id); ?>
-			         <?php foreach ($preguntas as $pregunta): ?>
-			         	<div class="col-xs-6 form-group">
-			         		<div class="col-xs-12">
-				         		<label class="ajuste-etiqueta control-label"><?php echo $pregunta->descripcion; ?></label>
-			         		</div>
-			         		<div class="col-xs-12">
-			         			<?php $respuesta = Respuesta::obtieneRespuesta(Zend_Auth::getInstance()->getIdentity()->persona_id, $pregunta->id); ?>
-			         			<?php if ($pregunta->tipo == 1): //pregunta corta ?>
-			         				<input type="text" name="opcion[<?php echo $respuesta->id ?>_<?php echo $pregunta->id; ?>_<?php echo $pregunta->tipo; ?>]" class="form-control input-sm number" value="<?php echo $respuesta->descripcion; ?>">
-			         			<?php endif ?>
-			         			<?php if ($pregunta->tipo == 2): //pregunta larga ?>
-			         				<textarea class="form-control input-sm" maxlength="2000" name="opcion[<?php echo $respuesta->id ?>_<?php echo $pregunta->id; ?>_<?php echo $pregunta->tipo; ?>]"><?php echo $respuesta->descripcion; ?></textarea>
-			         			<?php endif ?>
-			         			<?php if ($pregunta->tipo == 3): ?>
-			         				<?php $opciones = My_Comun::obtenerFiltroSQL('opciones_pregunta',' WHERE status=1 AND pregunta_id='.$pregunta->id,' opcion ASC '); ?>
-			         				<?php foreach ($opciones as $opcion): ?>
-			         					<label class="radio-inline"><input type="radio" name="opcion[<?php echo $respuesta->id; ?>_<?php echo $pregunta->id; ?>_<?php echo $pregunta->tipo; ?>]" class="" value="<?php echo $opcion->opcion; ?>" <?php echo (($opcion->opcion==$respuesta->descripcion)?'checked':''); ?>>&nbsp; <?php echo $opcion->opcion; ?></label>
-			         				<?php endforeach ?>
-			         			<?php endif ?>
-			         			<?php if ($pregunta->tipo == 4): ?>
-			         				<?php $opciones = My_Comun::obtenerFiltroSQL('opciones_pregunta',' WHERE status=1 AND pregunta_id='.$pregunta->id,' opcion ASC '); ?>
-			         				<?php foreach ($opciones as $opcion): ?>
-					         			<?php $respuesta2 = Respuesta::obtieneRespuestaEspecial($opcion->opcion, $pregunta->id); ?>
-			         					<label class="radio-inline"><input type="checkbox" name="opcion[<?php echo $respuesta->id; ?>_<?php echo $pregunta->id; ?>_<?php echo $pregunta->tipo; ?>][]" class="" value="<?php echo $opcion->opcion; ?>" <?php echo (($respuesta2->id!='')?'checked':''); ?> onclick="eliminaSeleccion(<?php echo Zend_Auth::getInstance()->getIdentity()->persona_id; ?>,<?php echo $pregunta->id; ?>,<?php echo $pregunta->tipo; ?>,this.value);">&nbsp; <?php echo $opcion->opcion; ?></label>
-			         				<?php endforeach ?>
-			         			<?php endif ?>
-<!--			         				<input type="hidden" name="pregunta_id[<?php echo $pregunta->id; ?>]" value="<?php echo $pregunta->id; ?>">-->
-			         		</div>
-			         	</div>
-			         <?php endforeach ?>
-			        <input type="hidden" name="status" value="1">
-			        <input type="hidden" name="persona_id" id="persona_id" value="<?php echo Zend_Auth::getInstance()->getIdentity()->persona_id; ?>" /> <!-- cuando no es nuevo -->
-			        <button class="btn btn-rojo-1 pull-right margen-top" onclick="guardarEncuesta('frmEncuesta<?php echo $encuesta->id; ?>',<?php echo $contador2; ?>);" type="button" ><i class="fa fa-check-circle"></i> Guardar</button>
-			         </div>
-		         	</form>
-		         </div>
-		         <?php $contador2++; ?>
-	        <?php endforeach ?>
-	        </div>
-	      </div>
-	      <!-- /tabs -->
-	      
-	    </div>
+		</ul>
 
-	    <br>    
-	  	<?php if ($this->registro->id == ''): ?>
-		    <div class="col-xs-12 text-right mb40px">
-<!--		        <button class="btn btn-rojo-1" onclick="limpiar('frmContestaEncuesta');" type="button" ><i class="fa fa-eraser"></i> Limpiar</button>-->
-		    </div>
-	  	<?php endif ?>  
+		<div class="col-md-12">
+			<h3>Indicadores</h3>
+			<!-- tabs left -->
+			<div class="tab-content">
+			<!-- <div class="tab-pane"> -->
+
+			<?php foreach ($this->zonasName as $zname){ ?>
+			<div class="tabs-left fade " role="tabpanel" id="set<?php echo $zname->id; ?>">
+				<ul class="nav nav-tabs">
+				
+					<?php $contador = 0; ?>
+					<?php $encuestasZonas = ContestaEncuesta::obtieneEncuestas_UsuarioZonaById(Zend_Auth::getInstance()->getIdentity()->persona_id, $zname->id); ?>
+
+					<?php foreach ($encuestasZonas as $encuesta){ ?>
+					<li class="<?php echo (($contador == $this->num_encuesta)?'active':''); ?>">
+						<a href="#_<?php echo $encuesta->id; ?>" data-toggle="tab" title="<?php echo $encuesta->nombre; ?>">
+							<?php echo substr($encuesta->nombre, 0,15).'...'; ?>
+						</a>
+					</li>
+					<?php $contador++; ?>
+					<?php } ?>
+					<!-- 	          <li><a href="#a" data-toggle="tab">One</a></li>
+	          <li class="active"><a href="#b" data-toggle="tab">Two</a></li>
+	          <li><a href="#c" data-toggle="tab">Twee</a></li> -->
+			 
+				</ul>
+
+				<div class="tab-content">
+					<?php $contador2 = 0; ?>
+					<?php foreach ($encuestasZonas as $encuesta): ?>
+					<div class="tab-pane <?php echo (($contador2 == $this->num_encuesta)?'active':''); ?>" id="_<?php echo $encuesta->id; ?>">
+						<form name="frmEncuesta<?php echo $encuesta->id; ?>" id="frmEncuesta<?php echo $encuesta->id; ?>" role="form" method="POST"
+						    action="/backend/contesta-encuesta/guardar" class="form-horizontal">
+							<div class="col-xs-10 cuerpo-encuesta">
+								<h3 class="col-xs-12 text-center">
+									<?php echo $encuesta->nombre; ?>
+								</h3>
+								<?php $preguntas = Preguntas::obtienePreguntasEncuesta($encuesta->id); ?>
+								<?php foreach ($preguntas as $pregunta): ?>
+								<div class="col-xs-6 form-group">
+									<div class="col-xs-12">
+										<label class="ajuste-etiqueta control-label">
+											<?php echo $pregunta->descripcion; ?>
+										</label>
+									</div>
+									<div class="col-xs-12">
+										<?php $respuesta = Respuesta::obtieneRespuesta(Zend_Auth::getInstance()->getIdentity()->persona_id, $pregunta->id); ?>
+										<?php if ($pregunta->tipo == 1): //pregunta corta ?>
+										<input type="text" name="opcion[<?php echo $respuesta->id ?>_<?php echo $pregunta->id; ?>_<?php echo $pregunta->tipo; ?>]"
+										    class="form-control input-sm number" value="<?php echo $respuesta->descripcion; ?>">
+										<?php endif ?>
+										<?php if ($pregunta->tipo == 2): //pregunta larga ?>
+										<textarea class="form-control input-sm" maxlength="2000" name="opcion[<?php echo $respuesta->id ?>_<?php echo $pregunta->id; ?>_<?php echo $pregunta->tipo; ?>]">
+											<?php echo $respuesta->descripcion; ?>
+										</textarea>
+										<?php endif ?>
+										<?php if ($pregunta->tipo == 3): ?>
+										<?php $opciones = My_Comun::obtenerFiltroSQL('opciones_pregunta',' WHERE status=1 AND pregunta_id='.$pregunta->id,' opcion ASC '); ?>
+										<?php foreach ($opciones as $opcion): ?>
+										<label class="radio-inline">
+											<input type="radio" name="opcion[<?php echo $respuesta->id; ?>_<?php echo $pregunta->id; ?>_<?php echo $pregunta->tipo; ?>]"
+											    class="" value="<?php echo $opcion->opcion; ?>" <?php echo (($opcion->opcion==$respuesta->descripcion)?'checked':''); ?>>&nbsp;
+											<?php echo $opcion->opcion; ?>
+										</label>
+										<?php endforeach ?>
+										<?php endif ?>
+										<?php if ($pregunta->tipo == 4): ?>
+										<?php $opciones = My_Comun::obtenerFiltroSQL('opciones_pregunta',' WHERE status=1 AND pregunta_id='.$pregunta->id,' opcion ASC '); ?>
+										<?php foreach ($opciones as $opcion): ?>
+										<?php $respuesta2 = Respuesta::obtieneRespuestaEspecial($opcion->opcion, $pregunta->id); ?>
+										<label class="radio-inline">
+											<input type="checkbox" name="opcion[<?php echo $respuesta->id; ?>_<?php echo $pregunta->id; ?>_<?php echo $pregunta->tipo; ?>][]"
+											    class="" value="<?php echo $opcion->opcion; ?>" <?php echo (($respuesta2->id!='')?'checked':''); ?> onclick="eliminaSeleccion(
+											<?php echo Zend_Auth::getInstance()->getIdentity()->persona_id; ?>,
+											<?php echo $pregunta->id; ?>,
+											<?php echo $pregunta->tipo; ?>,this.value);">&nbsp;
+											<?php echo $opcion->opcion; ?>
+										</label>
+										<?php endforeach ?>
+										<?php endif ?>
+										<!--			         				<input type="hidden" name="pregunta_id[<?php echo $pregunta->id; ?>]" value="<?php echo $pregunta->id; ?>">-->
+									</div>
+								</div>
+								<?php endforeach ?>
+								<input type="hidden" name="status" value="1">
+								<input type="hidden" name="persona_id" id="persona_id" value="<?php echo Zend_Auth::getInstance()->getIdentity()->persona_id; ?>"
+								/>
+								<!-- cuando no es nuevo -->
+								<button class="btn btn-rojo-1 pull-right margen-top" onclick="guardarEncuesta('frmEncuesta<?php echo $encuesta->id; ?>',<?php echo $contador2; ?>);"
+								    type="button">
+									<i class="fa fa-check-circle"></i> Guardar</button>
+							</div>
+						</form>
+					</div>
+					<?php $contador2++; ?>
+					<?php endforeach ?>
+				</div>
+			</div>
+			</div>
+			<?php } ?>
+			<!-- /tabs -->
+
+		</div>
+
+		<br>
+		<?php if ($this->registro->id == ''): ?>
+		<div class="col-xs-12 text-right mb40px">
+			<!--		        <button class="btn btn-rojo-1" onclick="limpiar('frmContestaEncuesta');" type="button" ><i class="fa fa-eraser"></i> Limpiar</button>-->
+		</div>
+		<?php endif ?>
 	</div>
 </div>
+
+
+

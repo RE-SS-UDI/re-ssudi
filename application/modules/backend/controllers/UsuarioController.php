@@ -79,6 +79,7 @@ class backend_UsuarioController extends Zend_Controller_Action{
             {
                 //$grid[$i]['permisos'] = '<i class="boton fa fa-check fa-lg text-danger"></i>';   
                 $grid[$i]['editar'] = '<i class="boton fa fa-pencil fa-lg text-danger"></i>';
+                $grid[$i]['editar_zona'] = '<i class="boton fa fa-pencil fa-lg text-danger"></i>';
                 
                 if($eliminar)
                     $grid[$i]['eliminar'] = '<span onclick="eliminar('.$registros['registros'][$k]->id.','.$registros['registros'][$k]->status.');" title="Eliminar"><i class="boton fa fa-times-circle fa-lg azul"></i></span>';
@@ -101,9 +102,12 @@ class backend_UsuarioController extends Zend_Controller_Action{
 */                
 
                 if($editar)
-                    $grid[$i]['editar'] = '<span onclick="agregar(\'/backend/usuario/agregar\','.$registros['registros'][$k]->id.', \'frm-1\',\'Usuario\' );" title="Editar"><i class="boton fa fa-pencil fa-lg azul"></i></span>';
+                    $grid[$i]['editar'] = '<span onclick="agregar(\'/backend/usuario/agregar\','.$registros['registros'][$k]->id.', \'frm-1\',\'Editar Usuario\' );" title="Editar"><i class="boton fa fa-pencil fa-lg azul"></i></span>';
+
                 else
                     $grid[$i]['editar'] = '<i class="boton fa fa-pencil fa-lg text-danger"></i>';
+
+                $grid[$i]['editar_zona'] = '<span onclick="agregar(\'/backend/usuario/agregar-zona\','.$registros['registros'][$k]->id.', \'frm-1\',\'Agregar Zona\' );" title="Editar Zona"><i class="boton fa fa-pencil-square-o fa-lg azul"></i></span>';
 
                 if($eliminar)
                     $grid[$i]['eliminar'] = '<span onclick="eliminar('.$registros['registros'][$k]->id.','.$registros['registros'][$k]->status.');" title="Deshabilitar / Habilitar"><i class="boton fa fa-times-circle fa-lg azul"></i></i></span>';
@@ -115,6 +119,54 @@ class backend_UsuarioController extends Zend_Controller_Action{
     	}//foreach
     	My_Comun::armarGrid($registros,$grid);
     }//function
+
+
+    public function agregarZonaAction(){
+        $this->_helper->layout->disableLayout();
+        $this->view->llave = My_Comun::aleatorio(20);
+        $idPer = Zend_Auth::getInstance()->getIdentity()->id;
+
+        $this->view->tipos = My_Comun::obtenerFiltroSQL('tipo_usuario', ' WHERE status = 1 ', ' descripcion asc');
+        $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', ' WHERE status = 1 ', ' nombre asc');
+
+        $this->view->zonasUsr = Usuario::obtieneZonasXususario($_POST["id"]);
+        // $this->view->zonasUsr = My_Comun::obtenerFiltroSQL('persona_zona', ' WHERE usuario_id = '.$_POST["id"].' ', ' id asc');
+
+
+        $this->view->tipoUser = My_Comun::obtenertipoUSer($idPer);
+        $this->view->zonaUser = My_Comun::obtenerZonas($idPer);
+
+
+        if($this->view->tipoUser[0]->tipo_usuario == 3){
+
+            $this->view->tipos = My_Comun::obtenerFiltroSQL('tipo_usuario', ' WHERE status = 1 ', ' descripcion asc');
+        }else {
+
+            $this->view->tipos = My_Comun::obtenerFiltroSQL('tipo_usuario', ' WHERE id = 5 or id = 6  ', ' descripcion asc');
+        } 
+
+
+
+        if($_POST["id"]!="0"){
+            $this->view->registro=My_Comun::obtenerSQL("usuario", "id", $_POST["id"]);
+
+
+
+            $this->view->personas = My_Comun::obtenerSQL("persona", "id", $this->view->registro->persona_id);
+            $this->view->bandera = true;
+            // $this->view->zonas = My_Comun::obtenerSQL("zona");
+
+        }else{
+
+
+
+            $this->view->personas = Persona::obtenerPersonasZonas($this->view->zonaUser[0]->id);
+            $this->view->bandera = false;
+
+
+        }
+
+    }//function
     
     public function agregarAction(){
         $this->_helper->layout->disableLayout();
@@ -122,13 +174,14 @@ class backend_UsuarioController extends Zend_Controller_Action{
 
         $this->view->tipos = My_Comun::obtenerFiltroSQL('tipo_usuario', ' WHERE status = 1 ', ' descripcion asc');
         $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', ' WHERE status = 1 ', ' nombre asc');
+
 		
-
-
         $idPer = Zend_Auth::getInstance()->getIdentity()->id;
 
         $this->view->tipoUser = My_Comun::obtenertipoUSer($idPer);
         $this->view->zonaUser = My_Comun::obtenerZonas($idPer);
+
+        
 
         if($this->view->tipoUser[0]->tipo_usuario == 3){
 
@@ -184,6 +237,110 @@ class backend_UsuarioController extends Zend_Controller_Action{
             $usuarioId = My_Comun::guardarSQL("usuario", $_POST, $_POST["id"], $bitacora);
             echo($usuarioId);
     }//guardar
+
+
+    public function guardazonaAction(){
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(TRUE);
+		
+        	$bitacora = array();
+        	$bitacora[0]["modelo"] = "Usuario";
+        	$bitacora[0]["campo"] = "uduario_id";
+        	$bitacora[0]["id"] = $_POST["id"];
+        	$bitacora[0]["agregar"] = "Agregar usuario-zona";
+        	$bitacora[0]["editar"] = "Editar usuario-zona";
+                   //print_r($_POST);
+                   //exit;
+            
+            // $catego_id = My_Comun::obtenerSQL('tipo_usuario','id',$_POST['tipo_usuario']);
+            // $encuesta_id = My_Comun::obtenerSQL('tipo_usuario','id',$_POST['tipo_usuario']);
+
+            $usuarioId = My_Comun::guardarSQLpersonaZona("persona_zona", $_POST, "0", $bitacora);
+            echo($usuarioId);
+    }//guardarZona
+
+
+    public function masZonasAction()
+    {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(TRUE);
+
+        $tipo = $_POST['tipo'];
+        $opciones = '';
+        $zona_id = $_POST['zona_id'];
+        $persona_id = $_POST['persona_id'];
+
+        $zonaName = My_Comun::obtenerFiltroSQL('zona', ' WHERE id = '.$zona_id.' ', ' nombre asc');
+        $UsrPersona = Usuario::obtieneUsuarioPersona($persona_id);    
+
+        // echo("<script>console.log('PHP: $UsrPersona->id +  ');</script>");
+
+
+        $usuarioId = Usuario::guardarSQLpersonaZona($zona_id, $UsrPersona->id);
+        echo($usuarioId);
+
+        if($usuarioId == null){
+        for ($i=0; $i < $_POST['cantidad']; $i++) { 
+            $time = time();
+            $opciones .= '<div id="opcion_'.$time.'" class="col-xs-12 form-group">
+                            <label class="col-xs-2 control-label">Descripción:</label>
+                        <div class="col-xs-6">
+                            <input type="text" value="'.$zonaName[0]->nombre.'" name="opciones[]" id="opcion_'.$time.'" class="form-control input-sm required" maxlength="100">
+                        </div>
+                        <div class="col-xs-2">
+                            <a class="btn btn-danger" title="Eliminar" onclick="eliminaOpcion(\''.$time.'\')"><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Eliminar</a>
+                        </div>
+                      </div>
+                    ';
+        }
+        echo $opciones;
+    }
+
+
+    }
+
+
+    public function eliminarOpcionesAction()
+    {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(TRUE);
+        
+            
+        $bitacora = array();
+        $bitacora[0]["modelo"] = "persona_zona";
+        $bitacora[0]["campo"] = "zona_id";
+        $bitacora[0]["id"] = $_POST["id"];
+        $bitacora[0]["eliminar"] = "Eliminar opción";
+        $bitacora[0]["deshabilitar"] = "Deshabilitar opción";
+        $bitacora[0]["habilitar"] = "Habilitar opción";
+
+        echo '<script>console.log("'. $_POST["id"].'");</script>';
+
+            
+        echo My_Comun::eliminarSQL("persona_zona", $_POST["id"], $bitacora);
+    }//function
+
+
+    public function eliminarOpcionesAgregadasAction()
+    {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(TRUE);
+        
+            
+        $bitacora = array();
+        $bitacora[0]["modelo"] = "persona_zona";
+        $bitacora[0]["campo"] = "zona_id";
+        $bitacora[0]["id"] = $_POST["id"];
+        $bitacora[0]["eliminar"] = "Eliminar opción";
+        $bitacora[0]["deshabilitar"] = "Deshabilitar opción";
+        $bitacora[0]["habilitar"] = "Habilitar opción";
+
+            
+        echo My_Comun::eliminarSQLPersonaZona("persona_zona", $_POST["id"], $bitacora);
+    }//function
+
+
+
 	
     public function permisosAction(){
         $this->_helper->layout->disableLayout();
