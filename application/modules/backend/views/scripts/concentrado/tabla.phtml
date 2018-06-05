@@ -2,6 +2,7 @@
     <tr class="">
         <th class="text-center ancho-celda" style="text-align: left;">Empresa</th>
         <th class="text-center ancho-celda" style="text-align: left;">Nombre</th>
+        <?php  $filtro_zona .= " and zona_id = ".$zona->id." "; ?>
         <?php foreach ($this->encuestas as $encuesta): ?>
             <th class="text-center ancho-celda"><?php echo $encuesta->nombre; ?></th>
         <?php endforeach ?>

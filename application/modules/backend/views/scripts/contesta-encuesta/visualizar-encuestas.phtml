@@ -1,8 +1,8 @@
-<div class="container">
 	<div class="panel-body">
-		<br/>
-		<div class="col-md-12">
-			<div class="col-md-12 text-right">
+<div class="container">
+		<!-- <div class="tabbable boxed parentTabs"> -->
+		<ul class="nav nav-tabs menu col-md-12">
+		<div class="col-md-12 text-right">
 				<a class="btn btn-sm btn-default" target="_blank" href="/backend/contesta-encuesta/exportar">
 					<i class="fa fa-file-excel-o fa-lg"></i>&nbsp;Exportar
 				</a>
@@ -10,12 +10,7 @@
                     <i class="fa fa-file-excel-o fa-lg"></i>&nbsp;Exportar todos
                 </a> -->
 			</div>
-		</div>
-
-<div class="container">
-		<!-- <div class="tabbable boxed parentTabs"> -->
 		<h3>Zonas</h3>
-		<ul class="nav nav-tabs menu col-md-12">
 			<?php foreach ($this->zonasName as $zname){ ?>
 			<li role="presentation" class="<?php echo (($zname->id == $this->num_encuesta)?'active':''); ?>">
 				<a href="#set<?php echo $zname->id; ?>"  title="<?php echo $zname->zona_nombre; ?>" role="tab" data-toggle="tab" ><?php echo substr($zname->zona_nombre, 0,15).'...'; ?></a>
@@ -32,7 +27,7 @@
 			<div class="tabs-left fade " role="tabpanel" id="set<?php echo $zname->id; ?>">
 				<ul class="nav nav-tabs" role="tablist">
 					<?php $contador = 0; ?>
-					<?php $encuestasZonas = ContestaEncuesta::obtieneEncuestas_UsuarioZonaById(Zend_Auth::getInstance()->getIdentity()->persona_id, $zname->id); ?>
+					<?php $encuestasZonas = ContestaEncuesta::obtieneEncuestas_UsuarioZonaById(Zend_Auth::getInstance()->getIdentity()->id, $zname->id); ?>
 					
 					<?php foreach ($encuestasZonas as $encuesta){ ?>
 					<li role="presentation" class="<?php echo (($contador == $this->num_encuesta)?'active':''); ?>">
@@ -118,6 +113,6 @@
 		</div>
 		<?php endif ?>
 	</div>
-<!-- </div> -->
+</div>
 </div>
 

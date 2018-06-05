@@ -45,8 +45,26 @@ function muestraEncuesta(persona, encuesta)
 
 function cargaTabla()
 {
+    console.log("default");
+
     $.ajax({
         url: '/backend/concentrado/tabla',
+        success: function(res){
+            $('#cuerpo_tabla').html(res);
+        }
+    });
+    
+}
+
+function cargaTablaZona()
+{
+    var zona_id = $("#Zid").val();
+    console.log(zona_id);
+    
+    $.ajax({
+        url: '/backend/concentrado/tabla',
+        type: 'POST',
+        data: {zona_id: zona_id},
         success: function(res){
             $('#cuerpo_tabla').html(res);
         }

@@ -197,6 +197,25 @@ public static function obtenerFiltroSQLConcentradoEncuestas($filtro_zona,$filtro
 		return $datos;
 	}
 
+	public static function obtenerFiltroSQLConcentradoZ($filtro_zona,$filtro_nombre){
+		$conec = new Conexion;
+        $conexion = $conec->abreConexion();
+		$sql = "
+		select e.nombre as empresa, p.id, p.nombre, p.apellido_pat, p.apellido_mat, e.zona_id from persona p
+		join empresa e
+		on p.empresa_id = e.id
+		join zona z 
+		on z.id = e.zona_id
+		where p.status = 1 ".$filtro_zona.$filtro_nombre."
+		 order by p.nombre asc";
+		$stmt = sqlsrv_query( $conexion, $sql);
+		$datos = array();
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+        	$datos[] = $obj;		     
+        }
+		return $datos;
+	}
+
      //FILTROS ZONA PERSONA
 public static function obtenerFiltroSQLEmpresaRoot(){
 		$conec = new Conexion;
@@ -301,7 +320,7 @@ public static function obtenerFiltroSQLZonasAdmin(){
         $conexion = $conec->abreConexion();
 		$sql = "
 				select p.zona_id as id
-				from persona_zona p
+				from usuario_zona p
 				where p.usuario_id = ".$id;
 
 
@@ -1581,8 +1600,14 @@ public static function obtenerFiltroSQLZonasAdmin(){
 
 	public static function envioCorreo($titulo, $cuerpo, $de, $de_nombre, $para, $para_nombre, $copia = "", $adjunto = ""){
 
-	$config = array("auth" => "login", "username" => "ressudi@utj.edu.mx", "password" => "adminca02", "port" => 587);
-	$transport = new Zend_Mail_Transport_Smtp("mail.utj.com.mx", $config);
+
+	// $config = array("auth" => "login", "username" => "ressudi@utj.edu.mx", "password" => "adminca02",  "port" => 465);
+	// $transport = new Zend_Mail_Transport_Smtp("mail.utj.com.mx", $config);
+	
+	$config = array('ssl' => 'ssl', "auth" => "login", "username" => "ressudi.utj@gmail.com", "password" => "ressudiutj2018",  "port" => 465);
+	$transport = new Zend_Mail_Transport_Smtp("smtp.gmail.com", $config);
+    Zend_Mail::setDefaultTransport($transport);
+	
 
   	$cuerpo_ = "
                     <!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
@@ -1634,11 +1659,16 @@ public static function obtenerFiltroSQLZonasAdmin(){
 //		     ->addCc("copy@calat.com") //Añadimos un destinatario en copia
 //		     ->addBcc("blind@calat"); //Añadimos un destinatario en copia oculta	
 */
- 		$mail = new Zend_Mail();
+		 $mail = new Zend_Mail();
+		 $mail->setFrom($de,  utf8_decode($de_nombre));
+		 $mail->addTo($para, utf8_decode($para_nombre));
+		//  $mail->setFrom('ressudi@utj.edu.mx', 'You');
+		//  $mail->addTo('alex.ibarra.roque@gmail.com', 'Anybody');	
+		//  $mail->setSubject('My first email by Mailjet');
+		//  $mail->setBodyText('Hello from Mailjet & Zend Framework !');
+		 $mail->setSubject(utf8_decode($titulo));
 		$mail->setBodyHtml(utf8_decode($cuerpo_));
-		$mail->setFrom($de,  utf8_decode($de_nombre));
-		$mail->addTo($para, utf8_decode($para_nombre));	
-		$mail->setSubject(utf8_decode($titulo));
+
 
 		try {
 		    $mail->send($transport);

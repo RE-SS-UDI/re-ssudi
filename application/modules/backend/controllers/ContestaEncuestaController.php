@@ -116,6 +116,8 @@ class Backend_ContestaEncuestaController extends Zend_Controller_Action{
         
        
         $i++;
+        
+        // $encuestas = ContestaEncuesta::obtieneEncuestasUsuarioZona(Zend_Auth::getInstance()->getIdentity()->id);
 
         $encuestas = ContestaEncuesta::obtieneEncuestasUsuario(Zend_Auth::getInstance()->getIdentity()->id);
 //        $registros=  My_Comun::obtenerFiltro("Usuario", $filtro, "nombre ASC");
@@ -182,6 +184,7 @@ class Backend_ContestaEncuestaController extends Zend_Controller_Action{
         }       
         $objPHPExcel->createExcel('Encuestas', $columns_name, $data, 10,array('rango'=>'A4:C4','texto'=>'Encuestas contestadas'));
     }
+
 
     public function exportarTodosAction()
     {

@@ -86,7 +86,7 @@ class Usuario{
         $conexion = $conec->abreConexion();
         $sql = "  SELECT z.id, z.zona_id, zo.nombre as znombre
                 FROM usuario u
-                INNER JOIN persona_zona z
+                INNER JOIN usuario_zona z
                 on z.usuario_id = u.id
                 INNER JOIN zona zo
                 on zo.id = z.zona_id
@@ -152,7 +152,7 @@ class Usuario{
         $conec = new Conexion;
         $conexion = $conec->abreConexion();
         $sql = "  SELECT z.id, z.zona_id, zo.usuario_id
-                FROM persona_zona z
+                FROM usuario_zona z
                 WHERE z.usuario_id = ".$usuario_id." and z.zona_id = ".$zona_id ;
          $stmt = sqlsrv_query( $conexion, $sql);
          $datos = array();
@@ -165,7 +165,7 @@ class Usuario{
 
     public static function guardarSQLpersonaZona($zona_id, $user_id){
 
-        $regi=My_Comun::obtenerFiltroSQL("persona_zona");
+        $regi=My_Comun::obtenerFiltroSQL("usuario_zona");
         // $regi=Usuario::obtienePersonaZonasByIds($user_id, $zona_id);
         $bandera=false;
 
@@ -180,7 +180,7 @@ class Usuario{
             $conec = new Conexion;
             $conexion = $conec->abreConexion();
 
-                $sql ="INSERT INTO dbo.persona_zona([usuario_id],[zona_id]) VALUES ($user_id, $zona_id)";
+                $sql ="INSERT INTO dbo.usuario_zona([usuario_id],[zona_id]) VALUES ($user_id, $zona_id)";
                 // echo("<script>console.log('PHP: ".$sql."');</script>");
 
             $s = sqlsrv_prepare($conexion, $sql);
@@ -232,7 +232,7 @@ class Usuario{
     //     $user_id = $data->id;
     //     $type = "empresa";
 
-    //     $regi=My_Comun::obtenerFiltroSQL("persona_zona");
+    //     $regi=My_Comun::obtenerFiltroSQL("usuario_zona");
     //     // $regi=Usuario::obtienePersonaZonasByIds($user_id, $zona_id);
     //     $bandera=false;
 
@@ -247,7 +247,7 @@ class Usuario{
     //         $conec = new Conexion;
     //         $conexion = $conec->abreConexion();
 
-    //             $sql ="INSERT INTO dbo.persona_zona([usuario_id],[zona_id],[type]) VALUES ($user_id, $zona_id,$type)";
+    //             $sql ="INSERT INTO dbo.usuario_zona([usuario_id],[zona_id],[type]) VALUES ($user_id, $zona_id,$type)";
     //             // echo("<script>console.log('PHP: ".$sql."');</script>");
 
     //         $s = sqlsrv_prepare($conexion, $sql);

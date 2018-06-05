@@ -66,7 +66,7 @@ class ContestaEncuesta
                 on e.id = ze.encuesta_id
                 INNER JOIN zona z
                 on z.id = ze.zona_id
-                INNER JOIN persona_zona em
+                INNER JOIN usuario_zona em
                 on z.id = em.zona_id        
                 INNER JOIN usuario u
                 on u.id = em.usuario_id
@@ -92,7 +92,7 @@ class ContestaEncuesta
                 on e.id = ze.encuesta_id
                 INNER JOIN zona z
                 on z.id = ze.zona_id
-                INNER JOIN persona_zona em
+                INNER JOIN usuario_zona em
                 on z.id = em.zona_id        
                 INNER JOIN usuario u
                 on u.id = em.usuario_id
@@ -118,7 +118,7 @@ class ContestaEncuesta
                 on e.id = ze.encuesta_id
                 INNER JOIN zona z
                 on z.id = ze.zona_id
-                INNER JOIN persona_zona em
+                INNER JOIN usuario_zona em
                 on z.id = em.zona_id        
                 INNER JOIN usuario u
                 on u.id = em.usuario_id

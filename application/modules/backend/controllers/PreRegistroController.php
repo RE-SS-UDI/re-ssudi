@@ -109,6 +109,7 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
 //        $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', ' WHERE status = 1', ' nombre asc');
         //$this->view->empresas = My_Comun::obtenerFiltroSQL('empresa', ' WHERE status = 1', ' nombre asc');
 
+        // $zId = $this->_getParam('zona_id');
 
         $idPer = Zend_Auth::getInstance()->getIdentity()->id;
         $this->view->zonaUser = My_Comun::obtenerZonas($idPer);
@@ -121,6 +122,7 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
 
             $this->view->empresas = My_Comun::obtenerFiltroSQLEmpresa($this->view->zonaUser[0]->id);
         }  
+
 
 
  

@@ -14,6 +14,9 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
         $this->view->zonaUser = My_Comun::obtenerZonas($idPer);
         $this->view->tipoUser = My_Comun::obtenertipoUSer($idPer);
 
+        $this->view->zonasName = ContestaEncuesta::obtieneZona_UsuarioZona(Zend_Auth::getInstance()->getIdentity()->id);
+
+
         //Verificamos el tipo d usurio
         if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario == 3){
             $this->view->categorias = My_Comun::obtenerFiltroSQL('categoria', 'where status = 1', 'nombre asc');
@@ -114,7 +117,13 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
     public function tablaAction()
     {
         $this->_helper->layout->disableLayout();
-
+        
+        // if (!empty($_POST)){
+        //     $customZona = $_POST["zona_id"];
+        // }else{
+        //     $customZona ='';
+        // }
+        
         $nombre=$this->_getParam('nombre');
         $categoria=$this->_getParam('categoria');
 
@@ -128,6 +137,7 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
 
         if ($categoria != '') {
             $filtro_categoria = ' AND e.categoria_id = '.$categoria;
+            
         }
 
         $idPer = Zend_Auth::getInstance()->getIdentity()->id;
@@ -136,8 +146,20 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
 
         //Verificamos el tipo d usurio
         if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario != 3){
-            $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->id);
-            $filtro_zona .= " and zona_id = ".$zona->id." ";
+            
+            if (!empty($_POST)){
+                $customZona = $_POST["zona_id"];
+                $filtro_zona .= " and zona_id = ".$customZona;
+                echo("<script>console.log('PHP: post - zonaid: ".$customZona."');</script>");
+            }else{
+                $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->id);
+                $filtro_zona .= " and zona_id = ".$zona->id." ";
+                echo("<script>console.log('PHP: default - zonaid: ".$zona->id."');</script>");
+
+
+            }
+
+            
         }
         $this->view->encuestas = My_Comun::obtenerFiltroSQLConcentradoEncuestas($filtro_zona,$filtro_categoria);
         $this->view->personas = My_Comun::obtenerFiltroSQLConcentrado($filtro_zona,$filtro_nombre);

@@ -29,6 +29,19 @@
     </div>
 </div>
 
+<ul class="nav nav-tabs menu  col-md-12" role="tablist">
+		<h3>Zonas</h3>
+        <select id="Zid" name="zona" onChange=cargaTablaZona() class="form-control input-sm">
+        <option value="">- Selecciona zona -</option>
+        <?php foreach ($this->zonasName as $zname): ?>
+                            <option value="<?php echo $zname->id; ?>"><?php echo $zname->zona_nombre ?></option>
+                            
+                        <?php endforeach ?>
+                        </select>
+                        
+
+</ul>
+
 <table class="table table-striped cuerpo-concentrado" id="cuerpo_tabla">
 
 </table>

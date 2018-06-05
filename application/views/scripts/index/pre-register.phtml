@@ -15,19 +15,19 @@
 				<label>*Nombre:</label>
 			</div>
 			<div class="col-md-3">
-				<input type="text" name="nombre" placeholder="Nombre" class="form-control required" maxlength="100">
+				<input type="text" onkeyup="this.value = this.value.toUpperCase();" name="nombre" placeholder="Nombre" class="form-control required" maxlength="100">
 			</div>
 			<div class="col-md-1">
 				<label>*Apellido paterno:</label>
 				</div>
 			<div class="col-md-3">
-				<input type="text" name="apellido_pat" placeholder="Apellido paterno" class="form-control required" maxlength="50">
+				<input type="text" onkeyup="this.value = this.value.toUpperCase();" name="apellido_pat" placeholder="Apellido paterno" class="form-control required" maxlength="50">
 			</div>
 			<div class="col-md-1">
 				<label>*Apellido materno:</label>
 			</div>
 			<div class="col-md-3">
-				<input type="text" name="apellido_mat" placeholder="Apellido materno" class="form-control required" maxlength="50">
+				<input type="text" onkeyup="this.value = this.value.toUpperCase();" name="apellido_mat" placeholder="Apellido materno" class="form-control required" maxlength="50">
 			</div>
 		</div>
 	</div>
@@ -43,13 +43,16 @@
 				<label>CURP:</label>
 			</div>
 			<div class="col-md-3">
-				<input type="text" name="curp" placeholder="CURP" class="form-control" maxlength="18">
+				<input type="text" onkeyup="this.value = this.value.toUpperCase();" name="curp" placeholder="CURP" class="form-control" maxlength="18">
 			</div>
 			<div class="col-md-1">
 				<label>RFC:</label>
 			</div>
 			<div class="col-md-3">
-				<input type="text" name="rfc" placeholder="XXXXYYMMDDXX" class="form-control " maxlength="12">
+			<input type="text" onkeyup="this.value = this.value.toUpperCase();" name="rfc" placeholder="XXXXYYMMDDXX" class="form-control " maxlength="12">
+
+				<!-- <input type="text" style="text-transform: uppercase;" name="rfc" placeholder="XXXXYYMMDDXX" class="form-control " maxlength="12"> -->
+				<?PHP $_POST['rfc'] = strtoupper($_POST['rfc']); ?>
 			</div>
 		</div>
 	</div>

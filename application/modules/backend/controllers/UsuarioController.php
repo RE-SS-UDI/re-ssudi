@@ -130,7 +130,7 @@ class backend_UsuarioController extends Zend_Controller_Action{
         $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', ' WHERE status = 1 ', ' nombre asc');
 
         $this->view->zonasUsr = Usuario::obtieneZonasXususario($_POST["id"]);
-        // $this->view->zonasUsr = My_Comun::obtenerFiltroSQL('persona_zona', ' WHERE usuario_id = '.$_POST["id"].' ', ' id asc');
+        // $this->view->zonasUsr = My_Comun::obtenerFiltroSQL('usuario_zona', ' WHERE usuario_id = '.$_POST["id"].' ', ' id asc');
 
 
         $this->view->tipoUser = My_Comun::obtenertipoUSer($idPer);
@@ -255,7 +255,7 @@ class backend_UsuarioController extends Zend_Controller_Action{
             // $catego_id = My_Comun::obtenerSQL('tipo_usuario','id',$_POST['tipo_usuario']);
             // $encuesta_id = My_Comun::obtenerSQL('tipo_usuario','id',$_POST['tipo_usuario']);
 
-            $usuarioId = My_Comun::guardarSQLpersonaZona("persona_zona", $_POST, "0", $bitacora);
+            $usuarioId = My_Comun::guardarSQLpersonaZona("usuario_zona", $_POST, "0", $bitacora);
             echo($usuarioId);
     }//guardarZona
 
@@ -307,7 +307,7 @@ class backend_UsuarioController extends Zend_Controller_Action{
         
             
         $bitacora = array();
-        $bitacora[0]["modelo"] = "persona_zona";
+        $bitacora[0]["modelo"] = "usuario_zona";
         $bitacora[0]["campo"] = "zona_id";
         $bitacora[0]["id"] = $_POST["id"];
         $bitacora[0]["eliminar"] = "Eliminar opción";
@@ -317,7 +317,7 @@ class backend_UsuarioController extends Zend_Controller_Action{
         echo '<script>console.log("'. $_POST["id"].'");</script>';
 
             
-        echo My_Comun::eliminarSQL("persona_zona", $_POST["id"], $bitacora);
+        echo My_Comun::eliminarSQL("usuario_zona", $_POST["id"], $bitacora);
     }//function
 
 
@@ -328,7 +328,7 @@ class backend_UsuarioController extends Zend_Controller_Action{
         
             
         $bitacora = array();
-        $bitacora[0]["modelo"] = "persona_zona";
+        $bitacora[0]["modelo"] = "usuario_zona";
         $bitacora[0]["campo"] = "zona_id";
         $bitacora[0]["id"] = $_POST["id"];
         $bitacora[0]["eliminar"] = "Eliminar opción";
@@ -336,7 +336,7 @@ class backend_UsuarioController extends Zend_Controller_Action{
         $bitacora[0]["habilitar"] = "Habilitar opción";
 
             
-        echo My_Comun::eliminarSQLPersonaZona("persona_zona", $_POST["id"], $bitacora);
+        echo My_Comun::eliminarSQLPersonaZona("usuario_zona", $_POST["id"], $bitacora);
     }//function
 
 
