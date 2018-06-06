@@ -181,12 +181,22 @@ public static function obtenerFiltroSQLConcentradoEncuestas($filtro_zona,$filtro
 	public static function obtenerFiltroSQLConcentrado($filtro_zona,$filtro_nombre){
 		$conec = new Conexion;
         $conexion = $conec->abreConexion();
+		// $sql = "
+		// select e.nombre as empresa, p.id, p.nombre, p.apellido_pat, p.apellido_mat, e.zona_id from persona p
+		// join empresa e
+		// on p.empresa_id = e.id
+		// join zona z 
+		// on z.id = e.zona_id
+		// where p.status = 1 ".$filtro_zona.$filtro_nombre."
+		//  order by p.nombre asc";
 		$sql = "
-		select e.nombre as empresa, p.id, p.nombre, p.apellido_pat, p.apellido_mat, e.zona_id from persona p
+		select e.nombre as empresa, p.id, p.nombre, p.apellido_pat, p.apellido_mat, uz.zona_id from persona p
 		join empresa e
 		on p.empresa_id = e.id
-		join zona z 
-		on z.id = e.zona_id
+		join usuario u
+		on p.id = u.persona_id
+		join usuario_zona uz
+		on u.id = uz.usuario_id
 		where p.status = 1 ".$filtro_zona.$filtro_nombre."
 		 order by p.nombre asc";
 		$stmt = sqlsrv_query( $conexion, $sql);

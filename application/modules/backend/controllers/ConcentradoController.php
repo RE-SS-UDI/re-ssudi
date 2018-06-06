@@ -118,12 +118,6 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
     {
         $this->_helper->layout->disableLayout();
         
-        // if (!empty($_POST)){
-        //     $customZona = $_POST["zona_id"];
-        // }else{
-        //     $customZona ='';
-        // }
-        
         $nombre=$this->_getParam('nombre');
         $categoria=$this->_getParam('categoria');
 
@@ -149,20 +143,20 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
             
             if (!empty($_POST)){
                 $customZona = $_POST["zona_id"];
-                $filtro_zona .= " and zona_id = ".$customZona;
+                $filtro_usuario_zona .= " and uz.zona_id = ".$customZona; //obtiene zona de usuario_zona
+                $filtro_zona .= " and zona_id = ".$customZona; //obtiene zona de zona
                 echo("<script>console.log('PHP: post - zonaid: ".$customZona."');</script>");
             }else{
                 $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->id);
-                $filtro_zona .= " and zona_id = ".$zona->id." ";
+                $filtro_usuario_zona .= " and uz.zona_id = ".$zona->id." "; //obtiene zona de usuario_zona
+                $filtro_zona .= " and zona_id = ".$customZona; //obtiene zona de zona
                 echo("<script>console.log('PHP: default - zonaid: ".$zona->id."');</script>");
-
-
             }
 
             
         }
         $this->view->encuestas = My_Comun::obtenerFiltroSQLConcentradoEncuestas($filtro_zona,$filtro_categoria);
-        $this->view->personas = My_Comun::obtenerFiltroSQLConcentrado($filtro_zona,$filtro_nombre);
+        $this->view->personas = My_Comun::obtenerFiltroSQLConcentrado($filtro_usuario_zona,$filtro_nombre);
         //print_r($this->view->encuestas);
     }
 

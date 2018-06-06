@@ -4,43 +4,48 @@
     </div>
     <div class="panel-body">
         <form name="frmFiltrosCategoria" id="frmFiltrosCategoria">
-            <div class="row margin-bottom-3">                
+            <div class="row margin-bottom-3">
                 <div class="col-xs-3">
                     <label for="fnombre" class="sr-only">Nombre</label>
-                    <input type="text" name="nombre" id="fnombre" class="form-control input-sm" value="" placeholder="Buscar por nombre"/>
+                    <input type="text" name="nombre" id="fnombre" class="form-control input-sm" value="" placeholder="Buscar por nombre" />
                 </div>
-                <div class="col-xs-3">
-                <label for="fstatus" class="sr-only">Categor&iacute;a</label>
+                <!-- <div class="col-xs-3">
+                    <label for="fstatus" class="sr-only">Categor&iacute;a</label>
                     <select id="fcategoria" name="categoria" class="form-control input-sm">
                         <option value="">- Todas las categor&iacute;as -</option>
-                        <?php foreach ($this->categorias as $categoria): ?>
-                            <option value="<?php echo $categoria->id; ?>"><?php echo $categoria->nombre ?></option>
-                            
+                        <?php /* foreach ($this->categorias as $categoria): ?>
+                        <option value="<?php echo $categoria->id; ?>">
+                            <?php echo $categoria->nombre ?>
+                        </option>
+
+                        <?php endforeach // */ ?>
+                    </select>
+                </div> -->
+                <div class="col-xs-3">
+                    <label for="Zid" class="sr-only">Zonas</label>
+                    <select id="Zid" name="zona" onChange=cargaTablaZona() class="form-control input-sm">
+                        <option value="">- Selecciona zona -</option>
+                        <?php foreach ($this->zonasName as $zname): ?>
+                        <option value="<?php echo $zname->id; ?>">
+                            <?php echo $zname->zona_nombre ?>
+                        </option>
                         <?php endforeach ?>
                     </select>
                 </div>
-                <div class="col-xs-6 text-center">
-                    <a onclick="filtrar();" class="btn btn-default btn-sm"><i class="fa fa-search"></i> Filtrar</a>
-                    <a onclick="limpiar();" class="btn btn-default btn-sm"><i class="fa fa-eraser"></i> Limpiar</a>
-                    
+
+                <div class="col-xs-3 text-center">
+                    <a onclick="filtrar();" class="btn btn-default btn-sm">
+                        <i class="fa fa-search"></i> Filtrar</a>
+                    <a onclick="limpiar();" class="btn btn-default btn-sm">
+                        <i class="fa fa-eraser"></i> Limpiar</a>
+
                 </div>
-    	    </div>
+            </div>
         </form>
     </div>
 </div>
 
-<ul class="nav nav-tabs menu  col-md-12" role="tablist">
-		<h3>Zonas</h3>
-        <select id="Zid" name="zona" onChange=cargaTablaZona() class="form-control input-sm">
-        <option value="">- Selecciona zona -</option>
-        <?php foreach ($this->zonasName as $zname): ?>
-                            <option value="<?php echo $zname->id; ?>"><?php echo $zname->zona_nombre ?></option>
-                            
-                        <?php endforeach ?>
-                        </select>
-                        
 
-</ul>
 
 <table class="table table-striped cuerpo-concentrado" id="cuerpo_tabla">
 
