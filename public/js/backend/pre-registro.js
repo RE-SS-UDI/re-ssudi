@@ -66,6 +66,7 @@ function guardarPreregistro(formulario, frmFiltro, filtroinicial, urlImprimir, u
 	                success: function(respuesta){
 	                    if(!isNaN(respuesta))
 	                    {   
+							
 	                        $("#_dialogo-1").dialog("close");
 	                        recargar();
 	                        _mensaje('#_mensaje-1',  'Se guardó de forma correcta');                       

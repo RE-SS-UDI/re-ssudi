@@ -177,13 +177,13 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
             
             $pre = My_Comun::eliminarSQL("pre_registro", $_POST["id"], $bitacora);
 
-            //$titulo = 'Bienvenido a Sinergia';
-            //$cuerpo = 'Ha sido aceptado en el sistema de "Sinergia", podrá aceder al sistema con la siguiente información:<br>';
-            //$cuerpo .= 'Usuario: '.$usu;
-            //$cuerpo .= '<br>Password: '.$pass;
+            $titulo = 'Bienvenido a Sinergia';
+            $cuerpo = 'Ha sido aceptado en el sistema de "Sinergia", podrá aceder al sistema con la siguiente información:<br>';
+            $cuerpo .= 'Usuario: '.$usu;
+            $cuerpo .= '<br>Password: '.$pass;
 
-            //$respuesta = My_Comun::envioCorreo($titulo, $cuerpo, 'esau.toc@hotmail.com', 'Sinergia', $_POST['correo'], $_POST['nombre'].' '.$_POST['apellido_pat'].' '.$_POST['apellido_mat']);
-            //print_r($respuesta);
+            $respuesta = My_Comun::envioCorreo($titulo, $cuerpo, 'ressudi.utj@gmail.com', 'Sinergia', $_POST['correo'], $_POST['nombre'].' '.$_POST['apellido_pat'].' '.$_POST['apellido_mat']);
+            print_r($respuesta);
             
             echo($preId);
     }//guardar
