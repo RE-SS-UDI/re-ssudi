@@ -183,7 +183,7 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
             $cuerpo .= '<br>Password: '.$pass;
 
             $respuesta = My_Comun::envioCorreo($titulo, $cuerpo, 'ressudi.utj@gmail.com', 'Sinergia', $_POST['correo'], $_POST['nombre'].' '.$_POST['apellido_pat'].' '.$_POST['apellido_mat']);
-            print_r($respuesta);
+            // print_r($respuesta);
             
             echo($preId);
     }//guardar

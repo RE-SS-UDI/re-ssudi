@@ -165,6 +165,12 @@ else select			0 as tipo_usuario_id, 0 as desc_tu , m.id, m.persona_origen_id,
 public static function obtenerFiltroSQLConcentradoEncuestas($filtro_zona,$filtro_categoria){
 		$conec = new Conexion;
         $conexion = $conec->abreConexion();
+		// $sql = "
+		// 		select e.id, e.nombre, e.status, e.categoria_id from encuesta e
+		// 		join zona_encuesta ze
+		// 		on ze.encuesta_id = e.id
+		// 		where e.status = 1 ".$filtro_categoria.$filtro_zona."
+		// 		order by nombre asc";
 		$sql = "
 				select e.id, e.nombre, e.status, e.categoria_id from encuesta e
 				join zona_encuesta ze

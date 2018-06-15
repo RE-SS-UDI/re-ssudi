@@ -20,6 +20,77 @@ class Encuesta
 	        print_r($e);
 	        exit;
 	    }	
+    }
+
+    public static function eliminaEncuestasAsignadasByEncuesta($encuesta_id){
+        $conec = new Conexion;
+        $conexion = $conec->abreConexion();
+
+        $sql = "DELETE zona_encuesta where id = ".$encuesta_id." ";
+
+	    $s = sqlsrv_prepare($conexion, $sql);
+
+	    try {
+            sqlsrv_execute($s);
+            return My_Comun::mensaje(1);
+	    } catch (Exception $e) {
+            return My_Comun::mensaje(3);
+	        print_r($e);
+	        exit;
+	    }	
+    }
+
+    public static function changeStatusEncuestasAsignadasByEncuesta($encuesta_id, $status){
+        $conec = new Conexion;
+        $conexion = $conec->abreConexion();
+        $estatus = true;
+        $sql = "";
+        echo "<script>console.log( 'Debug Objects: " . $status . "' );</script>";
+
+        if ($status == 1) {
+            $estatus = false;
+            $sql = "UPDATE zona_encuesta SET status = 0, updated_at = GETDATE() WHERE id = ".$encuesta_id." ";
+        }else{
+            $sql = "UPDATE zona_encuesta SET status = 1, updated_at = GETDATE() WHERE id = ".$encuesta_id." ";
+        }
+        echo "<script>console.log( 'Debug Objects: " . $sql . "' );</script>";
+
+
+        $s = sqlsrv_prepare($conexion, $sql);
+
+            try {
+                sqlsrv_execute($s);
+                if ($status){
+                    return My_Comun::mensaje(2);
+                }else{
+                    return My_Comun::mensaje(4);
+                }
+            } catch (Exception $e) {
+                if ($status){
+                    return My_Comun::mensaje(3);
+                }else{
+                    return My_Comun::mensaje(5);
+                }
+                print_r($e);
+                exit;
+            }	
+	
+    }
+    
+    public static function inactiveEncuestasAsignadas($zona_id){
+        $conec = new Conexion;
+        $conexion = $conec->abreConexion();
+
+        $sql = "UPDATE zona_encuesta SET status = 0, updated_at = GETDATE() WHERE zona_id = ".$zona_id." ";
+
+	    $s = sqlsrv_prepare($conexion, $sql);
+
+	    try {
+	        sqlsrv_execute($s);
+	    } catch (Exception $e) {
+	        print_r($e);
+	        exit;
+	    }	
 	}
 
     public static function verificaEncuesta($persona_id,$encuesta_id)

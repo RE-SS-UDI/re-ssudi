@@ -10,12 +10,18 @@
 		    	<div class="col-xs-4 cuerpo-lista-encuestas sinPadding">
 		    		<ul id="lista_encuestas" style="list-style-type: none;">
 		    			<?php foreach ($this->encuestas as $encuesta): ?>
+						<?php 
+						$categos = My_Comun::obtenerFiltroSQL('categoria', ' WHERE id = '.$encuesta->categoria_id, ' nombre asc');
+						?>
 	                        <li class="col-xs-12 padding5px">
 	                            <div class="col-xs-1">
 	                                <input type="checkbox" name="encuesta[]" value="<?php echo $encuesta->id; ?>">
 	                            </div>
 	                            <div class="col-xs-10">
-	                                <p ><?php echo $encuesta->nombre ?></p>
+								<p ><?php echo $encuesta->nombre ?>
+								<?php foreach ($categos as $cat): ?>
+	                                <?php echo ' - '.$cat->nombre ?></p>
+									<?php endforeach ?>
 	                            </div>
 	                        </li>
 		    			<?php endforeach ?>

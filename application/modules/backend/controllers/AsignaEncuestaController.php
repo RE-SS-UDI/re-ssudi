@@ -10,6 +10,8 @@ class Backend_AsignaEncuestaController extends Zend_Controller_Action{
 
         $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', ' WHERE status = 1 ', ' nombre asc');
         $this->view->encuestas = My_Comun::obtenerFiltroSQL('encuesta', ' WHERE status = 1 ', ' nombre asc');
+    
+
 //        print_r($this->view->encuestas);
 //        exit;
     }//function
@@ -56,12 +58,15 @@ class Backend_AsignaEncuestaController extends Zend_Controller_Action{
             $filtro.=" AND (ze.zona_id = '".$zona."') ";
         }//if
 
-        $consulta = "SELECT e.nombre as encuesta, z.nombre as zona
+        $consulta = "SELECT e.nombre as encuesta, z.nombre as zona, ze.status as status, 
+                    e.id as encuId, ze.id as zeID, cat.nombre as catNombre
                       FROM encuesta e
                       INNER JOIN zona_encuesta ze
                       on e.id = ze.encuesta_id
                       INNER JOIN zona z
                       on z.id = ze.zona_id
+                      INNER JOIN categoria cat
+                      on cat.id = e.categoria_id
                       WHERE ".$filtro;
     
         $registros = My_Comun::registrosGridQuerySQL($consulta);
@@ -72,8 +77,21 @@ class Backend_AsignaEncuestaController extends Zend_Controller_Action{
         {
                 
                 $grid[$i]['encuesta'] =$registros['registros'][$k]->encuesta;
+                $grid[$i]['catNombre'] =$registros['registros'][$k]->catNombre;
                 $grid[$i]['zona'] =$registros['registros'][$k]->zona;
-                $grid[$i]['status']=(($registros['registros'][$k]->status)?'Habilitado':'Inhabilitado');
+                $grid[$i]['status']=(($registros['registros'][$k]->status)?'Habilitado':'Deshabilitado');
+                if($registros['registros'][$k]->status == 0){
+                    $grid[$i]['habilitar'] = '<span onclick="cambiaStatus('.$registros['registros'][$k]->zeID.', '.$registros['registros'][$k]->status.' );" title="Cambia"><i class="boton fa fa-check-square-o fa-lg text-danger"></i></span>';
+                    $grid[$i]['eliminar'] = '<span onclick="eliminar('.$registros['registros'][$k]->zeID.', 1 );" title="Remueve"><i class="boton fa fa-times-circle fa-lg azul"></i></span>';
+    
+                }else{
+                    $grid[$i]['habilitar'] = '<span onclick="cambiaStatus('.$registros['registros'][$k]->zeID.', '.$registros['registros'][$k]->status.' );" title="Cambia"><i class="boton fa fa-check-square-o fa-lg azul"></i></span>';
+                $grid[$i]['eliminar'] = '<span onclick="eliminar('.$registros['registros'][$k]->zeID.', 1 );" title="Remueve"><i class="boton fa fa-times-circle fa-lg azul"></i></span>';
+
+                }
+                
+                // $grid[$i]['encuId'] =$registros['registros'][$k]->encuId;
+
                
             
     				
@@ -94,7 +112,9 @@ class Backend_AsignaEncuestaController extends Zend_Controller_Action{
         	$bitacora[0]["editar"] = "Editar categoría";
 
             if ($_POST['zona_id'] != '') {
-                Encuesta::eliminaEncuestasAsignadas($_POST['zona_id']);
+                
+                Encuesta::inactiveEncuestasAsignadas($_POST['zona_id']);
+                // Encuesta::eliminaEncuestasAsignadas($_POST['zona_id']);
             }
 
             $data = array();
@@ -114,7 +134,7 @@ class Backend_AsignaEncuestaController extends Zend_Controller_Action{
  //               exit;
             echo($preId);
     }//guardar
-	
+
     function eliminarAction()
     {
         $this->_helper->layout->disableLayout();
@@ -129,8 +149,43 @@ class Backend_AsignaEncuestaController extends Zend_Controller_Action{
         $bitacora[0]["deshabilitar"] = "Deshabilitar categoría";
         $bitacora[0]["habilitar"] = "Habilitar categoría";
 			
-        echo My_Comun::eliminarSQL("categoria", $_POST["id"], $bitacora);
+        echo Encuesta::eliminaEncuestasAsignadasByEncuesta( $_POST["id"]);
     }//function
+
+    function statusAction()
+    {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(TRUE);
+        
+			
+        $bitacora = array();
+        $bitacora[0]["modelo"] = "Categoría";
+        $bitacora[0]["campo"] = "nombre";
+        $bitacora[0]["id"] = $_POST["id"];
+        $bitacora[0]["eliminar"] = "Eliminar categoría";
+        $bitacora[0]["deshabilitar"] = "Deshabilitar categoría";
+        $bitacora[0]["habilitar"] = "Habilitar categoría";
+			
+        echo Encuesta::changeStatusEncuestasAsignadasByEncuesta( $_POST["id"], $_POST["status"]);
+    }//function
+    
+	
+    // function eliminarAction()
+    // {
+    //     $this->_helper->layout->disableLayout();
+    //     $this->_helper->viewRenderer->setNoRender(TRUE);
+        
+			
+    //     $bitacora = array();
+    //     $bitacora[0]["modelo"] = "Categoría";
+    //     $bitacora[0]["campo"] = "nombre";
+    //     $bitacora[0]["id"] = $_POST["id"];
+    //     $bitacora[0]["eliminar"] = "Eliminar categoría";
+    //     $bitacora[0]["deshabilitar"] = "Deshabilitar categoría";
+    //     $bitacora[0]["habilitar"] = "Habilitar categoría";
+			
+    //     echo My_Comun::eliminarSQL("categoria", $_POST["id"], $bitacora);
+    // }//function
 
 }//class
 ?>
