@@ -23,8 +23,10 @@
 			<div class="tab-content">
 
 			<!-- tabs left -->
+			<?php $text = "tabs-left fade active in" ?>
 			<?php foreach ($this->zonasName as $zname){ ?>
-			<div class="tabs-left fade " role="tabpanel" id="set<?php echo $zname->id; ?>">
+			<div class="<?php echo $text; ?>" role="tabpanel" id="set<?php echo $zname->id; ?>">
+			<?php $text = "tabs-left fade" ?> <!-- reset message for active tabs -->
 				<ul class="nav nav-tabs" role="tablist">
 					<?php $contador = 0; ?>
 					<?php $encuestasZonas = ContestaEncuesta::obtieneEncuestas_UsuarioZonaById(Zend_Auth::getInstance()->getIdentity()->id, $zname->id); ?>

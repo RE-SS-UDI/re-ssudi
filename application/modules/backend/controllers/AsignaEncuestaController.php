@@ -92,9 +92,7 @@ class Backend_AsignaEncuestaController extends Zend_Controller_Action{
                 
                 // $grid[$i]['encuId'] =$registros['registros'][$k]->encuId;
 
-               
-            
-    				
+
             $i++;
     	}//foreach
     	My_Comun::armarGrid($registros,$grid);
