@@ -7,6 +7,11 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
     }//function
  
     public function indexAction(){
+
+        // usuario_id Zend_Auth::getInstance()->getIdentity()->id
+        // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', ' WHERE status = 1 ', ' nombre asc');
+        $this->view->zonas = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->id);
+
     	$sess=new Zend_Session_Namespace('permisos');
     	///$this->view->puedeAgregar=strpos($sess->cliente->permisos,"AGREGAR_PRE_REGISTRO")!==false;
 
@@ -22,16 +27,23 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
 
 
         //Verificamos el tipo d usurio
-        if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario != 3){
-            $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->id);
-            $filtro .= " AND pr.zona_id = ".$zona->id." ";
-        }
+        // if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario != 3){
+            // $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->id);
+            // $filtro .= " AND pr.zona_id = ".$zona->id." ";
+        // }
 
+        $z = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->id);
+        $k = $z[0]->zona_id ;
+        
+        // foreach ($z as $zoni) {
+        //     $k = $zoni->zona_id ;
+        // }
 
         $nombre=$this->_getParam('nombre');
         $materno=$this->_getParam('materno');
         $paterno=$this->_getParam('paterno');
         $status=$this->_getParam('status');
+        $zona=$this->_getParam('zona_id');
         
         
         if($this->_getParam('status')!="")
@@ -49,8 +61,14 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
         {
             $filtro.=" AND (pr.apellido_mat LIKE '%".$materno."%') ";
         }
+        if($zona!='')
+        {
+            $filtro.=" AND (pr.zona_id = '".$zona."') ";
+        }else{
+            $filtro.=" AND (pr.zona_id = '".$k."') ";
+        }
 
-        $consulta = "SELECT pr.id, pr.nombre, pr.apellido_pat, pr.apellido_mat, pr.correo, pr.telefono, pr.status
+        $consulta = "SELECT pr.id, pr.nombre, pr.apellido_pat, pr.apellido_mat, pr.correo, pr.telefono, pr.status, z.nombre as zNombre
                       FROM pre_registro pr
                       JOIN zona z
                       ON z.id = pr.zona_id
@@ -68,6 +86,7 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
                 $grid[$i]['nombre'] =$registros['registros'][$k]->nombre.' '.$registros['registros'][$k]->apellido_pat.' '.$registros['registros'][$k]->apellido_mat;
                 $grid[$i]['correo'] =$registros['registros'][$k]->correo;
                 $grid[$i]['telefono'] =$registros['registros'][$k]->telefono;
+                $grid[$i]['zona'] =$registros['registros'][$k]->zNombre;
                 $grid[$i]['status']="En espera";
                
             if($registros['registros'][$k]->status == 0)
@@ -101,6 +120,8 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
     	}//foreach
     	My_Comun::armarGrid($registros,$grid);
     }//function
+
+    
     
     public function agregarAction(){
         $this->_helper->layout->disableLayout();
@@ -114,22 +135,47 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
         $idPer = Zend_Auth::getInstance()->getIdentity()->id;
         $this->view->zonaUser = My_Comun::obtenerZonas($idPer);
         $this->view->tipoUser = My_Comun::obtenertipoUSer($idPer);
+        // $this->view->zonasUser = Usuario::obtieneZonasXususario($idPer);
 
-        if($this->view->tipoUser[0]->tipo_usuario == 3){
-
-            $this->view->empresas = My_Comun::obtenerFiltroSQLEmpresaRoot();
-        }else {
-
-            $this->view->empresas = My_Comun::obtenerFiltroSQLEmpresa($this->view->zonaUser[0]->id);
-        }  
-
-
-
- 
         if($_POST["id"]!="0"){
             $this->view->registro=My_Comun::obtenerSQL("pre_registro", "id", $_POST["id"]);
         }
+
+        // if($this->view->tipoUser[0]->tipo_usuario == 3){
+
+        //     $this->view->empresas = My_Comun::obtenerFiltroSQLEmpresaRoot();
+        // }else {
+
+            // $this->view->empresas = My_Comun::obtenerFiltroSQLEmpresaZonas($this->view->zonasUser);
+            $this->view->empresas = My_Comun::obtenerFiltroSQLEmpresa($this->view->registro->zona_id);
+            
+        // }  
+
     }//function
+
+    public function checaEmailAction(){
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(TRUE); 
+
+        // echo "cesar";
+        
+        $personas = My_Comun::obtenerFiltroSQL('persona', ' WHERE correo = \''. $_POST["email"].'\' ' , ' nombre asc');
+        // $pre_reg = My_Comun::obtenerFiltroSQL('pre_registro', ' WHERE correo like '. $_POST["email"].' ', ' nombre asc');
+
+        $tamP = count($personas);
+        // $tamPr = sizeof($pre_reg);
+        $opciones = 0;
+
+
+        if ($tamP > 0 ){
+            $opciones = 0;
+        }else{
+            $opciones = 1;
+        }
+        echo $opciones; 
+    
+        // echo "<script>console.log( 'Debug Objects: " .  $_POST["email"] . "' );</script>";
+      }
 
     public function guardarAction(){
         $this->_helper->layout->disableLayout();
@@ -177,15 +223,16 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
             
             $pre = My_Comun::eliminarSQL("pre_registro", $_POST["id"], $bitacora);
 
-            $titulo = 'Bienvenido a Sinergia';
-            $cuerpo = 'Ha sido aceptado en el sistema de "Sinergia", podrá aceder al sistema con la siguiente información:<br>';
+            $titulo = 'Bienvenido a Ressudi';
+            $cuerpo = 'Ha sido aceptado en el sistema de "Ressudi", podrá aceder al sistema con la siguiente información:<br>';
             $cuerpo .= 'Usuario: '.$usu;
             $cuerpo .= '<br>Password: '.$pass;
 
-            $respuesta = My_Comun::envioCorreo($titulo, $cuerpo, 'ressudi.utj@gmail.com', 'Sinergia', $_POST['correo'], $_POST['nombre'].' '.$_POST['apellido_pat'].' '.$_POST['apellido_mat']);
+            $respuesta = My_Comun::envioCorreo($titulo, $cuerpo, 'ressudi.utj@gmail.com', 'Ressudi', $_POST['correo'], $_POST['nombre'].' '.$_POST['apellido_pat'].' '.$_POST['apellido_mat']);
             // print_r($respuesta);
             
             echo($preId);
+            // echo("Agregado correctamente!");
     }//guardar
 	
     function eliminarAction()

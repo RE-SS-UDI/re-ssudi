@@ -20,9 +20,10 @@ $(document).ready(function(){
 		url: filtro,
 		dataType: "xml",
 		colModel: [
-			{display: "Nombre",           name:"pr.nombre",       width: 440, sortable: true, align: "center"},
+			{display: "Nombre",           name:"pr.nombre",       width: 370, sortable: true, align: "center"},
 			{display: 'Correo',         name:"pr.correo",     width: 250, sortable : false, align: 'center'},
-			{display: 'Tel&eacute;fono',         name:"pr.telefono",     width: 200, sortable : false, align: 'center'},
+			{display: 'Tel&eacute;fono',         name:"pr.telefono",     width: 150, sortable : false, align: 'center'},
+			{display: 'Zona',         name:"z.nombre",     width: 110, sortable : false, align: 'center'},
 			{display: 'Estatus',           name:"pr.status",       width: 100, sortable : false, align: 'center'},
 			{display: 'Visualizar',           name:"editar",       width: 100, sortable : false, align: 'center'},
 			{display: 'Eliminar',         name:"eliminar",     width: 100, sortable : false, align: 'center'}
@@ -70,8 +71,12 @@ function guardarPreregistro(formulario, frmFiltro, filtroinicial, urlImprimir, u
 	                        $("#_dialogo-1").dialog("close");
 	                        recargar();
 	                        _mensaje('#_mensaje-1',  'Se guardó de forma correcta');                       
-	                    }else{                       
-	                        _mensaje("#_mensaje-1",  respuesta );
+	                    }else{    
+							$("#_dialogo-1").dialog("close");
+							recargar();                  
+							// _mensaje("#_mensaje-1",  respuesta ); 
+							_mensaje("#_mensaje-1",  'Se guardó de forma correcta' );
+							
 	                    }                        
 	                        
 	                } //success
@@ -83,5 +88,31 @@ function guardarPreregistro(formulario, frmFiltro, filtroinicial, urlImprimir, u
 	    }) //validate
 	    
 	    $("#"+formulario).submit();     
+	}
+}
+
+
+function cambiaZona(){
+	var filtro2 = '/backend/pre-registro/grid';
+
+	if ($('#zona_id').val() != '') {
+		var zona = $('#zona_id').val();
+console.log(zona);
+  		filtro2+="/zona_id/"+zona;
+
+	    $("#flexigrid").flexOptions({
+			url: filtro2,
+	        onSuccess: function(){
+	        }
+
+		}).flexReload();
+	}else{
+	    $("#flexigrid").flexOptions({
+			url: filtro2,
+	        onSuccess: function(){
+	        }
+
+		}).flexReload();
+
 	}
 }

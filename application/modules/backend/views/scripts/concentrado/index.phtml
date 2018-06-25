@@ -33,6 +33,25 @@
                     </select>
                 </div>
 
+                <div class="col-xs-3">
+                    <label for="encuestaCat" class="sr-only">Encuesta</label>
+                    <select id="encuestaCat" name="encuestaCat" onChange=cambiaZona() class="form-control input-sm">
+                        <option value="">- Selecciona Encuesta -</option>
+                        <?php foreach ($this->encu as $zname): ?>
+                        <?php $cate = My_Comun::obtenerFiltroSQL('categoria', 'where status = 1 and id = '.$zname->categoria_id, 'nombre asc'); ?>
+                        <option value="<?php echo $zname->id; ?>">
+                        <?php echo $zname->nombre ?>
+                        <?php foreach ($cate as $hh): ?>
+                        <?php if ($hh->nombre != ''){
+                            echo ' - '.$hh->nombre;
+                        } ?>
+
+                            <?php endforeach ?>
+                        </option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
+
                 <div class="col-xs-3 text-center">
                     <a onclick="filtrar();" class="btn btn-default btn-sm">
                         <i class="fa fa-search"></i> Filtrar</a>

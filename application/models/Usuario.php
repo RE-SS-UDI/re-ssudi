@@ -90,7 +90,7 @@ class Usuario{
                 on z.usuario_id = u.id
                 INNER JOIN zona zo
                 on zo.id = z.zona_id
-                WHERE u.id = ".$usuario_id;
+                WHERE u.id = ".$usuario_id." AND zo.status = 1 order by zo.nombre asc";
          $stmt = sqlsrv_query( $conexion, $sql);
          $datos = array();
          while( $obj = sqlsrv_fetch_object($stmt)) {

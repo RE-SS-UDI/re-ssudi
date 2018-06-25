@@ -79,7 +79,8 @@ class backend_UsuarioController extends Zend_Controller_Action{
             {
                 //$grid[$i]['permisos'] = '<i class="boton fa fa-check fa-lg text-danger"></i>';   
                 $grid[$i]['editar'] = '<i class="boton fa fa-pencil fa-lg text-danger"></i>';
-                $grid[$i]['editar_zona'] = '<i class="boton fa fa-pencil fa-lg text-danger"></i>';
+                
+                $grid[$i]['editar_zona'] = '<i class="boton fa fa-pencil-square-o fa-lg text-danger"></i>';
                 
                 if($eliminar)
                     $grid[$i]['eliminar'] = '<span onclick="eliminar('.$registros['registros'][$k]->id.','.$registros['registros'][$k]->status.');" title="Eliminar"><i class="boton fa fa-times-circle fa-lg azul"></i></span>';
@@ -103,11 +104,15 @@ class backend_UsuarioController extends Zend_Controller_Action{
 
                 if($editar)
                     $grid[$i]['editar'] = '<span onclick="agregar(\'/backend/usuario/agregar\','.$registros['registros'][$k]->id.', \'frm-1\',\'Editar Usuario\' );" title="Editar"><i class="boton fa fa-pencil fa-lg azul"></i></span>';
-
                 else
                     $grid[$i]['editar'] = '<i class="boton fa fa-pencil fa-lg text-danger"></i>';
 
-                $grid[$i]['editar_zona'] = '<span onclick="agregar(\'/backend/usuario/agregar-zona\','.$registros['registros'][$k]->id.', \'frm-1\',\'Agregar Zona\' );" title="Editar Zona"><i class="boton fa fa-pencil-square-o fa-lg azul"></i></span>';
+
+                if($permisos)
+                    $grid[$i]['editar_zona'] = '<span onclick="agregar(\'/backend/usuario/agregar-zona\','.$registros['registros'][$k]->id.', \'frm-1\',\'Agregar Zona\' );" title="Editar Zona"><i class="boton fa fa-pencil-square-o fa-lg azul"></i></span>';
+                else
+                    $grid[$i]['editar_zona'] = '<i class="boton fa fa-pencil-square-o fa-lg text-danger"></i>';
+
 
                 if($eliminar)
                     $grid[$i]['eliminar'] = '<span onclick="eliminar('.$registros['registros'][$k]->id.','.$registros['registros'][$k]->status.');" title="Deshabilitar / Habilitar"><i class="boton fa fa-times-circle fa-lg azul"></i></i></span>';
@@ -122,9 +127,11 @@ class backend_UsuarioController extends Zend_Controller_Action{
 
 
     public function agregarZonaAction(){
+        
         $this->_helper->layout->disableLayout();
         $this->view->llave = My_Comun::aleatorio(20);
         $idPer = Zend_Auth::getInstance()->getIdentity()->id;
+        echo "<script>console.log( 'Debug Objects: " . $_POST["id"] . "' );</script>";
 
         $this->view->tipos = My_Comun::obtenerFiltroSQL('tipo_usuario', ' WHERE status = 1 ', ' descripcion asc');
         $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', ' WHERE status = 1 ', ' nombre asc');

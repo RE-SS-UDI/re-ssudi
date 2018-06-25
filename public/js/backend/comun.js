@@ -410,3 +410,46 @@ $.datepicker.regional['es'] = {
  dateFormat: 'yy-mm-dd',
  };
  $.datepicker.setDefaults($.datepicker.regional['es']);
+
+
+ 
+ function checkExistsEmail() {
+    var email = document.getElementById("correo").value;
+    // console.log(email)
+    // x.value = x.value.toUpperCase();
+    $.ajax({
+        type: "POST",
+        url: "/backend/pre-registro/checa-email",
+        data: {
+            email: email
+        },
+        success: function(res)
+        {   
+            // console.log(res);
+            $d = res;
+            if ($d == 0){
+                console.log("correo registrado");
+                document.getElementById("endTimeLabel").style.display = 'block';
+            }else{
+                document.getElementById("endTimeLabel").style.display = 'none';
+            }
+        }
+        ,error: function(res){
+            console.log('no chido');
+        } //error
+    }); //$.ajax
+
+    }
+
+   function checkSameEmail(){
+    var email1 = document.getElementById("correo").value;
+    var email2 = document.getElementById("correo2").value;
+
+    if (email1 == email2){
+        document.getElementById("noIgual").style.display = 'none';
+    }else{
+        document.getElementById("noIgual").style.display = 'block';
+    }
+
+   }
+    

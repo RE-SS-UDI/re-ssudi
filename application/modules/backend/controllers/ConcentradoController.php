@@ -14,6 +14,10 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
         $this->view->zonaUser = My_Comun::obtenerZonas($idPer);
         $this->view->tipoUser = My_Comun::obtenertipoUSer($idPer);
 
+        $this->view->encu = My_Comun::obtenerFiltroSQL('encuesta', 'where status = 1', 'nombre asc');
+        // $this->view->cate = My_Comun::obtenerFiltroSQL('categoria', 'where status = 1', 'nombre asc');
+
+
         $this->view->zonasName = ContestaEncuesta::obtieneZona_UsuarioZona(Zend_Auth::getInstance()->getIdentity()->id);
 
 
@@ -37,6 +41,7 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
 
         $nombre=$this->_getParam('nombre');
         $status=$this->_getParam('status');
+        $cateEn=$this->_getParam('encuestaCat');
         
         
         if($this->_getParam('status')!="")
@@ -52,6 +57,11 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
                     $filtro.=" AND (c.nombre LIKE '%".$nombre[$i]."%') ";
             }//for
         }//if
+
+        if($cateEn!='')
+        {
+            $filtro.=" AND (c.id = '".$cateEn."') ";
+        }
 
 
 
@@ -120,6 +130,8 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
         
         $nombre=$this->_getParam('nombre');
         $categoria=$this->_getParam('categoria');
+        $cateEn=$this->_getParam('encuestaCat');
+        $customZona = $this->_getParam('Zid');
 
         $filtro_nombre = '';
         $filtro_categoria = ' ';
@@ -134,6 +146,11 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
             
         }
 
+        if($cateEn!='')
+        {
+            $filtro_categoria.=' AND e.id = '.$cateEn;
+        }
+
         $idPer = Zend_Auth::getInstance()->getIdentity()->id;
         $this->view->zonaUser = My_Comun::obtenerZonas($idPer);
 
@@ -141,16 +158,22 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
         //Verificamos el tipo d usurio
         if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario != 3){
             
-            if (!empty($_POST)){
-                $customZona = $_POST["zona_id"];
+            if ($customZona!=''){
+                // $customZona = $_POST["zona_id"];
                 $filtro_usuario_zona .= " and uz.zona_id = ".$customZona; //obtiene zona de usuario_zona
                 $filtro_zona .= " and zona_id = ".$customZona; //obtiene zona de zona
                 echo("<script>console.log('PHP: post - zonaid: ".$customZona."');</script>");
             }else{
-                $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->id);
-                $filtro_usuario_zona .= " and uz.zona_id = ".$zona->id." "; //obtiene zona de usuario_zona
-                $filtro_zona .= " and zona_id = ".$customZona; //obtiene zona de zona
-                echo("<script>console.log('PHP: default - zonaid: ".$zona->id."');</script>");
+                $zona = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->id);
+                foreach($zona as $zonas){
+                     $filtro_usuario_zona .= " and uz.zona_id = ".$zonas->id." "; //obtiene zona de usuario_zona
+                    $filtro_zona .= " and zona_id = ".$zonas->zona_id; //obtiene zona de zona
+                }
+                
+                // $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->id);
+                // $filtro_usuario_zona .= " and uz.zona_id = ".$zona->id." "; //obtiene zona de usuario_zona
+                // $filtro_zona .= " and zona_id = ".$customZona; //obtiene zona de zona
+                // echo("<script>console.log('PHP: default - zonaid: ".$zona->id."');</script>");
             }
 
             

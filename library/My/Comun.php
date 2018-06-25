@@ -232,28 +232,48 @@ public static function obtenerFiltroSQLConcentradoEncuestas($filtro_zona,$filtro
 		return $datos;
 	}
 
-     //FILTROS ZONA PERSONA
-public static function obtenerFiltroSQLEmpresaRoot(){
-		$conec = new Conexion;
-        $conexion = $conec->abreConexion();
-		$sql ="select * from empresa";
-		$stmt = sqlsrv_query( $conexion, $sql);
-		$datos = array();
-        while( $obj = sqlsrv_fetch_object($stmt)) {
-        	$datos[] = $obj;		     
-        }
-		return $datos;
-	}
+		//FILTROS ZONA PERSONA
+	public static function obtenerFiltroSQLEmpresaRoot(){
+			$conec = new Conexion;
+			$conexion = $conec->abreConexion();
+			$sql ="select * from empresa order by nombre asc";
+			$stmt = sqlsrv_query( $conexion, $sql);
+			$datos = array();
+			while( $obj = sqlsrv_fetch_object($stmt)) {
+				$datos[] = $obj;		     
+			}
+			return $datos;
+		}
 
-public static function obtenerFiltroSQLEmpresa($zonaUser){
+	public static function obtenerFiltroSQLEmpresa($zonaUser){
+			$conec = new Conexion;
+			$conexion = $conec->abreConexion();
+			$sql ="Select * from empresa where zona_id=".$zonaUser." order by nombre asc";
+			$stmt = sqlsrv_query( $conexion, $sql);
+			$datos = array();
+			while( $obj = sqlsrv_fetch_object($stmt)) {
+				$datos[] = $obj;		     
+			}
+			return $datos;
+		}
+
+	public static function obtenerFiltroSQLEmpresaZonas($zonaUser){
 		$conec = new Conexion;
-        $conexion = $conec->abreConexion();
-		$sql ="Select * from empresa where zona_id=".$zonaUser;
+		$conexion = $conec->abreConexion();
+		$zonas= '';
+		for($i = 0; $i >= count($zonaUser); $i++){
+			$zonas .= " AND zona_id=".$zonaUser[$i]->id;
+		}
+		// foreach($zonaUser as $zonasU){
+		// 	$zonas .= " AND zona_id=".$zonasU;
+		// }
+		
+		$sql ="Select * from empresa where status =1 ".$zonas." order by nombre asc";
 		$stmt = sqlsrv_query( $conexion, $sql);
 		$datos = array();
-        while( $obj = sqlsrv_fetch_object($stmt)) {
-        	$datos[] = $obj;		     
-        }
+		while( $obj = sqlsrv_fetch_object($stmt)) {
+			$datos[] = $obj;		     
+		}
 		return $datos;
 	}
 

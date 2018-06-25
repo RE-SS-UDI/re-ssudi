@@ -58,18 +58,66 @@ function cargaTabla()
 
 function cargaTablaZona()
 {
-    var zona_id = $("#Zid").val();
-    console.log(zona_id);
+    // var zona_id = $("#Zid").val();
+    // console.log(zona_id);
+
+    var filtro2 = '/backend/concentrado/tabla';
+
+	if ($('#Zid').val() != '') {
+		var zona = $('#Zid').val();
+
+          filtro2+="/Zid/"+zona;
+
+          $.ajax({
+            url: filtro2,
+            success: function(res){
+                $('#cuerpo_tabla').html(res);
+            }
+        });
     
-    $.ajax({
-        url: '/backend/concentrado/tabla',
-        type: 'POST',
-        data: {zona_id: zona_id},
-        success: function(res){
-            $('#cuerpo_tabla').html(res);
-        }
-    });
+    // $.ajax({
+    //     url: '/backend/concentrado/tabla',
+    //     type: 'POST',
+    //     data: {zona_id: zona_id},
+    //     success: function(res){
+    //         $('#cuerpo_tabla').html(res);
+    //     }
+    // });
     
+}
+}
+
+
+function cambiaZona(){
+	var filtro2 = '/backend/concentrado/tabla';
+
+	if ($('#encuestaCat').val() != '') {
+		var zona = $('#encuestaCat').val();
+
+          filtro2+="/encuestaCat/"+zona;
+
+          $.ajax({
+            url: filtro2,
+            success: function(res){
+                $('#cuerpo_tabla').html(res);
+            }
+        });
+
+	//     $("#flexigrid").flexOptions({
+	// 		url: filtro2,
+	//         onSuccess: function(){
+	//         }
+
+	// 	}).flexReload();
+	// }else{
+	//     $("#flexigrid").flexOptions({
+	// 		url: filtro2,
+	//         onSuccess: function(){
+	//         }
+
+	// 	}).flexReload();
+
+	}
 }
 
 function filtrar()
