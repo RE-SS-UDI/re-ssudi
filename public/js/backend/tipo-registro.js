@@ -23,7 +23,7 @@ $(document).ready(function(){
 			{display: "Nombre",           name:"pr.nombre",       width: 370, sortable: true, align: "center"},
 			{display: 'Correo',         name:"pr.correo",     width: 250, sortable : false, align: 'center'},
 			{display: 'Tel&eacute;fono',         name:"pr.telefono",     width: 150, sortable : false, align: 'center'},
-			{display: 'Estado',         name:"es.estado",     width: 110, sortable : false, align: 'center'},
+			{display: 'Zona',         name:"z.nombre",     width: 110, sortable : false, align: 'center'},
 			{display: 'Estatus',           name:"pr.status",       width: 100, sortable : false, align: 'center'},
 			{display: 'Visualizar',           name:"editar",       width: 100, sortable : false, align: 'center'},
 			{display: 'Eliminar',         name:"eliminar",     width: 100, sortable : false, align: 'center'}
@@ -58,7 +58,7 @@ $(document).ready(function(){
 
 function guardarPreregistro(formulario, frmFiltro, filtroinicial, urlImprimir, urlExportar)
 {
-	if (confirm('¿Desea aceptar el registro y volverlo un usuario de RESSUDI?')) {
+	if (confirm('¿Desea aceptar el registro y volverlo un usuario de RESUDI?')) {
 	    $("#"+formulario).validate({
 	        submitHandler: function(frm)
 	        {

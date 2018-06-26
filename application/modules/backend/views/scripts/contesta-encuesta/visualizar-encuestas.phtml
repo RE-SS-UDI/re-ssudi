@@ -33,7 +33,7 @@
 					
 					<?php foreach ($encuestasZonas as $encuesta){ ?>
 					<li role="presentation" class="<?php echo (($contador == $this->num_encuesta)?'active':''); ?>">
-						<a href="#_<?php echo $encuesta->id; ?>" data-toggle="tab" title="<?php echo $encuesta->nombre; ?>">
+						<a href="#_<?php echo $encuesta->id; ?>_<?php echo$zname->id;?>" data-toggle="tab" title="<?php echo $encuesta->nombre; ?>">
 							<?php echo substr($encuesta->nombre, 0,15).'...'; ?>
 						</a>
 					</li>
@@ -48,7 +48,7 @@
 				<div class="tab-content">
 					<?php $contador2 = 0; ?>
 					<?php foreach ($encuestasZonas as $encuesta): ?>
-					<div role="tabpanel" class="tab-pane <?php echo (($contador2 == $this->num_encuesta)?'active':''); ?>" id="_<?php echo $encuesta->id; ?>">
+					<div role="tabpanel" class="tab-pane <?php echo (($contador2 == $this->num_encuesta)?'active':''); ?>" id="_<?php echo $encuesta->id; ?>_<?php echo$zname->id;?>">
 						<div class="col-xs-10 cuerpo-encuesta">
 							<h3 class="col-xs-12 text-center">
 								<?php echo $encuesta->nombre; ?>
@@ -62,7 +62,7 @@
 									</label>
 								</div>
 								<div class="col-xs-12">
-									<?php $respuesta = Respuesta::obtieneRespuesta(Zend_Auth::getInstance()->getIdentity()->persona_id, $pregunta->id); ?>
+									<?php $respuesta = Respuesta::obtieneRespuesta(Zend_Auth::getInstance()->getIdentity()->persona_id, $pregunta->id, $zname->id); ?>
 									<?php if ($pregunta->tipo == 1): //pregunta corta ?>
 									<p class="text-justify">R:
 										<?php echo $respuesta->descripcion; ?>
@@ -81,10 +81,10 @@
 									<?php if ($pregunta->tipo == 4): ?>
 									<?php 
 			         				$respuestas_usuario = '';
-			         				$opciones = My_Comun::obtenerFiltroSQL('opciones_pregunta',' WHERE status=1 AND pregunta_id='.$pregunta->id,' opcion ASC '); 
+			         				$opciones = My_Comun::obtenerFiltroSQL('opciones_pregunta',' WHERE status=1 AND pregunta_id='.$pregunta->id.' AND zona_id='.$zname->id.' opcion ASC '); 
 			         				?>
 									<?php foreach ($opciones as $opcion): ?>
-									<?php $respuesta2 = Respuesta::obtieneRespuestaEspecial($opcion->opcion, $pregunta->id); ?>
+									<?php $respuesta2 = Respuesta::obtieneRespuestaEspecial($opcion->opcion, $pregunta->id, $zname->id); ?>
 									<?php if ($respuesta2->id!= ''){
 			         						$respuestas_usuario .= $opcion->opcion.', ';
 			         					 } ?>

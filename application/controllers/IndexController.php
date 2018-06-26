@@ -29,6 +29,9 @@ class IndexController extends Zend_Controller_Action{
     public function preRegisterAction()
     {
       $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', ' WHERE status = 1 ', ' nombre asc');
+      $this->view->estados = My_Comun::obtenerFiltroSQL('estados', ' WHERE status = 1 ', ' estado asc');
+      $this->view->tipo_Pregistro = My_Comun::obtenerFiltroSQL('tipo_preregistro', ' WHERE status = 1 ', ' descripcion asc');
+
     }
 
 

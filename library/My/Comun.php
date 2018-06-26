@@ -744,6 +744,7 @@ public static function obtenerFiltroSQLZonasAdmin(){
 				// print_r($consulta." //*");
 //				exit;
 				$consulta .= "; SELECT Scope_Identity() as id;";
+
 					
 					$s = sqlsrv_prepare($conexion, $consulta);
 
@@ -759,9 +760,9 @@ public static function obtenerFiltroSQLZonasAdmin(){
 						            return "¡ATENCIÓN! Ya existe un registro con la misma información.";
 					        	}
 				//descomentar de ser necesario para saber que errores hay
-//					            echo "SQLSTATE: ".$error[ 'SQLSTATE']."<br />";
-//					            echo "code: ".$error[ 'code']."<br />";
-//					            echo "message: ".$error[ 'message']."<br />";
+					            // echo "SQLSTATE: ".$error[ 'SQLSTATE']."<br />";
+					            // echo "code: ".$error[ 'code']."<br />";
+					            // echo "message: ".$error[ 'message']."<br />";
 					        }
 					    }
 						sqlsrv_next_result($s);
@@ -782,7 +783,7 @@ public static function obtenerFiltroSQLZonasAdmin(){
 			if( $r === false ) {
 				//descomentar de ser necesario para saber que errores hay
 			    // die( print_r( sqlsrv_errors(), true));
-			    return "¡ATENCIÓN! Ocurrió un error inesperado. Contactar al equipo de soporte de RESSUDI.";
+			    return "No se pudo realizar el registro";
 			}else{
 				//$stmt = sqlsrv_query( $conexion, $consulta);
 				$iddevuelto = $r['id'];

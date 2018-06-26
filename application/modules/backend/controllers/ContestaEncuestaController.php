@@ -26,6 +26,7 @@ class Backend_ContestaEncuestaController extends Zend_Controller_Action{
     public function guardarAction(){
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(TRUE);
+
 		
             $bitacora = array();
             $bitacora[0]["modelo"] = "Respuesta";
@@ -50,7 +51,9 @@ class Backend_ContestaEncuestaController extends Zend_Controller_Action{
                         $data2['pregunta_id'] = $separaId[1];
                         $data2['persona_id'] = $_POST['persona_id'];
                         $data2['tipo'] = $separaId[2];
+                        $data2['zona_id'] = $_POST['zona_ID'];
                         $data2['id'] = '';
+                        
                        $preId = My_Comun::guardarSQL("respuesta", $data2, $data2['id'], $bitacora);
 //                        print_r($data2);
 
@@ -63,7 +66,9 @@ class Backend_ContestaEncuestaController extends Zend_Controller_Action{
                     $data['pregunta_id'] = $separaId[1];
                     $data['persona_id'] = $_POST['persona_id'];
                     $data['tipo'] = $separaId[2];
+                    $data['zona_id'] = $_POST['zona_ID'];
                     $data['id'] = $separaId[0];
+                    
 //                    print_r($data);
 
                    $preId = My_Comun::guardarSQL("respuesta", $data, $data['id'], $bitacora);

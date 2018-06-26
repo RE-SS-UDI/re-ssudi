@@ -92,17 +92,40 @@
 				<input type="email" name="correo2" id="correo2" class="form-control mail required" placeholder="Correo electrónico" maxlength="100" onfocusout="checkSameEmail()">
 				<span id="noIgual" style="color:red" hidden >Correo no coincide </span>
 			</div>
-			<div class="col-md-1">
+			<!-- <div class="col-md-1">
 				<label>*Zona</label>
 			</div>
 			<div class="col-md-3">
 				<select class="form-control required" name="zona_id">
 					<option value="" selected>Seleccione su zona</option>
-					<?php foreach ($this->zonas as $zona): ?>
-						<option value="<?php echo $zona->id; ?>"><?php echo $zona->nombre; ?></option>
+					<!-- <?php foreach ($this->zonas as $zona): ?> -->
+						<!-- <option value="<?php echo $zona->id; ?>"><?php echo $zona->nombre; ?></option> -->
+					<!-- <?php endforeach ?> -->
+				<!-- </select> -->
+			<!-- </div> -->
+			<div class="col-md-1">
+				<label>*Tipo Registro</label>
+			</div>
+			<div class="col-md-3">
+				<select class="form-control required" name="tipo_id">
+					<option value="" selected>Seleccione el tipo</option>
+					<?php foreach ($this->tipo_Pregistro as $zona): ?>
+						<option value="<?php echo $zona->id; ?>"><?php echo $zona->descripcion; ?></option>
 					<?php endforeach ?>
 				</select>
 			</div>
+			<div class="col-md-1">
+				<label>*Estado</label>
+			</div>
+			<div class="col-md-3">
+				<select class="form-control required" name="estado_id">
+					<option value="" selected>Seleccione su estado</option>
+					<?php foreach ($this->estados as $estado): ?>
+						<option value="<?php echo $estado->id_estado; ?>"><?php echo $estado->estado; ?></option>
+					<?php endforeach ?>
+				</select>
+			</div>
+			
 		</div>
 	</div>
 	<div class="row">

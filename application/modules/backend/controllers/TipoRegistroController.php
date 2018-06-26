@@ -1,8 +1,8 @@
 <?php
-class Backend_PreRegistroController extends Zend_Controller_Action{
+class Backend_TipoRegistroController extends Zend_Controller_Action{
     public function init(){
         $this->view->headScript()->appendFile('/js/backend/comun.js?');
-        $this->view->headScript()->appendFile('/js/backend/pre-registro.js?'.time());
+        $this->view->headScript()->appendFile('/js/backend/tipo-registro.js?'.time());
        
     }//function
  
@@ -13,7 +13,7 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
         $this->view->zonas = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->id);
 
     	$sess=new Zend_Session_Namespace('permisos');
-    	///$this->view->puedeAgregar=strpos($sess->cliente->permisos,"AGREGAR_PRE_REGISTRO")!==false;
+        $this->view->puedeAgregar=strpos($sess->cliente->permisos,"AGREGAR_TIPO_REGISTRO")!==false;
 
     }//function
 
@@ -63,19 +63,15 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
         }
         if($zona!='')
         {
-            $filtro.=" AND (tp.zona_id = '".$zona."') ";
+            $filtro.=" AND (pr.zona_id = '".$zona."') ";
         }else{
-            $filtro.=" AND (tp.zona_id = '".$k."') ";
+            $filtro.=" AND (pr.zona_id = '".$k."') ";
         }
 
-        $consulta = "SELECT pr.id, pr.nombre, pr.apellido_pat, pr.apellido_mat, pr.correo, pr.telefono, pr.status, z.nombre as zNombre, es.estado
+        $consulta = "SELECT pr.id, pr.nombre, pr.apellido_pat, pr.apellido_mat, pr.correo, pr.telefono, pr.status, z.nombre as zNombre
                       FROM pre_registro pr
-                      JOIN tipo_preregistro tp
-                      ON tp.id = pr.tipo_id
-                      JOIN estados es
-                      ON es.id_estado = pr.estado_id
                       JOIN zona z
-                      ON z.id = tp.zona_id
+                      ON z.id = pr.zona_id
                       WHERE ".$filtro;
 
         $registros = My_Comun::registrosGridQuerySQL($consulta);
@@ -90,7 +86,7 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
                 $grid[$i]['nombre'] =$registros['registros'][$k]->nombre.' '.$registros['registros'][$k]->apellido_pat.' '.$registros['registros'][$k]->apellido_mat;
                 $grid[$i]['correo'] =$registros['registros'][$k]->correo;
                 $grid[$i]['telefono'] =$registros['registros'][$k]->telefono;
-                $grid[$i]['estado'] =$registros['registros'][$k]->estado;
+                $grid[$i]['zona'] =$registros['registros'][$k]->zNombre;
                 $grid[$i]['status']="En espera";
                
             if($registros['registros'][$k]->status == 0)
@@ -151,9 +147,7 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
         // }else {
 
             // $this->view->empresas = My_Comun::obtenerFiltroSQLEmpresaZonas($this->view->zonasUser);
-            $regi = My_Comun::obtenerSQL("pre_registro", "id", $_POST["id"]);
-            $tp = My_Comun::obtenerSQL("tipo_preregistro", "id", $regi->tipo_id);
-            $this->view->empresas = My_Comun::obtenerFiltroSQLEmpresa($tp->zona_id);
+            $this->view->empresas = My_Comun::obtenerFiltroSQLEmpresa($this->view->registro->zona_id);
             
         // }  
 
