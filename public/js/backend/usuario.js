@@ -29,7 +29,7 @@ $(document).ready(function(){
 			{display: "Empresa",name:"e.nombre",       width: 250, sortable: true, align: "center"},			
 //			{display: 'Permisos',         name:"permisos",     width: 100, sortable : false, align: 'center'},
 			{display: 'Editar',           name:"editar",       width: 100, sortable : false, align: 'center'},
-			{display: 'Edita zona ',           name:"editar_zona",       width: 100, sortable : false, align: 'center'},
+			// {display: 'Edita zona ',           name:"editar_zona",       width: 100, sortable : false, align: 'center'},
 			{display: 'Habilitar/Deshabilitar',         name:"eliminar",     width: 155, sortable : false, align: 'center'}
 		],
 		sortname: "p.nombre"

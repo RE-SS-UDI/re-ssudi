@@ -1,8 +1,8 @@
 <?php
-class Backend_TipoRegistroController extends Zend_Controller_Action{
+class Backend_TipoPersonaController extends Zend_Controller_Action{
     public function init(){
         $this->view->headScript()->appendFile('/js/backend/comun.js?');
-        $this->view->headScript()->appendFile('/js/backend/tipo-registro.js?'.time());
+        $this->view->headScript()->appendFile('/js/backend/tipo-persona.js?'.time());
        
     }//function
  
@@ -10,10 +10,10 @@ class Backend_TipoRegistroController extends Zend_Controller_Action{
 
         // usuario_id Zend_Auth::getInstance()->getIdentity()->id
         // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', ' WHERE status = 1 ', ' nombre asc');
-        $this->view->zonas = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->id);
+        $this->view->zonas = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
 
     	$sess=new Zend_Session_Namespace('permisos');
-        $this->view->puedeAgregar=strpos($sess->cliente->permisos,"AGREGAR_TIPO_REGISTRO")!==false;
+        $this->view->puedeAgregar=strpos($sess->cliente->permisos,"AGREGAR_TIPO_PERSONA")!==false;
 
     }//function
 
@@ -32,62 +32,49 @@ class Backend_TipoRegistroController extends Zend_Controller_Action{
             // $filtro .= " AND pr.zona_id = ".$zona->id." ";
         // }
 
-        $z = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->id);
+        $z = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
         $k = $z[0]->zona_id ;
         
         // foreach ($z as $zoni) {
         //     $k = $zoni->zona_id ;
         // }
 
-        $nombre=$this->_getParam('nombre');
-        $materno=$this->_getParam('materno');
-        $paterno=$this->_getParam('paterno');
-        $status=$this->_getParam('status');
+
         $zona=$this->_getParam('zona_id');
+        $nombre=$this->_getParam('nombre');
         
         
         if($this->_getParam('status')!="")
             $filtro.=" AND status=".$this->_getParam('status');
-        
         if($nombre!='')
         {
-            $filtro.=" AND (pr.nombre LIKE '%".$nombre."%') ";
-        }
-        if($paterno!='')
-        {
-            $filtro.=" AND (pr.apellido_pat LIKE '%".$paterno."%') ";
-        }
-        if($materno!='')
-        {
-            $filtro.=" AND (pr.apellido_mat LIKE '%".$materno."%') ";
+            $filtro.=" AND (tp.descripcion LIKE '%".$nombre."%')";
         }
         if($zona!='')
         {
-            $filtro.=" AND (pr.zona_id = '".$zona."') ";
+            $filtro.=" AND (tp.zona_id = '".$zona."') ";
         }else{
-            $filtro.=" AND (pr.zona_id = '".$k."') ";
+            $filtro.=" AND (tp.zona_id = '".$k."') ";
         }
 
-        $consulta = "SELECT pr.id, pr.nombre, pr.apellido_pat, pr.apellido_mat, pr.correo, pr.telefono, pr.status, z.nombre as zNombre
-                      FROM pre_registro pr
+        $consulta = "SELECT tp.id, tp.descripcion, tp.status, tp.zona_id, z.nombre
+                      FROM tipo_persona tp
                       JOIN zona z
-                      ON z.id = pr.zona_id
+                      ON z.id = tp.zona_id
                       WHERE ".$filtro;
 
         $registros = My_Comun::registrosGridQuerySQL($consulta);
         $grid=array();
     	$i=0;
 
-        $editar = My_Comun::tienePermiso("EDITAR_PRE_REGISTRO");
-    	$eliminar = My_Comun::tienePermiso("ELIMINAR_PRE_REGISTRO");
+        $editar = My_Comun::tienePermiso("EDITAR_TIPO_PERSONA");
+    	$eliminar = My_Comun::tienePermiso("ELIMINAR_TIPO_PERSONA");
             
         for ($k=0; $k < count($registros['registros']); $k++) 
         {
-                $grid[$i]['nombre'] =$registros['registros'][$k]->nombre.' '.$registros['registros'][$k]->apellido_pat.' '.$registros['registros'][$k]->apellido_mat;
-                $grid[$i]['correo'] =$registros['registros'][$k]->correo;
-                $grid[$i]['telefono'] =$registros['registros'][$k]->telefono;
-                $grid[$i]['zona'] =$registros['registros'][$k]->zNombre;
-                $grid[$i]['status']="En espera";
+                $grid[$i]['descripcion'] =$registros['registros'][$k]->descripcion;
+                $grid[$i]['status']=(($registros['registros'][$k]->status)?'Habilitado':'Inhabilitado');
+                $grid[$i]['zona'] =$registros['registros'][$k]->nombre;
                
             if($registros['registros'][$k]->status == 0)
             {
@@ -102,7 +89,7 @@ class Backend_TipoRegistroController extends Zend_Controller_Action{
             {
                     
                 if($editar){
-                    $grid[$i]['editar'] = '<span onclick="agregar(\'/backend/pre-registro/agregar\','.$registros['registros'][$k]->id.', \'frmPreRegistro\',\'Ficha de Pre-registro\' );" title="Visualizar"><i class="boton fa fa-eye fa-lg azul"></i></span>';
+                    $grid[$i]['editar'] = '<span onclick="agregar(\'/backend/tipo-persona/agregar\','.$registros['registros'][$k]->id.', \'frmPreRegistro\',\'Tipo Registro\' );" title="Visualizar"><i class="boton fa fa-pencil fa-lg azul"></i></span>';
                 }
                 else{
                     $grid[$i]['editar'] = '<i class="boton fa fa-pencil fa-lg text-danger"></i>';
@@ -138,7 +125,7 @@ class Backend_TipoRegistroController extends Zend_Controller_Action{
         // $this->view->zonasUser = Usuario::obtieneZonasXususario($idPer);
 
         if($_POST["id"]!="0"){
-            $this->view->registro=My_Comun::obtenerSQL("pre_registro", "id", $_POST["id"]);
+            $this->view->registro=My_Comun::obtenerSQL("tipo_persona", "id", $_POST["id"]);
         }
 
         // if($this->view->tipoUser[0]->tipo_usuario == 3){
@@ -148,6 +135,7 @@ class Backend_TipoRegistroController extends Zend_Controller_Action{
 
             // $this->view->empresas = My_Comun::obtenerFiltroSQLEmpresaZonas($this->view->zonasUser);
             $this->view->empresas = My_Comun::obtenerFiltroSQLEmpresa($this->view->registro->zona_id);
+            $this->view->zonas2 = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
             
         // }  
 
@@ -182,57 +170,15 @@ class Backend_TipoRegistroController extends Zend_Controller_Action{
         $this->_helper->viewRenderer->setNoRender(TRUE);
 		
         	$bitacora = array();
-        	$bitacora[0]["modelo"] = "Pre-registro";
+        	$bitacora[0]["modelo"] = "Tipo-persona";
         	$bitacora[0]["campo"] = "nombre";
         	$bitacora[0]["id"] = $_POST["id"];
-        	$bitacora[0]["agregar"] = "Modifica pre-registro";
-        	$bitacora[0]["editar"] = "Editar pre-registro";
+        	$bitacora[0]["agregar"] = "Modifica tipo-persona";
+        	$bitacora[0]["editar"] = "Editar tipo-persona";
 
-            $pre_registro = My_Comun::obtenerSQL('pre_registro','id',$_POST['id']);            
+            $preId = My_Comun::guardarSQL("tipo_persona", $_POST, $_POST["id"], $bitacora);
 
-            $data = array();
-            $data['nombre'] = $_POST['nombre'];
-            $data['apellido_pat'] = $_POST['apellido_pat'];
-            $data['apellido_mat'] = $_POST['apellido_mat'];
-            $data['rfc'] = $_POST['rfc'];
-            $data['curp'] = $_POST['curp'];
-            $data['fecha_nacimiento'] = $_POST['fecha_nacimiento'];
-            $data['genero'] = $_POST['genero'];
-            $data['correo'] = $_POST['correo'];
-            $data['telefono'] = $_POST['telefono'];
-            $data['celular'] = $_POST['celular'];
-            $data['empresa_id'] = $_POST['empresa_id'];
-
-            $preId = My_Comun::guardarSQL("persona", $data, $data["id"], $bitacora);
-
-            //Se define una cadena de caractares. Te recomiendo que uses esta.
-            $cadena = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
-            $pass = $this->generaUsuarioContrasena($cadena, 8);
-            $armando = trim($_POST['nombre'].$_POST['apellido_pat'].$_POST['apellido_mat']," ");
-            $usu = $this->generaUsuarioContrasena($armando,6);
-            $data2 = array();
-            $data2['persona_id'] = $preId;
-            $data2['cambiado'] = 0;
-            $data2['usuario'] = $usu;
-            $data2['contrasena'] = $pass;
-            //Nuevo
-            $data2['tipo_usuario'] = 6;
-            $data2['permisos'] = '';
-
-            $usuId = My_Comun::guardarSQL("usuario", $data2, $data2["id"], $bitacora);
-            
-            $pre = My_Comun::eliminarSQL("pre_registro", $_POST["id"], $bitacora);
-
-            $titulo = 'Bienvenido a Ressudi';
-            $cuerpo = 'Ha sido aceptado en el sistema de "Ressudi", podrá aceder al sistema con la siguiente información:<br>';
-            $cuerpo .= 'Usuario: '.$usu;
-            $cuerpo .= '<br>Password: '.$pass;
-
-            $respuesta = My_Comun::envioCorreo($titulo, $cuerpo, 'ressudi.utj@gmail.com', 'Ressudi', $_POST['correo'], $_POST['nombre'].' '.$_POST['apellido_pat'].' '.$_POST['apellido_mat']);
-            // print_r($respuesta);
-            
             echo($preId);
-            // echo("Agregado correctamente!");
     }//guardar
 	
     function eliminarAction()
@@ -249,7 +195,7 @@ class Backend_TipoRegistroController extends Zend_Controller_Action{
         $bitacora[0]["deshabilitar"] = "Deshabilitar pre-registro";
         $bitacora[0]["habilitar"] = "Habilitar pre-registro";
 			
-        echo My_Comun::eliminarSQL("pre_registro", $_POST["id"], $bitacora);
+        echo My_Comun::eliminarSQL("tipo_persona", $_POST["id"], $bitacora);
     }//function 
 
     public function generaUsuarioContrasena($cadena,$longitud)

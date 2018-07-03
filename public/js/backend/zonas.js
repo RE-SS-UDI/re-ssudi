@@ -20,7 +20,8 @@ $(document).ready(function(){
 		dataType: "xml",
 		colModel: [
 			{display: "Nombre",           name:"z.nombre",       width: 250, sortable: true, align: "center"},
-			{display: 'Estatus',           name:"c.status",       width: 100, sortable : false, align: 'center'},
+            {display: "Estado",           name:"es.estado",       width: 250, sortable: true, align: "center"},
+            {display: 'Estatus',           name:"c.status",       width: 100, sortable : false, align: 'center'},
 			{display: 'Editar',           name:"editar",       width: 100, sortable : false, align: 'center'},
 			{display: 'Habilitar/Deshabilitar',         name:"eliminar",     width: 150, sortable : false, align: 'center'}
 		],

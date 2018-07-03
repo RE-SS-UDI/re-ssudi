@@ -58,7 +58,7 @@ class Usuario{
     }//function
 
 
-    public static function obtieneZonaUsuario($usuario_id)
+    public static function obtieneZonaUsuario($persona_id)
     {
         $conec = new Conexion;
         $conexion = $conec->abreConexion();
@@ -72,7 +72,7 @@ class Usuario{
                       on e.id = p.empresa_id
                       INNER JOIN zona z
                       on z.id = e.zona_id
-                    WHERE u.id = ".$usuario_id;
+                    WHERE u.persona_id = ".$persona_id;
         $stmt = sqlsrv_query( $conexion, $sql);
         while( $obj = sqlsrv_fetch_object($stmt)) {
             return $obj; 
@@ -80,17 +80,17 @@ class Usuario{
         
     }
 
-    public static function obtieneZonasXususario($usuario_id)
+    public static function obtieneZonasXususario($persona_id)
     {
         $conec = new Conexion;
         $conexion = $conec->abreConexion();
         $sql = "  SELECT z.id, z.zona_id, zo.nombre as znombre
                 FROM usuario u
-                INNER JOIN usuario_zona z
-                on z.usuario_id = u.id
+                INNER JOIN persona_zona z
+                on z.persona_id = u.persona_id
                 INNER JOIN zona zo
                 on zo.id = z.zona_id
-                WHERE u.id = ".$usuario_id." AND zo.status = 1 order by zo.nombre asc";
+                WHERE u.persona_id = ".$persona_id." AND zo.status = 1 order by zo.nombre asc";
          $stmt = sqlsrv_query( $conexion, $sql);
          $datos = array();
          while( $obj = sqlsrv_fetch_object($stmt)) {
@@ -100,6 +100,45 @@ class Usuario{
          return $datos;
     }
 
+    public static function obtieneestadosZonasXususario($persona_id)
+    {
+        $conec = new Conexion;
+        $conexion = $conec->abreConexion();
+        // $sql = "  SELECT z.id, z.zona_id, zo.nombre as znombre, es.estado, es.id_estado as estadoId
+        $sql = "SELECT DISTINCT es.estado, es.id_estado as estadoId
+                FROM usuario u
+                INNER JOIN persona_zona z
+                on z.persona_id = u.persona_id
+                INNER JOIN zona zo
+                on zo.id = z.zona_id
+                INNER JOIN estados es
+                on es.id_estado = zo.estado_id
+                WHERE u.persona_id = ".$persona_id." AND zo.status = 1 order by es.estado asc";
+         $stmt = sqlsrv_query( $conexion, $sql);
+         $datos = array();
+         while( $obj = sqlsrv_fetch_object($stmt)) {
+         
+             $datos[] =  $obj;       
+         }
+         return $datos;
+    }
+
+    
+    public static function ObtienePersonaFromUsuario($usuario_id)
+    {
+        $conec = new Conexion;
+        $conexion = $conec->abreConexion();
+        $sql = "  SELECT u.persona_id
+                      FROM usuario u 
+                      INNER JOIN persona p
+                      on p.id = u.persona_id
+                    WHERE u.id = ".$usuario_id;
+        $stmt = sqlsrv_query( $conexion, $sql);
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+            return $obj; 
+        }
+        
+    }
 
     public static function obtieneUsuarioPersona($persona_id)
     {
@@ -151,9 +190,9 @@ class Usuario{
     {
         $conec = new Conexion;
         $conexion = $conec->abreConexion();
-        $sql = "  SELECT z.id, z.zona_id, zo.usuario_id
-                FROM usuario_zona z
-                WHERE z.usuario_id = ".$usuario_id." and z.zona_id = ".$zona_id ;
+        $sql = "  SELECT z.id, z.zona_id, z.persona_id
+                FROM persona_zona z
+                WHERE z.persona_id = ".$usuario_id." and z.zona_id = ".$zona_id ;
          $stmt = sqlsrv_query( $conexion, $sql);
          $datos = array();
          while( $obj = sqlsrv_fetch_object($stmt)) {
@@ -163,15 +202,16 @@ class Usuario{
          return $datos;
     }
 
-    public static function guardarSQLpersonaZona($zona_id, $user_id){
+    public static function guardarSQLpersonaZona($zona_id, $persona_id){
 
-        $regi=My_Comun::obtenerFiltroSQL("usuario_zona");
+        $regi=My_Comun::obtenerFiltroSQL("persona_zona");
+        $idPer = Zend_Auth::getInstance()->getIdentity()->id;
         // $regi=Usuario::obtienePersonaZonasByIds($user_id, $zona_id);
         $bandera=false;
 
         foreach ($regi as $pZona){
-            if( ($pZona->zona_id == $zona_id && $pZona->usuario_id == $user_id )  ) {
-                echo("<script>console.log('PHP: ".$pZona->zona_id." usuario ".$pZona->usuario_id."');</script>");
+            if( ($pZona->zona_id == $zona_id && $pZona->persona_id == $persona_id )  ) {
+                echo("<script>console.log('PHP: ".$pZona->zona_id." usuario ".$pZona->persona_id."');</script>");
                 $bandera=true;
             }
         }
@@ -180,7 +220,7 @@ class Usuario{
             $conec = new Conexion;
             $conexion = $conec->abreConexion();
 
-                $sql ="INSERT INTO dbo.usuario_zona([usuario_id],[zona_id]) VALUES ($user_id, $zona_id)";
+                $sql ="INSERT INTO dbo.persona_zona([persona_id],[zona_id]) VALUES ($persona_id, $zona_id)";
                 // echo("<script>console.log('PHP: ".$sql."');</script>");
 
             $s = sqlsrv_prepare($conexion, $sql);

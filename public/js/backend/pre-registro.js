@@ -91,14 +91,10 @@ function guardarPreregistro(formulario, frmFiltro, filtroinicial, urlImprimir, u
 	}
 }
 
-
-function cambiaZona(){
+function updateByZona(zona_id){
 	var filtro2 = '/backend/pre-registro/grid';
-
-	if ($('#zona_id').val() != '') {
-		var zona = $('#zona_id').val();
-console.log(zona);
-  		filtro2+="/zona_id/"+zona;
+console.log(zona_id);
+  		filtro2+="/zona_id/"+zona_id;
 
 	    $("#flexigrid").flexOptions({
 			url: filtro2,
@@ -106,13 +102,148 @@ console.log(zona);
 	        }
 
 		}).flexReload();
-	}else{
-	    $("#flexigrid").flexOptions({
-			url: filtro2,
-	        onSuccess: function(){
-	        }
-
-		}).flexReload();
-
 	}
+
+function updateByEstado(estado_id){
+	var filtro2 = '/backend/pre-registro/grid';
+console.log(estado_id);
+			filtro2+="/estado_id/"+estado_id;
+
+		$("#flexigrid").flexOptions({
+			url: filtro2,
+			onSuccess: function(){
+			}
+
+		}).flexReload();
+	}
+
+	
+function updateByEstadoZona(estado_id,zona_id){
+	var filtro2 = '/backend/pre-registro/grid';
+	console.log(estado_id);
+	filtro2+="/estado_id/"+estado_id;
+	filtro2+="/zona_id/"+zona_id;
+
+	$("#flexigrid").flexOptions({
+		url: filtro2,
+		onSuccess: function(){
+		}
+
+	}).flexReload();
+}
+
+function updateByEstadoZonaTipo(estado_id,zona_id,tipo_id){
+	var filtro2 = '/backend/pre-registro/grid';
+	console.log(estado_id);
+	filtro2+="/estado_id/"+estado_id;
+	filtro2+="/zona_id/"+zona_id;
+	filtro2+="/tipo_id/"+tipo_id;
+
+	$("#flexigrid").flexOptions({
+		url: filtro2,
+		onSuccess: function(){
+		}
+
+	}).flexReload();
+}
+
+
+function cambiaZona(zona_id){
+
+	var zona = zona_id.value;
+	console.log("zona slelected: "+zona);
+		var estado = $('#estado_idS').val();
+		console.log("estado pre-seleccionado: "+estado);
+		 updateByEstadoZona(estado,zona);
+
+if (zona != '') {
+		$.ajax({
+			url: '/backend/pre-registro/on-change-zona',
+			type: 'POST',
+			data: {zona: zona},
+			success: function(res){
+                var objJSON = eval("(function(){return " + res + ";})()");
+                // var response = $.parseJSON(res);
+                // console.log("sucess " + objJSON[0].nombre);
+            var tipo = $('#tipo_idS');
+            tipo.empty();
+                for (var tipo in objJSON) {
+                    console.log("de "+objJSON[tipo]['descripcion']);
+                    // tipo.append(
+                    //     $('<option>', {
+                    //     value: objJSON[tipo]['id']
+                    //     }).text(objJSON[tipo]['descripcion'])
+                    // );
+                     $('#tipo_idS').append('<option value=' + objJSON[tipo]['id'] + '>' + objJSON[tipo]['descripcion'] + '</option>');
+                }
+            }
+		});
+	}
+}
+
+function cambiaEstado(estado_id) {
+	console.log("estado seleccionado: "+estado_id.value);
+	var estado = estado_id.value;
+	
+	updateByEstado(estado);
+
+	if (estado != '') {
+		$.ajax({
+			url: '/backend/pre-registro/on-change-estado',
+			type: 'POST',
+			data: {estado: estado},
+			success: function(res){
+				console.log('estado cambiado');
+                var objJSON = eval("(function(){return " + res + ";})()");
+                // var response = $.parseJSON(res);
+                // console.log("sucess " + objJSON[0].nombre);
+            var zonas = $('#zona_idS');
+            zonas.empty();
+            var tipo = $('#tipo_idS');
+            tipo.empty();
+                for (var zona in objJSON) {
+                    console.log(objJSON[zona]['nombre']);
+                    zonas.append(
+                        $('<option>', {
+                        value: objJSON[zona]['id']
+                        }).text(objJSON[zona]['nombre'])
+                    );
+                    // $('#zona_id').append('<option value=' + objJSON[zona]['id'] + '>' + objJSON[zona]['nombre'] + '</option>');
+                }
+            }
+		});
+	}
+}
+
+function cambiaTipo(tipo_id) {
+	console.log("tipo seleccionado: "+tipo_id.value);
+	var tipo = tipo_id.value;
+	var estado = $('#estado_idS').val();
+	var zona = $('#zona_idS').val();
+	updateByEstadoZonaTipo(estado,zona,tipo);
+	
+	// if (tipo != '') {
+	// 	$.ajax({
+	// 		url: '/backend/pre-registro/on-change-tipo',
+	// 		type: 'POST',
+	// 		data: {tipo: tipo},
+	// 		success: function(res){
+	// 			console.log('tipo cambiado');
+    //             var objJSON = eval("(function(){return " + res + ";})()");
+    //             // var response = $.parseJSON(res);
+    //             // console.log("sucess " + objJSON[0].nombre);
+    //         var tipo = $('#tipo_idS');
+    //         tipo.empty();
+    //             for (var zona in objJSON) {
+    //                 console.log(objJSON[zona]['nombre']);
+    //                 zonas.append(
+    //                     $('<option>', {
+    //                     value: objJSON[zona]['id']
+    //                     }).text(objJSON[zona]['nombre'])
+    //                 );
+    //                 // $('#zona_id').append('<option value=' + objJSON[zona]['id'] + '>' + objJSON[zona]['nombre'] + '</option>');
+    //             }
+    //         }
+	// 	});
+	// }
 }

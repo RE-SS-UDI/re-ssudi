@@ -10,7 +10,7 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
     	$sess=new Zend_Session_Namespace('permisos');
     	//$this->view->puedeAgregar=strpos($sess->cliente->permisos,"AGREGAR_CATEGORIA")!==false;
 
-        $idPer = Zend_Auth::getInstance()->getIdentity()->id;
+        $idPer = Zend_Auth::getInstance()->getIdentity()->persona_id;
         $this->view->zonaUser = My_Comun::obtenerZonas($idPer);
         $this->view->tipoUser = My_Comun::obtenertipoUSer($idPer);
 
@@ -164,7 +164,7 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
                 $filtro_zona .= " and zona_id = ".$customZona; //obtiene zona de zona
                 echo("<script>console.log('PHP: post - zonaid: ".$customZona."');</script>");
             }else{
-                $zona = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->id);
+                $zona = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
                 foreach($zona as $zonas){
                      $filtro_usuario_zona .= " and uz.zona_id = ".$zonas->id." "; //obtiene zona de usuario_zona
                     $filtro_zona .= " and zona_id = ".$zonas->zona_id; //obtiene zona de zona

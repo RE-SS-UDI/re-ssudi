@@ -22,8 +22,18 @@
                     <input type="text" name="materno" id="fmaterno" class="form-control input-sm" value="" placeholder="Buscar apellido materno"/>
                 </div>
                 <div class="col-xs-2">
+                    <label for="fmaterno" class="sr-only">Estados</label>
+                    <select name="estado_idS" id="estado_idS" class="form-control input-sm " onchange="cambiaEstado(this);">
+
+			    		<?php foreach ($this->estados as $estado): ?>
+                        <?php  echo "<script>console.log( 'estados ids: " . $estado->estadoId . "' );</script>"; ?>
+			    			<option value="<?php echo $estado->estadoId ?>"><?php echo $estado->estado; ?></option>
+			    		<?php endforeach ?>
+			    	</select>
+                </div>
+                <div class="col-xs-2">
                     <label for="fmaterno" class="sr-only">Zonas</label>
-                    <select name="zona_id" id="zona_id" class="form-control input-sm required" onchange="cambiaZona();">
+                    <select name="zona_idS" id="zona_idS" class="form-control input-sm " onchange="cambiaZona(this);">
 
 			    		<?php foreach ($this->zonas as $zona): ?>
                         <?php  echo "<script>console.log( 'Debug Objects: " . $zona->zona_id . "' );</script>"; ?>
@@ -31,7 +41,17 @@
 			    		<?php endforeach ?>
 			    	</select>
                 </div>
-                <div class="col-xs-3 text-right">
+                <div class="col-xs-2">
+                    <label for="fmaterno" class="sr-only">Tipo</label>
+                    <select name="tipo_idS" id="tipo_idS" class="form-control input-sm " onchange="cambiaTipo(this);">
+
+			    		<?php foreach ($this->zonas as $zona): ?>
+                        <?php  echo "<script>console.log( 'Debug Objects: " . $zona->zona_id . "' );</script>"; ?>
+			    			<option value="<?php echo $zona->zona_id ?>"><?php echo $zona->znombre; ?></option>
+			    		<?php endforeach ?>
+			    	</select>
+                </div>
+                <div class="col-xs-2 text-right">
                     <button class="btn btn-sm btn-default" type="button" onclick="filtrar('frmFiltrosPreRegistro','/backend/pre-registro/grid','/backend/pre-registro/imprimir','/backend/pre-registro/exportar');">
                         <i class="fa fa-search"></i>&nbsp;Filtrar
                     </button>

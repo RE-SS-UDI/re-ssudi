@@ -38,8 +38,10 @@ class Backend_ZonasController extends Zend_Controller_Action{
             }//for
         }//if
 
-        $consulta = "SELECT z.*
+        $consulta = "SELECT z.*, es.estado as estado
                       FROM zona z
+                      INNER JOIN estados es
+                      ON es.id_estado = z.estado_id
                       WHERE ".$filtro;
     
         $registros = My_Comun::registrosGridQuerySQL($consulta);
@@ -53,6 +55,7 @@ class Backend_ZonasController extends Zend_Controller_Action{
         {
                 
                 $grid[$i]['nombre'] =$registros['registros'][$k]->nombre;
+                $grid[$i]['estado'] =$registros['registros'][$k]->estado;
                 $grid[$i]['status']=(($registros['registros'][$k]->status)?'Habilitado':'Inhabilitado');
                
             if($registros['registros'][$k]->status == 0)
@@ -94,6 +97,8 @@ class Backend_ZonasController extends Zend_Controller_Action{
         if($_POST["id"]!="0"){
             $this->view->registro=My_Comun::obtenerSQL("zona", "id", $_POST["id"]);
         }
+        $this->view->estados = Usuario::obtieneestadosZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+
     }//function
 
     public function guardarAction(){

@@ -41,7 +41,7 @@ class backend_UsuarioController extends Zend_Controller_Action{
         }//if
         //Verificamos el tipo d usurio
         if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario != 3){
-            $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->id);
+            $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->persona_id);
             $filtro .= " AND e.zona_id = ".$zona->id." ";
         }
         
@@ -80,7 +80,7 @@ class backend_UsuarioController extends Zend_Controller_Action{
                 //$grid[$i]['permisos'] = '<i class="boton fa fa-check fa-lg text-danger"></i>';   
                 $grid[$i]['editar'] = '<i class="boton fa fa-pencil fa-lg text-danger"></i>';
                 
-                $grid[$i]['editar_zona'] = '<i class="boton fa fa-pencil-square-o fa-lg text-danger"></i>';
+                // $grid[$i]['editar_zona'] = '<i class="boton fa fa-pencil-square-o fa-lg text-danger"></i>';
                 
                 if($eliminar)
                     $grid[$i]['eliminar'] = '<span onclick="eliminar('.$registros['registros'][$k]->id.','.$registros['registros'][$k]->status.');" title="Eliminar"><i class="boton fa fa-times-circle fa-lg azul"></i></span>';
@@ -108,10 +108,10 @@ class backend_UsuarioController extends Zend_Controller_Action{
                     $grid[$i]['editar'] = '<i class="boton fa fa-pencil fa-lg text-danger"></i>';
 
 
-                if($permisos)
-                    $grid[$i]['editar_zona'] = '<span onclick="agregar(\'/backend/usuario/agregar-zona\','.$registros['registros'][$k]->id.', \'frm-1\',\'Agregar Zona\' );" title="Editar Zona"><i class="boton fa fa-pencil-square-o fa-lg azul"></i></span>';
-                else
-                    $grid[$i]['editar_zona'] = '<i class="boton fa fa-pencil-square-o fa-lg text-danger"></i>';
+                // if($permisos)
+                //     $grid[$i]['editar_zona'] = '<span onclick="agregar(\'/backend/usuario/agregar-zona\','.$registros['registros'][$k]->id.', \'frm-1\',\'Agregar Zona\' );" title="Editar Zona"><i class="boton fa fa-pencil-square-o fa-lg azul"></i></span>';
+                // else
+                //     $grid[$i]['editar_zona'] = '<i class="boton fa fa-pencil-square-o fa-lg text-danger"></i>';
 
 
                 if($eliminar)
@@ -137,7 +137,7 @@ class backend_UsuarioController extends Zend_Controller_Action{
         $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', ' WHERE status = 1 ', ' nombre asc');
 
         $this->view->zonasUsr = Usuario::obtieneZonasXususario($_POST["id"]);
-        // $this->view->zonasUsr = My_Comun::obtenerFiltroSQL('usuario_zona', ' WHERE usuario_id = '.$_POST["id"].' ', ' id asc');
+        // $this->view->zonasUsr = My_Comun::obtenerFiltroSQL('persona_zona', ' WHERE usuario_id = '.$_POST["id"].' ', ' id asc');
 
 
         $this->view->tipoUser = My_Comun::obtenertipoUSer($idPer);
@@ -262,7 +262,7 @@ class backend_UsuarioController extends Zend_Controller_Action{
             // $catego_id = My_Comun::obtenerSQL('tipo_usuario','id',$_POST['tipo_usuario']);
             // $encuesta_id = My_Comun::obtenerSQL('tipo_usuario','id',$_POST['tipo_usuario']);
 
-            $usuarioId = My_Comun::guardarSQLpersonaZona("usuario_zona", $_POST, "0", $bitacora);
+            $usuarioId = My_Comun::guardarSQLpersonaZona("persona_zona", $_POST, "0", $bitacora);
             echo($usuarioId);
     }//guardarZona
 
@@ -301,9 +301,7 @@ class backend_UsuarioController extends Zend_Controller_Action{
                     ';
         }
         echo $opciones;
-    }
-
-
+        }
     }
 
 

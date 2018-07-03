@@ -22,7 +22,7 @@
 				<ul class="nav nav-tabs">
 				
 					<?php $contador = 0; ?>
-					<?php $encuestasZonas = ContestaEncuesta::obtieneEncuestas_UsuarioZonaById(Zend_Auth::getInstance()->getIdentity()->id, $zname->id); ?>
+					<?php $encuestasZonas = ContestaEncuesta::obtieneEncuestas_UsuarioZonaById(Zend_Auth::getInstance()->getIdentity()->persona_id, $zname->id); ?>
 
 					<?php foreach ($encuestasZonas as $encuesta){ ?>
 					<li class="<?php echo (($contador == $this->num_encuesta)?'active':''); ?>">

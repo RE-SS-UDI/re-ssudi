@@ -1,0 +1,30 @@
+<div class="panel panel-default" style="margin: 5px 0;">
+    <div class="pnl-heading-rojo-1 clearfix">
+        <h3 class="panel-title pull-left">Estados</h3>
+        <button type="button" onclick="agregar('/backend/estado/agregar', 0, 'frmPreRegistro','Estado');" class="btn btn-sm btn-default pull-right <?php echo($this->puedeAgregar?"":"hide"); ?>">
+            <i class="fa fa-plus"></i>&nbsp;Agregar
+        </button>
+    </div>
+    <div class="panel-body">
+        <form name="frmFiltrosPreRegistro" id="frmFiltrosPreRegistro">
+            <div class="row margin-bottom-3">
+                
+                <div class="col-xs-2">
+                    <label for="fnombre" class="sr-only">Estado</label>
+                    <input type="text" name="nombre" id="fnombre" class="form-control input-sm" value="" placeholder="Buscar Estado"/>
+                </div>
+
+                <div class="col-xs-3 text-right">
+                    <button class="btn btn-sm btn-default" type="button" onclick="filtrar('frmFiltrosPreRegistro','/backend/estado/grid','/backend/estado/imprimir','/backend/estado/exportar');">
+                        <i class="fa fa-search"></i>&nbsp;Filtrar
+                    </button>
+                    <button class="btn btn-sm btn-default" type="button" onclick="limpiar('frmFiltrosPreRegistro','/backend/estado/grid');">
+                        <i class="fa fa-eraser"></i>&nbsp;Limpiar
+                    </button>
+                </div>
+    	    </div>
+        </form>
+    </div>
+</div>
+<div id="flexigrid"></div>
+<div class="height-5"></div>

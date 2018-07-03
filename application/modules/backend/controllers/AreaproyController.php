@@ -25,7 +25,7 @@ class Backend_AreaproyController extends Zend_Controller_Action
 
          //Verificamos el tipo d usurio
         if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario != 3){
-            $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->id);
+            $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->persona_id);
             $filtro .= " AND ap.zona_id = ".$zona->id." ";
         }
 

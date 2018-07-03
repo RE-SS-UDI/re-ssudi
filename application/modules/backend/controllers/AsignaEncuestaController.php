@@ -7,9 +7,17 @@ class Backend_AsignaEncuestaController extends Zend_Controller_Action{
     }//function
  
     public function indexAction(){
+        $idPer = Zend_Auth::getInstance()->getIdentity()->persona_id;
 
-        $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', ' WHERE status = 1 ', ' nombre asc');
+
+        // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', ' WHERE status = 1 ', ' nombre asc');
+        $this->view->zonas = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+
+        $this->view->estados = Usuario::obtieneestadosZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+
         $this->view->encuestas = My_Comun::obtenerFiltroSQL('encuesta', ' WHERE status = 1 ', ' nombre asc');
+        $this->view->categorias = My_Comun::obtenerFiltroSQL('categoria', ' WHERE status = 1 ', ' nombre asc');
+
     
 
 //        print_r($this->view->encuestas);
@@ -59,12 +67,16 @@ class Backend_AsignaEncuestaController extends Zend_Controller_Action{
         }//if
 
         $consulta = "SELECT e.nombre as encuesta, z.nombre as zona, ze.status as status, 
-                    e.id as encuId, ze.id as zeID, cat.nombre as catNombre
+                    e.id as encuId, ze.id as zeID, cat.nombre as catNombre, es.estado, tp.descripcion
                       FROM encuesta e
                       INNER JOIN zona_encuesta ze
                       on e.id = ze.encuesta_id
                       INNER JOIN zona z
                       on z.id = ze.zona_id
+                      INNER JOIN tipo_persona tp
+                      on ze.zona_id = tp.zona_id 
+                      INNER JOIN estados es
+                      on z.estado_id = es.id_estado
                       INNER JOIN categoria cat
                       on cat.id = e.categoria_id
                       WHERE ".$filtro;
@@ -79,6 +91,8 @@ class Backend_AsignaEncuestaController extends Zend_Controller_Action{
                 $grid[$i]['encuesta'] =$registros['registros'][$k]->encuesta;
                 $grid[$i]['catNombre'] =$registros['registros'][$k]->catNombre;
                 $grid[$i]['zona'] =$registros['registros'][$k]->zona;
+                $grid[$i]['estado'] =$registros['registros'][$k]->estado;
+                $grid[$i]['tipo'] =$registros['registros'][$k]->descripcion;
                 $grid[$i]['status']=(($registros['registros'][$k]->status)?'Habilitado':'Deshabilitado');
                 if($registros['registros'][$k]->status == 0){
                     $grid[$i]['habilitar'] = '<span onclick="cambiaStatus('.$registros['registros'][$k]->zeID.', '.$registros['registros'][$k]->status.' );" title="Cambia"><i class="boton fa fa-check-square-o fa-lg text-danger"></i></span>';
@@ -111,25 +125,27 @@ class Backend_AsignaEncuestaController extends Zend_Controller_Action{
 
             if ($_POST['zona_id'] != '') {
                 
-                Encuesta::inactiveEncuestasAsignadas($_POST['zona_id']);
+                // Encuesta::inactiveEncuestasAsignadas($_POST['zona_id']);
                 // Encuesta::eliminaEncuestasAsignadas($_POST['zona_id']);
             }
 
             $data = array();
 
 
-            foreach ($_POST['encuesta'] as $key) {
-                $data[] = $key;
-//                $data['zona_id'] = $_POST['zona_id'];
-            }
-            foreach ($data as $key2) {
-                $data2 = array();
-                $data2['encuesta_id'] = $key2;
-                $data2['zona_id'] = $_POST['zona_id'];
-                //print_r($data2);
-                $preId = My_Comun::guardarSQL("zona_encuesta", $data2, $data2["id"], $bitacora);
-            }
- //               exit;
+//             foreach ($_POST['encuesta_id'] as $key) {
+//                 $data[] = $key;
+// //                $data['zona_id'] = $_POST['zona_id'];
+//             }
+//             foreach ($data as $key2) {
+//                 $data2 = array();
+//                 $data2['encuesta_id'] = $key2;
+//                 $data2['zona_id'] = $_POST['zona_id'];
+//                 //print_r($data2);
+//                 $preId = My_Comun::guardarSQL("zona_encuesta", $data2, $data2["id"], $bitacora);
+//             }
+//  //               exit;
+            $preId = My_Comun::guardarSQL("zona_encuesta", $_POST, 0, $bitacora);
+
             echo($preId);
     }//guardar
 
@@ -166,6 +182,58 @@ class Backend_AsignaEncuestaController extends Zend_Controller_Action{
 			
         echo Encuesta::changeStatusEncuestasAsignadasByEncuesta( $_POST["id"], $_POST["status"]);
     }//function
+
+    
+    public function onChangeCategoriaAction(){
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(TRUE);
+        // $estado = $_POST["estado"];
+  
+        $categoria=$this->_getParam('categoria');
+        $filtro = "WHERE status = 1";
+          
+        if($categoria!='')
+        {
+            $filtro.=" AND (categoria_id = $categoria) ";
+        }
+        // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        $encuestas = My_Comun::obtenerFiltroSQL('encuesta', $filtro, ' nombre asc');
+        echo json_encode($encuestas);
+    }
+
+    public function onChangeEstadoAction(){
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(TRUE);
+        // $estado = $_POST["estado"];
+  
+        $estado=$this->_getParam('estado');
+        $filtro = "WHERE status = 1";
+          
+        if($estado!='')
+        {
+            $filtro.=" AND (estado_id = $estado) ";
+        }
+        // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        $encuestas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        echo json_encode($encuestas);
+    }
+
+    public function onChangeZonaAction(){
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(TRUE);
+        // $estado = $_POST["estado"];
+  
+        $zona=$this->_getParam('zona');
+        $filtro = "WHERE status = 1";
+          
+        if($zona!='')
+        {
+            $filtro.=" AND (zona_id = $zona) ";
+        }
+        // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        $zonas = My_Comun::obtenerFiltroSQL('tipo_persona', $filtro, ' descripcion asc');
+        echo json_encode($zonas);
+    }
     
 	
     // function eliminarAction()
@@ -186,4 +254,6 @@ class Backend_AsignaEncuestaController extends Zend_Controller_Action{
     // }//function
 
 }//class
+
+
 ?>

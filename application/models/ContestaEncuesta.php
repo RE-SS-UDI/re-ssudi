@@ -27,7 +27,7 @@ class ContestaEncuesta
         return $datos;
 	}
 
-    public static function obtieneEncuestasUsuario($usuario_id)
+    public static function obtieneEncuestasUsuario($persona_id)
     {
         $conec = new Conexion;
         $conexion = $conec->abreConexion();
@@ -44,7 +44,7 @@ class ContestaEncuesta
                   on em.id = p.empresa_id         
                   INNER JOIN usuario u
                   on u.persona_id = p.id
-                  WHERE u.id = '".$usuario_id."'
+                  WHERE u.persona_id = '".$persona_id."'
                 ";
         $stmt = sqlsrv_query( $conexion, $sql);
         $datos = array();
@@ -55,7 +55,7 @@ class ContestaEncuesta
         return $datos;
     }//funcion
 
-    public static function obtieneEncuestasUsuarioZona($usuario_id)
+    public static function obtieneEncuestasUsuarioZona($persona_id)
     {
         $conec = new Conexion;
         $conexion = $conec->abreConexion();
@@ -66,11 +66,9 @@ class ContestaEncuesta
                 on e.id = ze.encuesta_id
                 INNER JOIN zona z
                 on z.id = ze.zona_id
-                INNER JOIN usuario_zona em
+                INNER JOIN persona_zona em
                 on z.id = em.zona_id        
-                INNER JOIN usuario u
-                on u.id = em.usuario_id
-                WHERE u.id = '".$usuario_id."'
+                WHERE em.persona_id = '".$persona_id."'
               ";
         $stmt = sqlsrv_query( $conexion, $sql);
         $datos = array();
@@ -81,7 +79,7 @@ class ContestaEncuesta
         return $datos;
     }//funcion
 
-    public static function obtieneEncuestas_UsuarioZonaById($usuario_id,$zona_id)
+    public static function obtieneEncuestas_UsuarioZonaById($persona_id,$zona_id)
     {
         $conec = new Conexion;
         $conexion = $conec->abreConexion();
@@ -92,11 +90,9 @@ class ContestaEncuesta
                 on e.id = ze.encuesta_id
                 INNER JOIN zona z
                 on z.id = ze.zona_id
-                INNER JOIN usuario_zona em
+                INNER JOIN persona_zona em
                 on z.id = em.zona_id        
-                INNER JOIN usuario u
-                on u.id = em.usuario_id
-                WHERE u.id = '".$usuario_id."' and z.id = '".$zona_id."'
+                WHERE em.persona_id = '".$persona_id."' and z.id = '".$zona_id."'
               ";
         $stmt = sqlsrv_query( $conexion, $sql);
         $datos = array();
@@ -107,7 +103,7 @@ class ContestaEncuesta
         return $datos;
     }//funcion
 
-    public static function obtieneZona_UsuarioZona($usuario_id)
+    public static function obtieneZona_UsuarioZona($persona_id)
     {
         $conec = new Conexion;
         $conexion = $conec->abreConexion();
@@ -118,11 +114,9 @@ class ContestaEncuesta
                 on e.id = ze.encuesta_id
                 INNER JOIN zona z
                 on z.id = ze.zona_id
-                INNER JOIN usuario_zona em
+                INNER JOIN persona_zona em
                 on z.id = em.zona_id        
-                INNER JOIN usuario u
-                on u.id = em.usuario_id
-                WHERE u.id = '".$usuario_id."'
+                WHERE em.persona_id = '".$persona_id."'
               ";
         $stmt = sqlsrv_query( $conexion, $sql);
         $datos = array();

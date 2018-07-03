@@ -201,8 +201,8 @@ public static function obtenerFiltroSQLConcentradoEncuestas($filtro_zona,$filtro
 		on p.empresa_id = e.id
 		join usuario u
 		on p.id = u.persona_id
-		join usuario_zona uz
-		on u.id = uz.usuario_id
+		join persona_zona uz
+		on u.persona_id = uz.persona_id
 		where p.status = 1 ".$filtro_zona.$filtro_nombre."
 		 order by p.nombre asc";
 		$stmt = sqlsrv_query( $conexion, $sql);
@@ -340,7 +340,7 @@ public static function obtenerFiltroSQLZonasAdmin(){
 				on p.empresa_id = e.id
 				join zona z
 				on e.zona_id = z.id 
-				where u.id = ".$id;
+				where u.persona_id = ".$id;
 
 
 		$stmt = sqlsrv_query( $conexion, $sql);
@@ -356,8 +356,8 @@ public static function obtenerFiltroSQLZonasAdmin(){
         $conexion = $conec->abreConexion();
 		$sql = "
 				select p.zona_id as id
-				from usuario_zona p
-				where p.usuario_id = ".$id;
+				from persona_zona p
+				where p.persona_id = ".$id;
 
 
 		$stmt = sqlsrv_query( $conexion, $sql);
@@ -725,7 +725,7 @@ public static function obtenerFiltroSQLZonasAdmin(){
 			$valores = "(";
 
 			foreach ($datos as $key => $value) {
-				if ($key=='id') {
+				if ($key=='id' || $key=='id_estado') {
 					continue;
 				}
 				$columnas .= $key."],[";
@@ -792,15 +792,26 @@ public static function obtenerFiltroSQLZonasAdmin(){
 		}else{//Actualizando
 			$consulta = "UPDATE dbo.".$modelo;
 			$a_actualizar = " SET ";
+			$bandera = false;
 
 			foreach ($datos as $key => $value) {
-				if ($key=='id') {
+				if ($key=='id' ) {
+					continue;
+				}
+				if ($key=='id_estado') {
+					$bandera = true;
 					continue;
 				}
 				$a_actualizar .= $key ."=".((!is_numeric($value))?"'".$value."'":$value).",";
 			}
 			$a_actualizar = trim($a_actualizar,",");
-			$consulta .= $a_actualizar." WHERE id = ".$id;
+			
+			if ($bandera){
+				$consulta .= $a_actualizar." WHERE id_estado = ".$id;
+			}else{
+				$consulta .= $a_actualizar." WHERE id = ".$id;
+			}
+			
 			
 //			$consulta .= "; SELECT Scope_Identity() as id;";
 //			print_r($consulta);

@@ -28,7 +28,7 @@ class Backend_ConcentradoProyController extends Zend_Controller_Action
 
         
         $filtro_nombre = " where nombre LIKE '%".$nombre."%'";
-        $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->id);
+        $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->persona_id);
         $filtro_zona .= " and zona_id = ".$zona->id." ";
         
         $idPer = Zend_Auth::getInstance()->getIdentity()->id;

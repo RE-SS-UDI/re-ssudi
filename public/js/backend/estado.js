@@ -1,4 +1,4 @@
-urlEliminar='/backend/pre-registro/eliminar';
+urlEliminar='/backend/estado/eliminar';
 
 $(document).ready(function(){
 	var value = __obtenerTiempo ();
@@ -11,7 +11,7 @@ $(document).ready(function(){
           },
           idle: value  //10 segundos
         })
-	var filtro="/backend/pre-registro/grid";
+	var filtro="/backend/estado/grid";
 	if($("#fnombre").val()!="")       filtro+="/nombre/"+$("#fnombre").val();
 	if($("#fpaterno").val()!="")       filtro+="/paterno/"+$("#fpaterno").val();
 	if($("#fmaterno").val()!="")       filtro+="/materno/"+$("#fmaterno").val();
@@ -20,15 +20,13 @@ $(document).ready(function(){
 		url: filtro,
 		dataType: "xml",
 		colModel: [
-			{display: "Nombre",           name:"pr.nombre",       width: 370, sortable: true, align: "center"},
-			{display: 'Correo',         name:"pr.correo",     width: 250, sortable : false, align: 'center'},
-			{display: 'Tel&eacute;fono',         name:"pr.telefono",     width: 150, sortable : false, align: 'center'},
-			{display: 'Zona',         name:"z.nombre",     width: 110, sortable : false, align: 'center'},
-			{display: 'Estatus',           name:"pr.status",       width: 100, sortable : false, align: 'center'},
-			{display: 'Visualizar',           name:"editar",       width: 100, sortable : false, align: 'center'},
+			{display: "Estado",           name:"es.estado",       width: 370, sortable: true, align: "center"},
+			{display: 'status',         name:"es.status",     width: 250, sortable : false, align: 'center'},
+			{display: 'Habilitar',           name:"habilitar",       width: 100, sortable : false, align: 'center'},
+			{display: 'Editar',           name:"editar",       width: 100, sortable : false, align: 'center'},
 			{display: 'Eliminar',         name:"eliminar",     width: 100, sortable : false, align: 'center'}
 		],
-		sortname: "pr.nombre"
+		sortname: "es.estado"
 		,sortorder: "asc"
 		,usepager: true
         ,useRp: false
@@ -58,7 +56,6 @@ $(document).ready(function(){
 
 function guardarPreregistro(formulario, frmFiltro, filtroinicial, urlImprimir, urlExportar)
 {
-	if (confirm('¿Desea aceptar el registro y volverlo un usuario de RESUDI?')) {
 	    $("#"+formulario).validate({
 	        submitHandler: function(frm)
 	        {
@@ -88,12 +85,11 @@ function guardarPreregistro(formulario, frmFiltro, filtroinicial, urlImprimir, u
 	    }) //validate
 	    
 	    $("#"+formulario).submit();     
-	}
 }
 
 
 function cambiaZona(){
-	var filtro2 = '/backend/pre-registro/grid';
+	var filtro2 = '/backend/estado/grid';
 
 	if ($('#zona_id').val() != '') {
 		var zona = $('#zona_id').val();
@@ -116,3 +112,35 @@ console.log(zona);
 
 	}
 }
+
+function cambiaStatus(id, estatus)
+{
+    console.log("id a cambiar "+id);
+    console.log("Estatus actual "+estatus);
+    var urlStatus = '/backend/estado/status';
+    _confirmar(
+    "#_mensaje-1"
+    ,"¿Est&aacute; seguro que quiere "+(estatus==1?"Deshabilitar":"Habilitar")+" el registro?"
+    ,function(){
+            $("#es_mensaje-1").removeClass("hide");
+            $("#texto_mensaje-1").addClass("hide");
+            $("#si-999").addClass('hide');
+            $("#no-999").addClass('hide');
+            $.ajax({
+                type: "POST",
+                url: urlStatus,
+                data: {
+                    id: id, status: estatus
+                },
+                success: function(respuesta)
+                {
+                    recargar();
+                    _mensaje("#_mensaje-1", respuesta);
+                },
+                error: function(respuesta){
+                    _mensaje("#_mensaje-1", "Ocurri&oacute; un error al tratar de eliminar el registro, int&eacute;ntelo de nuevo");
+                } //error
+            });
+        }
+    );
+}//function

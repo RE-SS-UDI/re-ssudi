@@ -16,9 +16,11 @@ $(document).ready(function() {
 		url: filtro,
 		dataType: "xml",
 		colModel: [
-            {display: "Nombre de encuesta",           name:"e.nombre",       width: 300, sortable: true, align: "center"},
-            {display: "Nombre de categoria",           name:"cat.nombre",       width: 260, sortable: true, align: "center"},
-            {display: "Zona",           name:"z.nombre",       width: 260, sortable: true, align: "center"},
+            {display: "Nombre de encuesta",           name:"e.nombre",       width: 170, sortable: true, align: "center"},
+            {display: "Nombre de categoria",           name:"cat.nombre",       width: 170, sortable: true, align: "center"},
+            {display: "Zona",           name:"z.nombre",       width: 150, sortable: true, align: "center"},
+            {display: "Estado",           name:"es.estado",       width: 150, sortable: true, align: "center"},
+            {display: "Tipo",           name:"tp.descripcion",       width: 150, sortable: true, align: "center"},
             {display: "Status", name:"ze.status", width: 150, sortable: true, align: "center"},
             {display: "Habilitar/Deshabilitar", name:"enable", value:"ze.id", width: 105, sortable: true, align: "center"},
             {display: "Remover", name:"remove", value:"ze.id", width: 105, sortable: true, align: "center"}
@@ -40,40 +42,7 @@ $(document).ready(function() {
 
 
 
-function cambiaZona(){
-	var filtro2 = '/backend/asigna-encuesta/grid';
 
-	if ($('#zona_id').val() != '') {
-		var zona = $('#zona_id').val();
-		var encuestas = '';
-//		$('#lista_encuestas input:checked').each(function(indice,elemento){
-//			console.log(indice);
-//			console.log(elemento.value);
-//	  		encuestas += elemento.value+',';
-//		});
-
-//		$('#encuestas_seleccionadas').val(encuestas);
-
-  		filtro2+="/zona_id/"+zona;
-//alert(filtro);
-  		//filtro+="/encuestas/"+encuestas;
-
-	    $("#flexigrid").flexOptions({
-			url: filtro2,
-	        onSuccess: function(){
-	        }
-
-		}).flexReload();
-	}else{
-	    $("#flexigrid").flexOptions({
-			url: filtro2,
-	        onSuccess: function(){
-	        }
-
-		}).flexReload();
-
-	}
-}
 
 function guardarAsignacion(formulario)
 {
@@ -170,3 +139,140 @@ function cambiaStatus(id, estatus)
         }
     );
 }//function
+
+function updateByZona(zona_id){
+	var filtro2 = '/backend/asigna-encuesta/grid';
+console.log(zona_id);
+			filtro2+="/zona_id/"+zona_id;
+
+		$("#flexigrid").flexOptions({
+			url: filtro2,
+			onSuccess: function(){
+			}
+
+		}).flexReload();
+	}
+
+function cambiaZona(){
+    var zona_id = $('#zona_id').val();
+    console.log("zona seleccionada: "+zona_id);
+    var zona = zona_id;
+    
+    updateByZona(zona);
+
+    
+	if (zona != '') {
+		$.ajax({
+			url: '/backend/asigna-encuesta/on-change-zona',
+			type: 'POST',
+			data: {zona: zona},
+			success: function(res){
+				console.log('zona cambiada');
+                var objJSON = eval("(function(){return " + res + ";})()");
+                // var response = $.parseJSON(res);
+                // console.log("sucess " + objJSON[0].nombre);
+            var tipo = $('#tipo_id');
+            tipo.empty();
+                for (var tipos in objJSON) {
+                    // console.log(objJSON[zona]['nombre']);
+                    tipo.append(
+                        $('<option>', {
+                        value: objJSON[tipos]['id']
+                        }).text(objJSON[tipos]['descripcion'])
+                    );
+                    // $('#zona_id').append('<option value=' + objJSON[zona]['id'] + '>' + objJSON[zona]['nombre'] + '</option>');
+                }
+            }
+		});
+	}
+
+	// var filtro2 = '/backend/asigna-encuesta/grid';
+	// if ($('#zona_id').val() != '') {
+	// 	var zona = $('#zona_id').val();
+	// 	var encuestas = '';
+
+  		// filtro2+="/zona_id/"+zona;
+
+	//     $("#flexigrid").flexOptions({
+	// 		url: filtro2,
+	//         onSuccess: function(){
+	//         }
+
+	// 	}).flexReload();
+	// }else{
+	//     $("#flexigrid").flexOptions({
+	// 		url: filtro2,
+	//         onSuccess: function(){
+	//         }
+
+	// 	}).flexReload();
+
+	// }
+}
+
+
+function cambiaCategoria(categoria_id) {
+	console.log("caregoria seleccionada: "+categoria_id.value);
+	var categoria = categoria_id.value;
+	
+	// updateByEstado(categoria);
+
+	if (categoria != '') {
+		$.ajax({
+			url: '/backend/asigna-encuesta/on-change-categoria',
+			type: 'POST',
+			data: {categoria: categoria},
+			success: function(res){
+				console.log('categoria cambiada');
+                var objJSON = eval("(function(){return " + res + ";})()");
+                // var response = $.parseJSON(res);
+                // console.log("sucess " + objJSON[0].nombre);
+            var encuestas = $('#encuesta_id');
+            encuestas.empty();
+                for (var encuesta in objJSON) {
+                    // console.log(objJSON[zona]['nombre']);
+                    encuestas.append(
+                        $('<option>', {
+                        value: objJSON[encuesta]['id']
+                        }).text(objJSON[encuesta]['nombre'])
+                    );
+                    // $('#zona_id').append('<option value=' + objJSON[zona]['id'] + '>' + objJSON[zona]['nombre'] + '</option>');
+                }
+            }
+		});
+	}
+}
+
+function cambiaEstado(estado_id) {
+	console.log("estado seleccionado: "+estado_id.value);
+	var estado = estado_id.value;
+	
+	// updateByEstado(categoria);
+
+	if (estado != '') {
+		$.ajax({
+			url: '/backend/asigna-encuesta/on-change-estado',
+			type: 'POST',
+			data: {estado: estado},
+			success: function(res){
+				console.log('estado cambiado');
+                var objJSON = eval("(function(){return " + res + ";})()");
+                // var response = $.parseJSON(res);
+                // console.log("sucess " + objJSON[0].nombre);
+            var zona = $('#zona_id');
+            zona.empty();
+            var tipo = $('#tipo_id');
+            tipo.empty();
+                for (var zonas in objJSON) {
+                    // console.log(objJSON[zona]['nombre']);
+                    zona.append(
+                        $('<option>', {
+                        value: objJSON[zonas]['id']
+                        }).text(objJSON[zonas]['nombre'])
+                    );
+                    // $('#zona_id').append('<option value=' + objJSON[zona]['id'] + '>' + objJSON[zona]['nombre'] + '</option>');
+                }
+            }
+		});
+	}
+}

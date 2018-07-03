@@ -103,3 +103,65 @@ function guardarPreRegistro(formulario)
     $("#"+formulario).submit();     
 }
 
+
+function onChangeEstado(estado_id)
+{
+	console.log("estado seleccionado: "+estado_id.value);
+    var estado = estado_id.value;
+
+	if (estado != '') {
+		$.ajax({
+			url: '/index/pre-register-onchange-estado',
+			type: 'POST',
+			data: {estado: estado},
+			success: function(res){
+                var objJSON = eval("(function(){return " + res + ";})()");
+                // var response = $.parseJSON(res);
+                // console.log("sucess " + objJSON[0].nombre);
+            var zonas = $('#zona_id');
+            zonas.empty();
+            var tipo = $('#tipo_id');
+            tipo.empty();
+                for (var zona in objJSON) {
+                    console.log(objJSON[zona]['nombre']);
+                    zonas.append(
+                        $('<option>', {
+                        value: objJSON[zona]['id']
+                        }).text(objJSON[zona]['nombre'])
+                    );
+                    // $('#zona_id').append('<option value=' + objJSON[zona]['id'] + '>' + objJSON[zona]['nombre'] + '</option>');
+                }
+            }
+		});
+	}
+}
+
+function onChangeZona(zona_id)
+{
+	console.log("zona seleccionada: "+zona_id.value);
+    var zona = zona_id.value;
+
+	if (zona != '') {
+		$.ajax({
+			url: '/index/pre-register-onchange-zona',
+			type: 'POST',
+			data: {zona: zona},
+			success: function(res){
+                var objJSON = eval("(function(){return " + res + ";})()");
+                // var response = $.parseJSON(res);
+                // console.log("sucess " + objJSON[0].nombre);
+            var tipo = $('#tipo_id');
+            tipo.empty();
+                for (var tipo in objJSON) {
+                    console.log(objJSON[tipo]['descripcion']);
+                    // tipo.append(
+                    //     $('<option>', {
+                    //     value: objJSON[tipo]['id']
+                    //     }).text(objJSON[tipo]['descripcion'])
+                    // );
+                    $('#tipo_id').append('<option value=' + objJSON[tipo]['id'] + '>' + objJSON[tipo]['descripcion'] + '</option>');
+                }
+            }
+		});
+	}
+}

@@ -9,8 +9,8 @@ class Backend_ContestaEncuestaController extends Zend_Controller_Action{
     public function indexAction(){
 //        $this->view->puedeObtenerTodos=strpos($sess->cliente->permisos,"PERMISOS_CONTESTA_ENCUESTA")!==false;
         // $this->view->encuestas = ContestaEncuesta::obtieneEncuestasUsuario(Zend_Auth::getInstance()->getIdentity()->id);
-        $this->view->encuestas = ContestaEncuesta::obtieneEncuestasUsuarioZona(Zend_Auth::getInstance()->getIdentity()->id);
-        $this->view->zonasName = ContestaEncuesta::obtieneZona_UsuarioZona(Zend_Auth::getInstance()->getIdentity()->id);
+        $this->view->encuestas = ContestaEncuesta::obtieneEncuestasUsuarioZona(Zend_Auth::getInstance()->getIdentity()->persona_id);
+        $this->view->zonasName = ContestaEncuesta::obtieneZona_UsuarioZona(Zend_Auth::getInstance()->getIdentity()->persona_id);
 
 //        print_r($this->view->encuestas);
 //        exit;
@@ -102,8 +102,8 @@ class Backend_ContestaEncuestaController extends Zend_Controller_Action{
     {
         $sess=new Zend_Session_Namespace('permisos');
         $this->view->puedeObtenerTodos=strpos($sess->cliente->permisos,"PERMISOS_CONTESTA_ENCUESTA")!==false;
-        $this->view->encuestas = ContestaEncuesta::obtieneEncuestasUsuarioZona(Zend_Auth::getInstance()->getIdentity()->id);
-        $this->view->zonasName = ContestaEncuesta::obtieneZona_UsuarioZona(Zend_Auth::getInstance()->getIdentity()->id);
+        $this->view->encuestas = ContestaEncuesta::obtieneEncuestasUsuarioZona(Zend_Auth::getInstance()->getIdentity()->persona_id);
+        $this->view->zonasName = ContestaEncuesta::obtieneZona_UsuarioZona(Zend_Auth::getInstance()->getIdentity()->persona_id);
 
         // $this->view->encuestas = ContestaEncuesta::obtieneEncuestasUsuario(Zend_Auth::getInstance()->getIdentity()->id);
     }
@@ -124,7 +124,7 @@ class Backend_ContestaEncuestaController extends Zend_Controller_Action{
         
         // $encuestas = ContestaEncuesta::obtieneEncuestasUsuarioZona(Zend_Auth::getInstance()->getIdentity()->id);
 
-        $encuestas = ContestaEncuesta::obtieneEncuestasUsuario(Zend_Auth::getInstance()->getIdentity()->id);
+        $encuestas = ContestaEncuesta::obtieneEncuestasUsuario(Zend_Auth::getInstance()->getIdentity()->persona_id);
 //        $registros=  My_Comun::obtenerFiltro("Usuario", $filtro, "nombre ASC");
 
         ini_set("memory_limit", "130M");

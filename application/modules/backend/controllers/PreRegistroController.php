@@ -10,7 +10,11 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
 
         // usuario_id Zend_Auth::getInstance()->getIdentity()->id
         // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', ' WHERE status = 1 ', ' nombre asc');
-        $this->view->zonas = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->id);
+        $this->view->zonas = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+        // $this->view->tipos = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->id);
+        // $this->view->empesas = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->id);
+
+        $this->view->estados = Usuario::obtieneestadosZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
 
     	$sess=new Zend_Session_Namespace('permisos');
     	///$this->view->puedeAgregar=strpos($sess->cliente->permisos,"AGREGAR_PRE_REGISTRO")!==false;
@@ -32,8 +36,8 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
             // $filtro .= " AND pr.zona_id = ".$zona->id." ";
         // }
 
-        $z = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->id);
-        $k = $z[0]->zona_id ;
+        $z = Usuario::obtieneestadosZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+        $k = $z[0]->estadoId;
         
         // foreach ($z as $zoni) {
         //     $k = $zoni->zona_id ;
@@ -44,6 +48,8 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
         $paterno=$this->_getParam('paterno');
         $status=$this->_getParam('status');
         $zona=$this->_getParam('zona_id');
+        $estado=$this->_getParam('estado_id');
+        $tipo=$this->_getParam('tipo_id');
         
         
         if($this->_getParam('status')!="")
@@ -63,14 +69,22 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
         }
         if($zona!='')
         {
-            $filtro.=" AND (tp.zona_id = '".$zona."') ";
+            $filtro.=" AND (pr.zona_id = '".$zona."') ";
+        }
+        if($tipo!='')
+        {
+            $filtro.=" AND (pr.tipo_id = '".$tipo."') ";
+        }
+        if($estado!='')
+        {
+            $filtro.=" AND (pr.estado_id = '".$estado."') ";
         }else{
-            $filtro.=" AND (tp.zona_id = '".$k."') ";
+            $filtro.=" AND (pr.estado_id = '".$k."') ";
         }
 
         $consulta = "SELECT pr.id, pr.nombre, pr.apellido_pat, pr.apellido_mat, pr.correo, pr.telefono, pr.status, z.nombre as zNombre, es.estado
                       FROM pre_registro pr
-                      JOIN tipo_preregistro tp
+                      JOIN tipo_persona tp
                       ON tp.id = pr.tipo_id
                       JOIN estados es
                       ON es.id_estado = pr.estado_id
@@ -152,7 +166,7 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
 
             // $this->view->empresas = My_Comun::obtenerFiltroSQLEmpresaZonas($this->view->zonasUser);
             $regi = My_Comun::obtenerSQL("pre_registro", "id", $_POST["id"]);
-            $tp = My_Comun::obtenerSQL("tipo_preregistro", "id", $regi->tipo_id);
+            $tp = My_Comun::obtenerSQL("tipo_persona", "id", $regi->tipo_id);
             $this->view->empresas = My_Comun::obtenerFiltroSQLEmpresa($tp->zona_id);
             
         // }  
@@ -279,5 +293,41 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
         return $pass;
 
     }
+
+    public function onChangeEstadoAction(){
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(TRUE);
+        // $estado = $_POST["estado"];
+  
+        $estado=$this->_getParam('estado');
+        $filtro = "WHERE status = 1";
+          
+        if($estado!='')
+        {
+            $filtro.=" AND (estado_id = $estado) ";
+        }
+        // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        $zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        echo json_encode($zonas);
+    }
+
+    public function onChangeZonaAction(){
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(TRUE);
+        // $estado = $_POST["estado"];
+  
+        $zona=$this->_getParam('zona');
+        $filtro = "WHERE status = 1";
+          
+        if($zona!='')
+        {
+            $filtro.=" AND (zona_id = $zona) ";
+        }
+        // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        $tipo_Pregistro = My_Comun::obtenerFiltroSQL('tipo_persona',$filtro, ' descripcion asc');
+        echo json_encode($tipo_Pregistro);
+    }
+
+
 }//class
 ?>
