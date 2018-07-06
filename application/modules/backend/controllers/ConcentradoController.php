@@ -12,13 +12,13 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
 
         $idPer = Zend_Auth::getInstance()->getIdentity()->persona_id;
         $this->view->zonaUser = My_Comun::obtenerZonas($idPer);
-        $this->view->tipoUser = My_Comun::obtenertipoUSer($idPer);
+        $this->view->tipoUser = My_Comun::obtenertipoUSer(Zend_Auth::getInstance()->getIdentity()->id);
 
         $this->view->encu = My_Comun::obtenerFiltroSQL('encuesta', 'where status = 1', 'nombre asc');
         // $this->view->cate = My_Comun::obtenerFiltroSQL('categoria', 'where status = 1', 'nombre asc');
 
 
-        $this->view->zonasName = ContestaEncuesta::obtieneZona_UsuarioZona(Zend_Auth::getInstance()->getIdentity()->id);
+        $this->view->zonasName = ContestaEncuesta::obtieneZona_UsuarioZona(Zend_Auth::getInstance()->getIdentity()->persona_id);
 
 
         //Verificamos el tipo d usurio

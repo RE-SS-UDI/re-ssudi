@@ -29,7 +29,6 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
         
         $filtro=" 1=1 ";
 
-
         //Verificamos el tipo d usurio
         // if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario != 3){
             // $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->id);

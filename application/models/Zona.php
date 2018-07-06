@@ -6,7 +6,7 @@
 class Zona
 {
 	
-	public static function obtieneZonaUsuario($usuario_id){
+	public static function obtieneZonaUsuario($persona_id){
         $conec = new Conexion;
         $conexion = $conec->abreConexion();
 
@@ -16,7 +16,7 @@ class Zona
 				  ON z.id = e.zona_id
 				  JOIN persona p
 				  ON e.id = p.empresa_id
-				  WHERE p.id = ".$usuario_id."
+				  WHERE p.id = ".$persona_id."
 				";
 
         $stmt = sqlsrv_query( $conexion, $sql);

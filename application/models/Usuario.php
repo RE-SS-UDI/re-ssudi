@@ -84,13 +84,11 @@ class Usuario{
     {
         $conec = new Conexion;
         $conexion = $conec->abreConexion();
-        $sql = "  SELECT z.id, z.zona_id, zo.nombre as znombre
-                FROM usuario u
-                INNER JOIN persona_zona z
-                on z.persona_id = u.persona_id
+        $sql = "SELECT z.id, z.zona_id, zo.nombre as znombre
+                FROM persona_zona z
                 INNER JOIN zona zo
                 on zo.id = z.zona_id
-                WHERE u.persona_id = ".$persona_id." AND zo.status = 1 order by zo.nombre asc";
+                WHERE z.persona_id = ".$persona_id." AND zo.status = 1 order by zo.nombre asc";
          $stmt = sqlsrv_query( $conexion, $sql);
          $datos = array();
          while( $obj = sqlsrv_fetch_object($stmt)) {
@@ -106,14 +104,12 @@ class Usuario{
         $conexion = $conec->abreConexion();
         // $sql = "  SELECT z.id, z.zona_id, zo.nombre as znombre, es.estado, es.id_estado as estadoId
         $sql = "SELECT DISTINCT es.estado, es.id_estado as estadoId
-                FROM usuario u
-                INNER JOIN persona_zona z
-                on z.persona_id = u.persona_id
+                FROM persona_zona z
                 INNER JOIN zona zo
                 on zo.id = z.zona_id
                 INNER JOIN estados es
                 on es.id_estado = zo.estado_id
-                WHERE u.persona_id = ".$persona_id." AND zo.status = 1 order by es.estado asc";
+                WHERE z.persona_id = ".$persona_id." AND zo.status = 1 order by es.estado asc";
          $stmt = sqlsrv_query( $conexion, $sql);
          $datos = array();
          while( $obj = sqlsrv_fetch_object($stmt)) {

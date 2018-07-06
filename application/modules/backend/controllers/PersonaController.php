@@ -11,8 +11,9 @@ class Backend_PersonaController extends Zend_Controller_Action{
     	$sess=new Zend_Session_Namespace('permisos');
         $this->view->puedeAgregar=strpos($sess->cliente->permisos,"AGREGAR_PERSONA")!==false;
         
-        $idPer = Zend_Auth::getInstance()->getIdentity()->persona_id;
-        echo '<script>console.log("PErsona id:'. $idPer.'");</script>';
+        $this->view->zonas = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+        $this->view->estados = Usuario::obtieneestadosZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+
 
     }//function
 
@@ -35,6 +36,9 @@ class Backend_PersonaController extends Zend_Controller_Action{
         $paterno=$this->_getParam('paterno');
         $materno=$this->_getParam('materno');
         $status=$this->_getParam('status');
+        $zona=$this->_getParam('zona_id');
+        $estado=$this->_getParam('estado_id');
+        $tipo=$this->_getParam('tipo_id');
         
         
         if($this->_getParam('status')!="")
@@ -73,11 +77,26 @@ class Backend_PersonaController extends Zend_Controller_Action{
             }//for
         }//if
 
+        if($zona!='')
+        {
+            $filtro.=" AND (pz.zona_id = '".$zona."') ";
+        }
+        if($tipo!='')
+        {
+            $filtro.=" AND (pr.tipo_id = '".$tipo."') ";
+        }
+        // if($estado!='')
+        // {
+        //     $filtro.=" AND (pr.estado_id = '".$estado."') ";
+        // }else{
+        //     $filtro.=" AND (pr.estado_id = '".$k."') ";
+        // }
+
 
 
         $consulta = "SELECT p.id, p.nombre, p.apellido_pat, p.apellido_mat, p.correo, p.telefono, p.status
                       FROM persona p
-                      JOIN empresa e
+                      Inner JOIN empresa e
                       ON e.id = p.empresa_id
                       WHERE ".$filtro;
 
@@ -168,12 +187,13 @@ class Backend_PersonaController extends Zend_Controller_Action{
         $this->_helper->layout->disableLayout();
         $this->view->llave = My_Comun::aleatorio(20);
 
+
         $this->view->tipos = My_Comun::obtenerFiltroSQL('tipo_usuario', ' WHERE status = 1 ', ' descripcion asc');
         $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', ' WHERE status = 1 ', ' nombre asc');
         
 
 		
-        $idPer = Zend_Auth::getInstance()->getIdentity()->id;
+        $idPer = Zend_Auth::getInstance()->getIdentity()->persona_id;
 
         $this->view->tipoUser = My_Comun::obtenertipoUSer($idPer);
         $this->view->zonaUser = My_Comun::obtenerZonas($idPer);
@@ -181,17 +201,17 @@ class Backend_PersonaController extends Zend_Controller_Action{
         
 
         if($this->view->tipoUser[0]->tipo_usuario == 3){
-
+            $this->view->empresas = My_Comun::obtenerFiltroSQLEmpresaRoot();
             $this->view->tipos = My_Comun::obtenerFiltroSQL('tipo_usuario', ' WHERE status = 1 ', ' descripcion asc');
         }else {
-
+            $this->view->empresas = My_Comun::obtenerFiltroSQLEmpresa($this->view->zonaUser[0]->id);
             $this->view->tipos = My_Comun::obtenerFiltroSQL('tipo_usuario', ' WHERE id = 5 or id = 6  ', ' descripcion asc');
         } 
 
 
 
         if($_POST["id"]!="0"){
-            $this->view->registro=My_Comun::obtenerSQL("usuario", "id", $_POST["id"]);
+            $this->view->registro=My_Comun::obtenerSQL("persona", "id", $_POST["id"]);
 
 
             $this->view->personas = My_Comun::obtenerSQL("persona", "id", $this->view->registro->persona_id);
@@ -402,6 +422,42 @@ class Backend_PersonaController extends Zend_Controller_Action{
             $this->view->bandera = false;
         }
     }//function
+
+
+    public function onChangeEstadoAction(){
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(TRUE);
+        // $estado = $_POST["estado"];
+  
+        $estado=$this->_getParam('estado');
+        $filtro = "WHERE status = 1";
+          
+        if($estado!='')
+        {
+            $filtro.=" AND (estado_id = $estado) ";
+        }
+        // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        $zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        echo json_encode($zonas);
+    }
+
+    
+    public function onChangeZonaAction(){
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(TRUE);
+        // $estado = $_POST["estado"];
+  
+        $zona=$this->_getParam('zona');
+        $filtro = "WHERE status = 1";
+          
+        if($zona!='')
+        {
+            $filtro.=" AND (zona_id = $zona) ";
+        }
+        // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        $tipo_Pregistro = My_Comun::obtenerFiltroSQL('tipo_persona',$filtro, ' descripcion asc');
+        echo json_encode($tipo_Pregistro);
+    }
 
 
 }//class

@@ -24,7 +24,7 @@ $(document).ready(function(){
 		colModel: [
 			{display: "Nombre",           name:"p.nombre",       width: 200, sortable: true, align: "center"},
 			{display: "Apellido paterno",name:"p.apellido_pat",       width: 150, sortable: true, align: "center"},			
-			{display: 'Apellido materno',         name:"p.apellido_mat",     width: 150, sortable : false, align: 'center'},
+			{display: 'Apellido materno',         name:"p.apellido_mat",     width: 150, sortable : true, align: 'center'},
 			{display: 'Correo',         name:"p.correo",     width: 240, sortable : false, align: 'center'},
 //			{display: 'Tel&eacute;fono',         name:"p.telefono",     width: 160, sortable : false, align: 'center'},
 			{display: 'Estatus',           name:"p.status",       width: 100, sortable : false, align: 'center'},
@@ -148,5 +148,71 @@ function eliminarOpcionesAgregadas(id)
 			} 
 		}
 	});
+}
+
+function cambiaEstado(estado_id) {
+	console.log("estado seleccionado: "+estado_id.value);
+	var estado = estado_id.value;
 	
+	// updateByEstado(estado);
+
+	if (estado != '') {
+		$.ajax({
+			url: '/backend/persona/on-change-estado',
+			type: 'POST',
+			data: {estado: estado},
+			success: function(res){
+				console.log('estado cambiado');
+                var objJSON = eval("(function(){return " + res + ";})()");
+                // var response = $.parseJSON(res);
+                // console.log("sucess " + objJSON[0].nombre);
+            var zonas = $('#zona_idS');
+            zonas.empty();
+            var tipo = $('#tipo_idS');
+            tipo.empty();
+                for (var zona in objJSON) {
+                    console.log(objJSON[zona]['nombre']);
+                    zonas.append(
+                        $('<option>', {
+                        value: objJSON[zona]['id']
+                        }).text(objJSON[zona]['nombre'])
+                    );
+                    // $('#zona_id').append('<option value=' + objJSON[zona]['id'] + '>' + objJSON[zona]['nombre'] + '</option>');
+                }
+            }
+		});
+	}
+}
+
+function cambiaZona(zona_id){
+
+	var zona = zona_id.value;
+	console.log("zona slelected: "+zona);
+		var estado = $('#estado_idS').val();
+		console.log("estado pre-seleccionado: "+estado);
+		//  updateByEstadoZona(estado,zona);
+
+if (zona != '') {
+		$.ajax({
+			url: '/backend/pre-registro/on-change-zona',
+			type: 'POST',
+			data: {zona: zona},
+			success: function(res){
+                var objJSON = eval("(function(){return " + res + ";})()");
+                // var response = $.parseJSON(res);
+                // console.log("sucess " + objJSON[0].nombre);
+            var tipo = $('#tipo_idS');
+            tipo.empty();
+                for (var tipo in objJSON) {
+                    console.log("de "+objJSON[tipo]['descripcion']);
+                    // tipo.append(
+                    //     $('<option>', {
+                    //     value: objJSON[tipo]['id']
+                    //     }).text(objJSON[tipo]['descripcion'])
+                    // );
+                     $('#tipo_idS').append('<option value=' + objJSON[tipo]['id'] + '>' + objJSON[tipo]['descripcion'] + '</option>');
+                }
+            }
+		});
+	}
 }
