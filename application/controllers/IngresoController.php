@@ -50,36 +50,30 @@ class IngresoController extends Zend_Controller_Action
         $persona = My_Comun::obtenerSQL('persona', 'correo', $_POST['correo_electronico'], ' and status = 1');
         $usuario = My_Comun::obtenerSQL('usuario', 'persona_id', $persona->id, ' and status = 1');
 
-        echo("<script>console.log('PHP: persona id: ".$persona->id."');</script>");
+        // echo("<script>console.log('PHP: persona id: ".$persona->id."');</script>");
 
 
         $titulo = "Ressudi UTJ";
         $cuerpo = "
             Hola ".$persona->nombre.",
 
-            <p>El modelo del navegador de Skandia plantea que el valor de mercado de una compañía  viene determinado por un capital financiero y unos valores ocultos que, en su conjunto, se denominan capital intelectual.</p>
-
-            <p>A partir de esta consideración se proponen la manera de medirlo, teniendo en cuenta que cualquier valoración  que se haga no solo debe contener indicadores pertinentes sino también presentar esas medidas en una forma que sea fácilmente inteligible, aplicable y comparable con otras empresas. Además de llevar en conjunto a producir un significado comprensible de la capacidad futura y sostenible de producir beneficios. Así como detectar cualquier excitación de la empresa, agotamiento, tensión, debilidad y enfermedad.</p>
-
-            <p>Para lo que se le solicita, de la manera más atenta, responder las encuestas que se encuentran en el sistema, con el usuario y contraseña de acceso que a continuación se le proporcionan.</p>
-            <br><br>
- 
-
             <p><strong>Sistema Administrativo RESSUDI</strong></p>
-
- 
 
             <a href=\"http://ca02.utj.edu.mx/\">http://ca02.utj.edu.mx/</a>
 
             <br />
+
+            <p>A continuacion, usuario y contrase&ntilde;a:</p>
+
+            
             <strong>Usuario:</strong>&nbsp;".$usuario->usuario."
             <br />
             <strong> Contrase&ntilde;a:</strong>&nbsp;".$usuario->contrasena."
         ";
 
-        echo("<script>console.log('PHP: usuario contra: ".$usuario->contrasena."');</script>");
-        echo("<script>console.log('PHP: usuario user: ".$usuario->usuario."');</script>");
-        echo("<script>console.log('PHP: usuario user: ".$persona->correo."');</script>");
+        // echo("<script>console.log('PHP: usuario contra: ".$usuario->contrasena."');</script>");
+        // echo("<script>console.log('PHP: usuario user: ".$usuario->usuario."');</script>");
+        // echo("<script>console.log('PHP: usuario correo: ".$persona->correo."');</script>");
         
         echo My_Comun::envioCorreo($titulo, $cuerpo,'ressudi.utj@gmail.com','Sinergia', $persona->correo, $persona->nombre);
 

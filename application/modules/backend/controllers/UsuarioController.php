@@ -10,7 +10,10 @@ class backend_UsuarioController extends Zend_Controller_Action{
       
     	$sess=new Zend_Session_Namespace('permisos');
         print_r($sess->permisos);
-    	$this->view->puedeAgregar=strpos($sess->cliente->permisos,"AGREGAR_USUARIO")!==false;
+        $this->view->puedeAgregar=strpos($sess->cliente->permisos,"AGREGAR_USUARIO")!==false;
+        // $this->view->zonas = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+        $this->view->estados = Usuario::obtieneestadosZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+
 
     }//function
 
@@ -25,6 +28,9 @@ class backend_UsuarioController extends Zend_Controller_Action{
 
         $nombre=$this->_getParam('nombre');
         $status=$this->_getParam('status');
+        $estado=$this->_getParam('estado_id');
+        $zona=$this->_getParam('zona_id');
+        $zona=$this->_getParam('tipo_id');
 
         if($this->_getParam('status')!="")			
             $filtro.=" AND u.status=".$this->_getParam('status');
@@ -40,9 +46,22 @@ class backend_UsuarioController extends Zend_Controller_Action{
             }//for
         }//if
         //Verificamos el tipo d usurio
-        if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario != 3){
-            $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->persona_id);
-            $filtro .= " AND e.zona_id = ".$zona->id." ";
+        // if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario != 3){
+        //     $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+        //     $filtro .= " AND e.zona_id = ".$zona->id." ";
+        // }
+
+        if($estado!='')
+        {
+            $filtro.=" AND (z.estado_id = '".$estado."') ";
+        }
+        if($zona!='')
+        {
+            $filtro.=" AND (e.zona_id = '".$zona."') ";
+        }
+        if($tipo!='')
+        {
+            $filtro.=" AND (p.tipo_id = '".$tipo."') ";
         }
         
         $consulta = "SELECT u.id,u.status,p.nombre,p.apellido_pat, p.apellido_mat, u.usuario, u.tipo_usuario, tu.descripcion, z.nombre as zona, e.nombre as empresa
@@ -72,8 +91,9 @@ class backend_UsuarioController extends Zend_Controller_Action{
                 $grid[$i]['nombre']=$registros['registros'][$k]->nombre.' '.$registros['registros'][$k]->apellido_pat.' '.$registros['registros'][$k]->apellido_mat;
 //                $grid[$i]['usuario']=$registros['registros'][$k]->usuario;
                 $grid[$i]['tipo']=$registros['registros'][$k]->descripcion;
-                $grid[$i]['zona']=$registros['registros'][$k]->zona;
-                $grid[$i]['empresa']=$registros['registros'][$k]->empresa;
+                // $grid[$i]['zona']=$registros['registros'][$k]->zona;
+                // $grid[$i]['empresa']=$registros['registros'][$k]->empresa;
+                $grid[$i]['enviar'] = '<span onclick="reSendCredentials('.$registros['registros'][$k]->id.');" title="Usuario/contrasena"><i class="boton fa fa-envelope-o fa-lg azul"></i></span>';
 
             if($registros['registros'][$k]->status == 0)
             {
@@ -144,7 +164,7 @@ class backend_UsuarioController extends Zend_Controller_Action{
         $this->view->zonaUser = My_Comun::obtenerZonas($idPer);
 
 
-        if($this->view->tipoUser[0]->tipo_usuario == 3){
+        if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario == 3){
 
             $this->view->tipos = My_Comun::obtenerFiltroSQL('tipo_usuario', ' WHERE status = 1 ', ' descripcion asc');
         }else {
@@ -392,13 +412,13 @@ class backend_UsuarioController extends Zend_Controller_Action{
           
         $nombre= $this->_getParam('nombre');
        
-        $filtro=" 1=1 ";
+        $filtro=" WHERE 1=1 ";
         $i=6;
         $data = array();
         
         
         if($this->_getParam('status')!=""){         
-            $filtro.=" AND status='".str_replace("'","�",$this->_getParam('status'))."' ";
+            $filtro.=" AND u.status='".str_replace("'","�",$this->_getParam('status'))."' ";
             if($this->_getParam('status') == 0){
                 $data[] = array("A$i" =>"Estatus:","B$i" => "Deshabilitado"); 
             }else{
@@ -414,14 +434,17 @@ class backend_UsuarioController extends Zend_Controller_Action{
             for($j=0; $j<=$nombre[$j]; $j++){
                 $nombre[$j]=trim(str_replace(array("'","\"",),array("�","�"),$nombre[$j]));
                 if($nombre[$j]!=""){
-                    $filtro.=" AND ( nombre LIKE '%".$nombre[$j]."%'  ) ";
+                    $filtro.=" AND ( p.nombre LIKE '%".$nombre[$j]."%'  ) ";
                 }
             }  
         }
 
        
         $i++;
-        $registros=  My_Comun::obtenerFiltro("Usuario", $filtro, "nombre ASC");
+        // $registros=  My_Comun::obtenerFiltro("Usuario", $filtro, "nombre ASC");
+        $registros = My_Comun::obtenerFiltroSQLPersonaUsuario($filtro);
+         // encode response to json format
+         $result = json_decode($registros, true);
 
         ini_set("memory_limit", "130M");
         ini_set('max_execution_time', 0);
@@ -461,8 +484,8 @@ class backend_UsuarioController extends Zend_Controller_Action{
             $i++;
             $data[] = array(                
                     "A$i" =>$registro->id,
-                    "B$i" =>utf8_encode($registro->nombre),
-                    "C$i" =>$registro->correo_electronico,
+                    "B$i" =>utf8_encode($registro->nombreP),
+                    "C$i" =>$registro->correoP,
                      "D$i" =>$a
                     );
         }       
@@ -475,10 +498,10 @@ class backend_UsuarioController extends Zend_Controller_Action{
           
         $nombre= $this->_getParam('nombre');
        
-        $filtro=" 1=1 ";
+        $filtro=" WHERE 1=1 ";
 
         if($this->_getParam('status')!=""){         
-            $filtro.=" AND status='".str_replace("'","�",$this->_getParam('status'))."' ";
+            $filtro.=" AND u.status='".str_replace("'","�",$this->_getParam('status'))."' ";
             if($this->_getParam('status') == 0){
                 $data[] = array("A$i" =>"Estatus:","B$i" => "Deshabilitado"); 
             }else{
@@ -494,14 +517,18 @@ class backend_UsuarioController extends Zend_Controller_Action{
             for($j=0; $j<=$nombre[$j]; $j++){
                 $nombre[$j]=trim(str_replace(array("'","\"",),array("�","�"),$nombre[$j]));
                 if($nombre[$j]!=""){
-                    $filtro.=" AND ( nombre LIKE '%".$nombre[$j]."%'  ) ";
+                    $filtro.=" AND ( p.nombre LIKE '%".$nombre[$j]."%'  ) ";
                 }
             }  
         }
         
         
 
-        $registros = My_Comun::obtenerFiltroSQL("usuario", $filtro);
+        // $registros = My_Comun::obtenerFiltroSQL("usuario", $filtro);
+        // $registros = My_Comun::obtenerFiltroSQL("usuario"); 
+        $registros = My_Comun::obtenerFiltroSQLPersonaUsuario($filtro);
+        // encode response to json format
+        $result = json_decode($registros, true);
        
         $pdf= new My_Fpdf_Pdf();
         
@@ -513,12 +540,24 @@ class backend_UsuarioController extends Zend_Controller_Action{
         $pdf->SetFont('Arial','B',11);
         $pdf->SetWidths(array(35,55,55,40));
         $pdf->Row(array('NO. DE USUARIO','NOMBRE','CORREO','ESTATUS'),0,1);
+        if (empty($registros)){
+            $pdf->Row(array('0','0','0','0'),0,1);
+        }
+
+        foreach($user as $mydata)
+        {
+            echo $mydata->name . "\n";
+            foreach($mydata->values as $values)
+            {
+                echo $values->value . "\n";
+            }
+        }   
         
         $pdf->SetFont('Arial','',10);
         foreach($registros as $registro)
         {
             $estatus = '';
-            switch($registro['status']){
+                switch($registro->status){
                 case 0: $estatus = 'Inhabilitado'; break;
                 case 1: $estatus = 'Habilitado'; break;
             }
@@ -527,7 +566,7 @@ class backend_UsuarioController extends Zend_Controller_Action{
             (
                 array
                 (                    
-                    $registro->id, utf8_encode($registro->nombre), $registro->correo_electronico, $estatus
+                    $registro->id, utf8_encode($registro->nombreP), $registro->correoP, $estatus
                 ),0,1           
             );
         }
@@ -535,7 +574,82 @@ class backend_UsuarioController extends Zend_Controller_Action{
        $pdf->Output();
     }
 
+    public function recuperarAction(){
 
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(TRUE);
+
+        $usuario_id=$this->_getParam('usuario');
+        // $usuario_id = $_POST['usuario'];
+        
+        $usuario = My_Comun::obtenerSQL('usuario', 'id', $usuario_id, ' and status = 1');
+        $persona = My_Comun::obtenerSQL('persona', 'id', $usuario->persona_id, ' and status = 1');
+
+
+        // echo("<script>console.log('PHP: persona id: ".$persona->id."');</script>");
+
+
+        $titulo = "Ressudi UTJ ";
+        $cuerpo = "
+            Hola ".$persona->nombre.",
+
+            <p><strong>Sistema Administrativo RESSUDI</strong></p>
+
+            <a href=\"http://ca02.utj.edu.mx/\">http://ca02.utj.edu.mx/</a>
+
+            <br />
+
+            <p>A continuacion, usuario y contrase&ntilde;a:</p>
+
+            
+            <strong>Usuario:</strong>&nbsp;".$usuario->usuario."
+            <br />
+            <strong> Contrase&ntilde;a:</strong>&nbsp;".$usuario->contrasena."
+        ";
+
+        // echo("<script>console.log('PHP: usuario contra: ".$usuario->contrasena."');</script>");
+        // echo("<script>console.log('PHP: usuario user: ".$usuario->usuario."');</script>");
+        // echo("<script>console.log('PHP: usuario correo: ".$persona->correo."');</script>");
+        
+        echo My_Comun::envioCorreo($titulo, $cuerpo,'ressudi.utj@gmail.com','Sinergia', $persona->correo, $persona->nombre);
+
+        // echo My_Comun::envioCorreo($titulo, $cuerpo,'ressudi@utj.edu.mx','Sinergia', $usuario->correo, $persona->nombre);
+    }
+
+
+    public function onChangeEstadoAction(){
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(TRUE);
+        // $estado = $_POST["estado"];
+  
+        $estado=$this->_getParam('estado');
+        $filtro = "WHERE status = 1";
+          
+        if($estado!='')
+        {
+            $filtro.=" AND (estado_id = $estado) ";
+        }
+        // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        $zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        echo json_encode($zonas);
+    }
+
+    public function onChangeZonaAction(){
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(TRUE);
+        // $estado = $_POST["estado"];
+  
+        $zona=$this->_getParam('zona');
+        $filtro = "WHERE status = 1";
+          
+        if($zona!='')
+        {
+            $filtro.=" AND (zona_id = $zona) ";
+        }
+        // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        $zonas = My_Comun::obtenerFiltroSQL('tipo_persona', $filtro, ' descripcion asc');
+        echo json_encode($zonas);
+    }
 
 
 }//class

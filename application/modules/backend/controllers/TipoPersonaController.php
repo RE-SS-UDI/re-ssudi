@@ -11,6 +11,7 @@ class Backend_TipoPersonaController extends Zend_Controller_Action{
         // usuario_id Zend_Auth::getInstance()->getIdentity()->id
         // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', ' WHERE status = 1 ', ' nombre asc');
         $this->view->zonas = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+        $this->view->estados = Usuario::obtieneestadosZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
 
     	$sess=new Zend_Session_Namespace('permisos');
         $this->view->puedeAgregar=strpos($sess->cliente->permisos,"AGREGAR_TIPO_PERSONA")!==false;
@@ -219,5 +220,23 @@ class Backend_TipoPersonaController extends Zend_Controller_Action{
         return $pass;
 
     }
+
+    public function onChangeEstadoAction(){
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(TRUE);
+        // $estado = $_POST["estado"];
+  
+        $estado=$this->_getParam('estado');
+        $filtro = "WHERE status = 1";
+          
+        if($estado!='')
+        {
+            $filtro.=" AND (estado_id = $estado) ";
+        }
+        // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        $zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        echo json_encode($zonas);
+    }
+    
 }//class
 ?>

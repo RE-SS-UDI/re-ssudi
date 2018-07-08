@@ -41,14 +41,14 @@ class Backend_EstadoController extends Zend_Controller_Action{
 
 
         $zona=$this->_getParam('zona_id');
-        $nombre=$this->_getParam('nombre');
+        $nombre=$this->_getParam('estado');
         
         
         if($this->_getParam('status')!="")
             $filtro.=" AND status=".$this->_getParam('status');
         if($nombre!='')
         {
-            $filtro.=" AND (tp.estado LIKE '%".$nombre."%')";
+            $filtro.=" AND (es.estado LIKE '%".$nombre."%')";
         }
         // if($zona!='')
         // {

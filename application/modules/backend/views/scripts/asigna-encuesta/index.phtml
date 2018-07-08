@@ -22,7 +22,7 @@
 			    	<select name="estado_id" id="estado_id" class="form-control input-sm required" onchange="cambiaEstado(this);">
 			    		<option value="">Estados</option>
 			    		<?php foreach ($this->estados as $estado): ?>
-			    			<option value="<?php echo $estado->estadoId ?>"><?php echo $estado->estado; ?></option>
+			    			<option value="<?php echo $estado->id_estado ?>"><?php echo $estado->estado; ?></option>
 			    		<?php endforeach ?>
 			    	</select>
 		    	</div>
@@ -58,7 +58,7 @@
 		    	</div>
 				<label class="col-xs-2 control-label">Selecciona un tipo</label>
 		    	<div class="col-xs-4">
-			    	<select name="tipo_id" id="tipo_id" class="form-control input-sm required" onchange="">
+			    	<select name="tipo_id" id="tipo_id" class="form-control input-sm required" onchange="cambiaTipo(this);">
 			    		<!-- <option value="">Tipo</option>
 			    		<?php foreach ($this->zonas as $zona): ?>
 			    			<option value="<?php echo $zona->zona_id ?>"><?php echo $zona->znombre; ?></option>

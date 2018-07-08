@@ -13,7 +13,9 @@ class Backend_AsignaEncuestaController extends Zend_Controller_Action{
         // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', ' WHERE status = 1 ', ' nombre asc');
         $this->view->zonas = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
 
-        $this->view->estados = Usuario::obtieneestadosZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+        // $this->view->estados = Usuario::obtieneestadosZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+        // mostrar todos los estados activos
+        $this->view->estados = My_Comun::obtenerFiltroSQL('estados', ' WHERE status = 1 ', ' estado asc');
 
         $this->view->encuestas = My_Comun::obtenerFiltroSQL('encuesta', ' WHERE status = 1 ', ' nombre asc');
         $this->view->categorias = My_Comun::obtenerFiltroSQL('categoria', ' WHERE status = 1 ', ' nombre asc');
@@ -57,6 +59,7 @@ class Backend_AsignaEncuestaController extends Zend_Controller_Action{
         $filtro=" 1=1 ";
 
         $zona=$this->_getParam('zona_id');
+        $tipo=$this->_getParam('tipo_id');
         $encuestas=$this->_getParam('encuestas');
 
         $encuestas = substr($encuestas,0,-1);
@@ -64,6 +67,11 @@ class Backend_AsignaEncuestaController extends Zend_Controller_Action{
         if($zona!='')
         {
             $filtro.=" AND (ze.zona_id = '".$zona."') ";
+        }//if
+
+        if($tipo!='')
+        {
+            $filtro.=" AND (tp.id = '".$tipo."') ";
         }//if
 
         $consulta = "SELECT e.nombre as encuesta, z.nombre as zona, ze.status as status, 

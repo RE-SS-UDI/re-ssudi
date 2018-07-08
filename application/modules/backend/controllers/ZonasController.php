@@ -25,7 +25,7 @@ class Backend_ZonasController extends Zend_Controller_Action{
         
         
         if($this->_getParam('status')!="")
-            $filtro.=" AND status=".$this->_getParam('status');
+            $filtro.=" AND z.status=".$status;
         
         if($nombre!='')
         {

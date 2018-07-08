@@ -24,9 +24,10 @@ $(document).ready(function(){
 		colModel: [
 			{display: "Nombre",           name:"p.nombre",       width: 280, sortable: true, align: "center"},
 //			{display: "Usuario",           name:"u.usuario",       width: 100, sortable: true, align: "center"},
-			{display: "Tipo de usuario",name:"tu.descripcion",       width: 150, sortable: true, align: "center"},			
-			{display: "Zona empresa",name:"z.nombre",       width: 156, sortable: true, align: "center"},			
-			{display: "Empresa",name:"e.nombre",       width: 250, sortable: true, align: "center"},			
+			{display: "Tipo de usuario",name:"tu.descripcion",       width: 150, sortable: true, align: "center"},
+			{display: "Re-enviar usuario/contrasena",name:"enviar",    width: 200, sortable: false, align: "center"},			
+			// {display: "Zona empresa",name:"z.nombre",       width: 156, sortable: true, align: "center"},			
+			// {display: "Empresa",name:"e.nombre",       width: 250, sortable: true, align: "center"},			
 //			{display: 'Permisos',         name:"permisos",     width: 100, sortable : false, align: 'center'},
 			{display: 'Editar',           name:"editar",       width: 100, sortable : false, align: 'center'},
 			// {display: 'Edita zona ',           name:"editar_zona",       width: 100, sortable : false, align: 'center'},
@@ -39,7 +40,7 @@ $(document).ready(function(){
         ,singleSelect: true
         ,resizable: false
         ,showToggleBtn: false
-        ,rp: 10
+        ,rp: 13
         ,width: 1200
         ,height: 400
 	});
@@ -146,6 +147,7 @@ function eliminarOpciones(id)
 
 function eliminarOpcionesAgregadas(id)
 {
+	
 	$.ajax({
 		url: '/backend/usuario/eliminar-opciones-agregadas',
 		type: 'POST',
@@ -184,4 +186,143 @@ function guardarPermisos(){
         } //submitHandler
     }) //validate
     $("#frm-1").submit();    
+}
+
+function reSendCredentials(usuario_id){
+	console.log("Usuario id a reenviar: "+usuario_id);
+	if (usuario_id != '') {
+		$.ajax({
+			url: '/backend/usuario/recuperar',
+			type: 'POST',
+			data: {usuario: usuario_id},
+			success: function(res){
+				console.log('correo enviado: '+ res);
+				$("#_dialogo-1").html(res);
+				_mensaje('#_mensaje-1',  'Se Envio el correo con los datos'); 
+            },error: function(respuesta){
+				_mensaje("#_mensaje-1", "Ocurri&oacute; un error inesperado, int&eacute;ntelo de nuevo");
+			}
+		});
+	}
+}
+
+function updateByEstado(estado_id){
+	var filtro2 = '/backend/usuario/grid';
+console.log(estado_id);
+			filtro2+="/estado_id/"+estado_id;
+
+		$("#flexigrid").flexOptions({
+			url: filtro2,
+			onSuccess: function(){
+			}
+
+		}).flexReload();
+	}
+
+function updateByEstadoZona(estado_id,zona_id){
+	var filtro2 = '/backend/usuario/grid';
+	console.log(estado_id);
+	filtro2+="/estado_id/"+estado_id;
+	filtro2+="/zona_id/"+zona_id;
+
+	$("#flexigrid").flexOptions({
+		url: filtro2,
+		onSuccess: function(){
+		}
+
+	}).flexReload();
+}
+
+function updateByEstadoZonaTipo(estado_id,zona_id,tipo_id){
+	var filtro2 = '/backend/pre-registro/grid';
+	console.log(estado_id);
+	filtro2+="/estado_id/"+estado_id;
+	filtro2+="/zona_id/"+zona_id;
+	filtro2+="/tipo_id/"+tipo_id;
+
+	$("#flexigrid").flexOptions({
+		url: filtro2,
+		onSuccess: function(){
+		}
+
+	}).flexReload();
+}
+
+
+function cambiaZona(zona_id){
+
+	var zona = zona_id.value;
+	console.log("zona slelected: "+zona);
+		var estado = $('#estado_id').val();
+		console.log("estado pre-seleccionado: "+estado);
+		 updateByEstadoZona(estado,zona);
+
+if (zona != '') {
+		$.ajax({
+			url: '/backend/usuario/on-change-zona',
+			type: 'POST',
+			data: {zona: zona},
+			success: function(res){
+                var objJSON = eval("(function(){return " + res + ";})()");
+                // var response = $.parseJSON(res);
+                // console.log("sucess " + objJSON[0].nombre);
+            var tipo = $('#tipo_id');
+			tipo.empty();
+			$('#tipo_id').append('<option value="" >Selecciona un tipo</option>');
+                for (var tipo in objJSON) {
+                    console.log("de "+objJSON[tipo]['descripcion']);
+                    // tipo.append(
+                    //     $('<option>', {
+                    //     value: objJSON[tipo]['id']
+                    //     }).text(objJSON[tipo]['descripcion'])
+                    // );
+					$('#tipo_id').append('<option value=' + objJSON[tipo]['id'] + '>' + objJSON[tipo]['descripcion'] + '</option>');
+                }
+            }
+		});
+	}
+}
+
+function cambiaEstado(estado_id) {
+	console.log("estado seleccionado: "+estado_id.value);
+	var estado = estado_id.value;
+	
+	updateByEstado(estado);
+
+	if (estado != '') {
+		$.ajax({
+			url: '/backend/usuario/on-change-estado',
+			type: 'POST',
+			data: {estado: estado},
+			success: function(res){
+				console.log('estado cambiado');
+                var objJSON = eval("(function(){return " + res + ";})()");
+                // var response = $.parseJSON(res);
+                // console.log("sucess " + objJSON[0].nombre);
+            var zonas = $('#zona_id');
+            zonas.empty();
+            var tipo = $('#tipo_id');
+			tipo.empty();
+			zonas.append('<option value="">Selecciona una zona</option>');
+			tipo.append('<option value="">Selecciona un tipo</option>');
+                for (var zona in objJSON) {
+                    console.log(objJSON[zona]['nombre']);
+                    zonas.append(
+                        $('<option>', {
+                        value: objJSON[zona]['id']
+                        }).text(objJSON[zona]['nombre'])
+                    );
+                    // $('#zona_id').append('<option value=' + objJSON[zona]['id'] + '>' + objJSON[zona]['nombre'] + '</option>');
+                }
+            }
+		});
+	}
+}
+
+function cambiaTipo(tipo_id) {
+	console.log("tipo seleccionado: "+tipo_id.value);
+	var tipo = tipo_id.value;
+	var estado = $('#estado_id').val();
+	var zona = $('#zona_id').val();
+	updateByEstadoZonaTipo(estado,zona,tipo);
 }

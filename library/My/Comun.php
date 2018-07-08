@@ -305,6 +305,20 @@ public static function obtenerFiltroSQLZonasAdmin(){
 		return $datos;
 	}
 
+	     //zonas para root en empresa
+	public static function obtenerFiltroSQLPersonaUsuario($filtro){
+	$conec = new Conexion;
+	$conexion = $conec->abreConexion();
+	$sql = "select u.*, CONCAT(p.nombre, '', p.apellido_pat, '', apellido_mat) AS nombreP, p.correo as correoP 
+	from usuario u INNER JOIN persona p ON u.persona_id = p.id ".$filtro;
+	$stmt = sqlsrv_query( $conexion, $sql);
+	$datos = array();
+	while( $obj = sqlsrv_fetch_object($stmt)) {
+		$datos[] = $obj;		     
+	}
+	return $datos;
+	}
+
 
 
 //obtener zona para cualquier usuario
@@ -1668,7 +1682,7 @@ public static function obtenerFiltroSQLZonasAdmin(){
                             
                             <tr>
                             	<td align=\"left\" style=\"padding: 10px;\">
-								<img src=\"http://ca02.utj.edu.mx/public/img/logo_ca.png\" alt=\"Sinergia\" title=\"Sinergia\"/></td>
+								<img src=\"http://ca02.utj.edu.mx/public/img/logo_ca2.png\" alt=\"Sinergia\" title=\"Sinergia\"/></td>
                             </tr>
                             
                             <tr>

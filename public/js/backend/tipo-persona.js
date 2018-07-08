@@ -20,7 +20,7 @@ $(document).ready(function(){
 		url: filtro,
 		dataType: "xml",
 		colModel: [
-			{display: "Descripcion",           name:"tp.descripcion",       width: 370, sortable: true, align: "center"},
+			{display: "Descripci&oacute;n",           name:"tp.descripcion",       width: 370, sortable: true, align: "center"},
 			{display: 'status',         name:"tp.status",     width: 250, sortable : false, align: 'center'},
 			{display: 'Zona',         name:"z.nombre",     width: 110, sortable : false, align: 'center'},
 			{display: 'Editar',           name:"editar",       width: 100, sortable : false, align: 'center'},
@@ -87,6 +87,19 @@ function guardarPreregistro(formulario, frmFiltro, filtroinicial, urlImprimir, u
 	    $("#"+formulario).submit();     
 }
 
+function updateByZona(zona_id){
+	var filtro2 = '/backend/tipo-persona/grid';
+console.log(zona_id);
+  		filtro2+="/zona_id/"+zona_id;
+
+	    $("#flexigrid").flexOptions({
+			url: filtro2,
+	        onSuccess: function(){
+	        }
+
+		}).flexReload();
+	}
+
 
 function cambiaZona(){
 	var filtro2 = '/backend/tipo-persona/grid';
@@ -110,5 +123,44 @@ console.log(zona);
 
 		}).flexReload();
 
+	}
+}
+
+
+function cambiaEstado(estado_id) {
+	console.log("estado seleccionado: "+estado_id.value);
+	var estado = estado_id.value;
+	
+	// updateByEstado(estado);
+
+	if (estado != '') {
+		$.ajax({
+			url: '/backend/tipo-persona/on-change-estado',
+			type: 'POST',
+			data: {estado: estado},
+			success: function(res){
+				console.log('estado cambiado');
+                var objJSON = eval("(function(){return " + res + ";})()");
+                // var response = $.parseJSON(res);
+                // console.log("sucess " + objJSON[0].nombre);
+			var zonas = $('#zona_id');
+			var cont = 0;
+            zonas.empty();
+                for (var zona in objJSON) {
+					if (cont < 1)
+						updateByZona(objJSON[zona]['id']);
+
+
+					console.log(objJSON[zona]['nombre']);
+                    zonas.append(
+                        $('<option>', {
+                        value: objJSON[zona]['id']
+                        }).text(objJSON[zona]['nombre'])
+					);
+					cont++;
+                    // $('#zona_id').append('<option value=' + objJSON[zona]['id'] + '>' + objJSON[zona]['nombre'] + '</option>');
+                }
+            }
+		});
 	}
 }

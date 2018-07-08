@@ -87,6 +87,22 @@ function guardarPreregistro(formulario, frmFiltro, filtroinicial, urlImprimir, u
 	    $("#"+formulario).submit();     
 }
 
+function updateByEstadoZonaTipo(estado_id, zona_id, tipo_id) {
+    var filtro2 = '/backend/estado/grid';
+    console.log("Zona selected: " + zona_id);
+    console.log("Tipo selected: " + tipo_id);
+    console.log("Estado selected: " + estado_id);
+    filtro2 += "/zona_id/" + zona_id;
+    filtro2 += "/tipo_id/" + tipo_id;
+    filtro2 += "/estado_id/" + estado_id;
+
+    $("#flexigrid").flexOptions({
+        url: filtro2,
+        onSuccess: function () {}
+
+    }).flexReload();
+}
+
 
 function cambiaZona(){
 	var filtro2 = '/backend/estado/grid';
@@ -111,6 +127,15 @@ console.log(zona);
 		}).flexReload();
 
 	}
+}
+
+function cambiaTipo(tipo_id) {
+    console.log("tipo seleccionado: " + tipo_id.value);
+    var tipo = tipo_id.value;
+    var zona = $('#zona_idS').val();
+    var estado = $('#estado_idS').val();
+
+    updateByEstadoZonaTipo(estado, zona, tipo);
 }
 
 function cambiaStatus(id, estatus)
