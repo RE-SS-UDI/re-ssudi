@@ -85,3 +85,38 @@ function eliminaSeleccion(persona,pregunta,tipo,valor)
     }
 
 }
+
+function exportaEncuestas(zona_id){
+
+    console.log("zona seleccionada: "+zona_id);
+	var zona = zona_id;
+		//  updateByEstadoZona(estado,zona);
+
+if (zona != '') {
+		$.ajax({
+			url: '/backend/contesta-encuesta/exportar',
+			type: 'POST',
+			data: {zona: zona},
+			success: function(res){
+            //     var objJSON = eval("(function(){return " + res + ";})()");
+            //     // var response = $.parseJSON(res);
+                console.log("sucess " +res );
+                
+                
+
+
+            // var tipo = $('#tipo_idS');
+            // tipo.empty();
+            //     for (var tipo in objJSON) {
+            //         console.log("de "+objJSON[tipo]['descripcion']);
+            //         // tipo.append(
+            //         //     $('<option>', {
+            //         //     value: objJSON[tipo]['id']
+            //         //     }).text(objJSON[tipo]['descripcion'])
+            //         // );
+            //          $('#tipo_idS').append('<option value=' + objJSON[tipo]['id'] + '>' + objJSON[tipo]['descripcion'] + '</option>');
+            //     }
+            }
+		});
+	}
+}

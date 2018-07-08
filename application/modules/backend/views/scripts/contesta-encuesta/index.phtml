@@ -2,7 +2,7 @@
 	<div class="panel-body">
 		
 		<ul class="nav nav-tabs menu  col-md-12" role="tablist">
-		<h3>Zonas</h3>
+		<h3>Categor&iacute;as</h3>
 			<?php foreach ($this->zonasName as $zname){ ?>
 			<li role="presentation" class="<?php echo (($zname->id == $this->num_encuesta)?'active':''); ?>">
 				<a href="#set<?php echo $zname->id; ?>"  title="<?php echo $zname->zona_nombre; ?>" role="tab" data-toggle="tab" ><?php echo substr($zname->zona_nombre, 0,15).'...'; ?></a>

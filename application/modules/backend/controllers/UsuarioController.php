@@ -30,7 +30,7 @@ class backend_UsuarioController extends Zend_Controller_Action{
         $status=$this->_getParam('status');
         $estado=$this->_getParam('estado_id');
         $zona=$this->_getParam('zona_id');
-        $zona=$this->_getParam('tipo_id');
+        $tipo=$this->_getParam('tipo_id');
 
         if($this->_getParam('status')!="")			
             $filtro.=" AND u.status=".$this->_getParam('status');

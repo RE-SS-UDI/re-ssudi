@@ -109,22 +109,26 @@ class Backend_ContestaEncuestaController extends Zend_Controller_Action{
     }
 
 
+
+
     public function exportarAction(){
         ### Deshabilitamos el layout y la vista
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(TRUE);
           
        
-        $filtro=" 1=1 ";
+        $filtro=" WHERE 1=1 ";
         $i=6;
         $data = array();
+        $zona=$this->_getParam('zona');
         
        
         $i++;
         
         // $encuestas = ContestaEncuesta::obtieneEncuestasUsuarioZona(Zend_Auth::getInstance()->getIdentity()->id);
-
-        $encuestas = ContestaEncuesta::obtieneEncuestasUsuario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+        
+        $encuestas = ContestaEncuesta::obtieneEncuestas_UsuarioZonaById(Zend_Auth::getInstance()->getIdentity()->persona_id, $zona);
+        // $encuestas = ContestaEncuesta::obtieneEncuestasUsuario(Zend_Auth::getInstance()->getIdentity()->persona_id);
 //        $registros=  My_Comun::obtenerFiltro("Usuario", $filtro, "nombre ASC");
 
         ini_set("memory_limit", "130M");
@@ -187,7 +191,7 @@ class Backend_ContestaEncuestaController extends Zend_Controller_Action{
             }
             $i++;
         }       
-        $objPHPExcel->createExcel('Encuestas', $columns_name, $data, 10,array('rango'=>'A4:C4','texto'=>'Encuestas contestadas'));
+     $objPHPExcel->createExcel('Encuestas', $columns_name, $data, 10,array('rango'=>'A4:C4','texto'=>'Encuestas contestadas'));
     }
 
 

@@ -3,15 +3,18 @@
 		<!-- <div class="tabbable boxed parentTabs"> -->
 		<ul class="nav nav-tabs menu col-md-12">
 		<div class="col-md-12 text-right">
-				<a class="btn btn-sm btn-default" target="_blank" href="/backend/contesta-encuesta/exportar">
+				<!-- <a class="btn btn-sm btn-default" target="#" href="/backend/contesta-encuesta/exportar?zona=1">
 					<i class="fa fa-file-excel-o fa-lg"></i>&nbsp;Exportar
-				</a>
+				</a> -->
 				<!--  <a class="btn btn-sm btn-default <?php echo($this->puedeObtenerTodos?"":"hide"); ?>" target="_blank" href="/backend/contesta-encuesta/exportar-todos">
                     <i class="fa fa-file-excel-o fa-lg"></i>&nbsp;Exportar todos
                 </a> -->
 			</div>
-		<h3>Zonas</h3>
+		<h3>Categor&iacute;as</h3>
 			<?php foreach ($this->zonasName as $zname){ ?>
+
+				
+	
 			<li role="presentation" class="<?php echo (($zname->id == $this->num_encuesta)?'active':''); ?>">
 				<a href="#set<?php echo $zname->id; ?>"  title="<?php echo $zname->zona_nombre; ?>" role="tab" data-toggle="tab" ><?php echo substr($zname->zona_nombre, 0,15).'...'; ?></a>
 			</li>
@@ -25,6 +28,7 @@
 			<!-- tabs left -->
 			<?php $text = "tabs-left fade active in" ?>
 			<?php foreach ($this->zonasName as $zname){ ?>
+			
 			<div class="<?php echo $text; ?>" role="tabpanel" id="set<?php echo $zname->id; ?>">
 			<?php $text = "tabs-left fade" ?> <!-- reset message for active tabs -->
 				<ul class="nav nav-tabs" role="tablist">
@@ -46,10 +50,16 @@
 				</ul>
 				
 				<div class="tab-content">
+				
 					<?php $contador2 = 0; ?>
 					<?php foreach ($encuestasZonas as $encuesta): ?>
 					<div role="tabpanel" class="tab-pane <?php echo (($contador2 == $this->num_encuesta)?'active':''); ?>" id="_<?php echo $encuesta->id; ?>_<?php echo$zname->id;?>">
 						<div class="col-xs-10 cuerpo-encuesta">
+							<div class="col-md-12 text-right">
+								<a class="btn btn-sm btn-success "  target="#" href="/backend/contesta-encuesta/exportar?zona=<?php echo $zname->id; ?>" > 
+									<i class="fa fa-file-excel-o fa-lg"></i>&nbsp;Exportar
+								</a>
+								</div>
 							<h3 class="col-xs-12 text-center">
 								<?php echo $encuesta->nombre; ?>
 							</h3>
