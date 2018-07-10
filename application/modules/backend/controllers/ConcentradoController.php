@@ -15,6 +15,8 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
         $this->view->tipoUser = My_Comun::obtenertipoUSer(Zend_Auth::getInstance()->getIdentity()->id);
 
         $this->view->encu = My_Comun::obtenerFiltroSQL('encuesta', 'where status = 1', 'nombre asc');
+        $this->view->estados = Usuario::obtieneestadosZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+
         // $this->view->cate = My_Comun::obtenerFiltroSQL('categoria', 'where status = 1', 'nombre asc');
 
 
@@ -130,56 +132,65 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
         
         $nombre=$this->_getParam('nombre');
         $categoria=$this->_getParam('categoria');
-        $cateEn=$this->_getParam('encuestaCat');
-        $customZona = $this->_getParam('Zid');
+
+        $zona = $this->_getParam('zona_id');
+        $estado = $this->_getParam('estado_id');
+        $tipo = $this->_getParam('tipo_id');
 
         $filtro_nombre = '';
         $filtro_categoria = ' ';
         $filtro_zona = '';
+        $filtro_estado = '';
+        $filtro_tipo = '';
 
         if ($nombre != '') {
             $filtro_nombre = " AND concat(p.nombre, ' ', p.apellido_pat, ' ', p.apellido_mat) LIKE '%".$nombre."%' ";
         }
 
         if ($categoria != '') {
-            $filtro_categoria = ' AND e.categoria_id = '.$categoria;
-            
+            $filtro_categoria = ' OR e.categoria_id = '.$categoria; 
         }
 
-        if($cateEn!='')
+        if($estado!='')
         {
-            $filtro_categoria.=' AND e.id = '.$cateEn;
+            $filtro_estado.=' AND zo.estado_id = '.$estado;
+        }
+        if($tipo!='')
+        {
+            $filtro_tipo.=' AND e.id = '.$tipo;
         }
 
-        $idPer = Zend_Auth::getInstance()->getIdentity()->id;
-        $this->view->zonaUser = My_Comun::obtenerZonas($idPer);
+        // $idPer = Zend_Auth::getInstance()->getIdentity()->id_persona;
+        // $this->view->zonaUser = Usuario::obtieneZonasXususario($idPer); 
 
 
         //Verificamos el tipo d usurio
-        if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario != 3){
+        // if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario != 3){
             
-            if ($customZona!=''){
+            if ($zona!=''){
                 // $customZona = $_POST["zona_id"];
-                $filtro_usuario_zona .= " and uz.zona_id = ".$customZona; //obtiene zona de usuario_zona
-                $filtro_zona .= " and zona_id = ".$customZona; //obtiene zona de zona
-                echo("<script>console.log('PHP: post - zonaid: ".$customZona."');</script>");
+                //  $filtro_usuario_zona .= " and uz.zona_id = ".$zona; //obtiene zona de usuario_zona
+                 $filtro_usuario_zona .= " and uz.zona_id = ".$zona;
+                $filtro_zona .= " or ze.zona_id = ".$zona; //obtiene zona de zona
+                // echo("<script>console.log('PHP: post - zonaid: ".$zona."');</script>");
             }else{
                 $zona = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+                
                 foreach($zona as $zonas){
-                     $filtro_usuario_zona .= " and uz.zona_id = ".$zonas->id." "; //obtiene zona de usuario_zona
-                    $filtro_zona .= " and zona_id = ".$zonas->zona_id; //obtiene zona de zona
+                     $filtro_usuario_zona .= " or p.id = ".$zonas->id." "; //obtiene zid persona de persona_zona
+                     $filtro_zona .= " or ze.zona_id = ".$zonas->zona_id; //obtiene zona de perzona_zona
                 }
                 
                 // $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->id);
                 // $filtro_usuario_zona .= " and uz.zona_id = ".$zona->id." "; //obtiene zona de usuario_zona
                 // $filtro_zona .= " and zona_id = ".$customZona; //obtiene zona de zona
-                // echo("<script>console.log('PHP: default - zonaid: ".$zona->id."');</script>");
+                echo("<script>console.log('PHP: default - zonaid: ".$filtro_usuario_zona."');</script>");
             }
 
             
-        }
-        $this->view->encuestas = My_Comun::obtenerFiltroSQLConcentradoEncuestas($filtro_zona,$filtro_categoria);
-        $this->view->personas = My_Comun::obtenerFiltroSQLConcentrado($filtro_usuario_zona,$filtro_nombre);
+        // }//fin if
+        $this->view->encuestas = My_Comun::obtenerFiltroSQLConcentradoEncuestas($filtro_zona ,$filtro_categoria);
+        $this->view->personas = My_Comun::obtenerFiltroSQLConcentrado($filtro_usuario_zona,$filtro_nombre,$filtro_estado);
         //print_r($this->view->encuestas);
     }
 
@@ -261,6 +272,40 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
             $i++;
         }       
         $objPHPExcel->createExcel('Encuesta', $columns_name, $data, 10,array('rango'=>'A4:C4','texto'=>'Encuesta contestada'));
+    }
+
+    public function onChangeEstadoAction(){
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(TRUE);
+        // $estado = $_POST["estado"];
+  
+        $estado=$this->_getParam('estado');
+        $filtro = "WHERE status = 1";
+          
+        if($estado!='')
+        {
+            $filtro.=" AND (estado_id = $estado) ";
+        }
+        // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        $zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        echo json_encode($zonas);
+    }
+
+    public function onChangeZonaAction(){
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(TRUE);
+        // $estado = $_POST["estado"];
+  
+        $zona=$this->_getParam('zona');
+        $filtro = "WHERE status = 1";
+          
+        if($zona!='')
+        {
+            $filtro.=" AND (zona_id = $zona) ";
+        }
+        // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        $zonas = My_Comun::obtenerFiltroSQL('tipo_persona', $filtro, ' descripcion asc');
+        echo json_encode($zonas);
     }
 
 }//class

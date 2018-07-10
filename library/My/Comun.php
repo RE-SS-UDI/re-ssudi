@@ -175,8 +175,8 @@ public static function obtenerFiltroSQLConcentradoEncuestas($filtro_zona,$filtro
 				select e.id, e.nombre, e.status, e.categoria_id from encuesta e
 				join zona_encuesta ze
 				on ze.encuesta_id = e.id
-				where e.status = 1 ".$filtro_categoria.$filtro_zona."
-				order by nombre asc";
+				where e.status = 1 and 1+1=2 ".$filtro_categoria.$filtro_zona."
+				order by e.nombre asc";
 		$stmt = sqlsrv_query( $conexion, $sql);
 		$datos = array();
         while( $obj = sqlsrv_fetch_object($stmt)) {
@@ -184,7 +184,7 @@ public static function obtenerFiltroSQLConcentradoEncuestas($filtro_zona,$filtro
         }
 		return $datos;
 	}
-	public static function obtenerFiltroSQLConcentrado($filtro_zona,$filtro_nombre){
+	public static function obtenerFiltroSQLConcentrado($filtro_zona,$filtro_nombre,$filtro_estado){
 		$conec = new Conexion;
         $conexion = $conec->abreConexion();
 		// $sql = "
@@ -197,11 +197,13 @@ public static function obtenerFiltroSQLConcentradoEncuestas($filtro_zona,$filtro
 		//  order by p.nombre asc";
 		$sql = "
 		select e.nombre as empresa, p.id, p.nombre, p.apellido_pat, p.apellido_mat, uz.zona_id from persona p
-		join empresa e
-		on p.empresa_id = e.id
-		join persona_zona uz
+		inner join persona_zona uz
 		on p.id = uz.persona_id
-		where p.status = 1 ".$filtro_zona.$filtro_nombre."
+		inner join zona zo
+		on zo.id = uz.zona_id
+		inner join empresa e
+		on uz.zona_id = e.zona_id
+		where p.status = 1 and 1=1 ".$filtro_zona.$filtro_nombre.$filtro_estado."
 		 order by p.nombre asc";
 		$stmt = sqlsrv_query( $conexion, $sql);
 		$datos = array();

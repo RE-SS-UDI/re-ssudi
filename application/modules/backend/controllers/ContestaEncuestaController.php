@@ -165,7 +165,7 @@ class Backend_ContestaEncuestaController extends Zend_Controller_Action{
                     );
             
             foreach ($preguntas as $pregunta) {
-                $respuesta = Respuesta::obtieneRespuesta(Zend_Auth::getInstance()->getIdentity()->persona_id, $pregunta->id);
+                $respuesta = Respuesta::obtieneRespuesta(Zend_Auth::getInstance()->getIdentity()->persona_id, $pregunta->id, $zona);
                 $i++;
                 if ($pregunta->tipo == 1 || $pregunta->tipo == 2 || $pregunta->tipo == 3) {
                     $data[] = array(                
@@ -176,7 +176,7 @@ class Backend_ContestaEncuestaController extends Zend_Controller_Action{
                     $respuestas_usuario = '';
                     $opciones = My_Comun::obtenerFiltroSQL('opciones_pregunta',' WHERE status=1 AND pregunta_id='.$pregunta->id,' opcion ASC ');
                     foreach ($opciones as $opcion) {
-                        $respuesta2 = Respuesta::obtieneRespuestaEspecial($opcion->opcion, $pregunta->id);
+                        $respuesta2 = Respuesta::obtieneRespuestaEspecial($opcion->opcion, $pregunta->id, $zona);
                         if ($respuesta2->id!= ''){
                             $respuestas_usuario .= $opcion->opcion.', ';
                         }
