@@ -34,20 +34,45 @@
             </label>
             <?php endif ?>
         </div>
+        <label for="estado_id" class="col-xs-2 control-label">
+            <span class="naranja">*</span>Zona:</label>
     </div>
 
     <div class="col-xs-12 form-group">
-        <label for="zona_id" class="col-xs-2 control-label">
-            <span class="naranja">*</span>Zonas:</label>
+        <label for="estado_id" class="col-xs-2 control-label">
+            <span class="naranja">*</span>Estado:</label>
+            <div class="row">
+        <div class="col-xs-4">
+        <select class="form-control required" name="estado_id" id="estado_id" onchange="cambiaEstadoAZ(this);" >
+                    <option value="" selected>Selecciona a un estado</option>
+                    <?php foreach ($this->estados as $estado): ?>
+                    <option value="<?php echo $estado->id_estado ?>"><?php echo $estado->estado; ?></option>
+                    <?php endforeach ?>
+                </select>
+        </div>
+        <div class="col-xs-4">
+                <select class="form-control required" name="zona_id" id="zona_id" onchange="cambiaZonaAZ(this);" >
+                    <option value="" selected>Selecciona a una zona</option>
+                    <!-- <?php foreach ($this->estados as $estado): ?>
+                    <option value="<?php echo $estado->id_estado ?>"><?php echo $estado->estado; ?></option>
+                    <?php endforeach ?> -->
+                </select>
+        </div>
+        </div>
+    </div>
+
+    <div class="col-xs-12 form-group">
+        <label for="tipo_id" class="col-xs-2 control-label">
+            <span class="naranja">*</span>Tipos:</label>
         <div class="row">
             <div class="col-xs-4">
-                <select class="form-control required" name="zona_id" id="zona_id">
-                    <option value="" selected>Selecciona a una zona</option>
-                    <?php foreach ($this->zonas as $zona): ?>
+                <select class="form-control required" name="tipo_id" id="tipo_id">
+                    <option value="" selected>Selecciona a un tipo</option>
+                    <!-- <?php foreach ($this->zonas as $zona): ?>
                     <option value="<?php echo $zona->id ?>">
                         <?php echo $zona->nombre; ?>
                     </option>
-                    <?php endforeach ?>
+                    <?php endforeach ?> -->
                 </select>
             </div>
 
@@ -76,7 +101,7 @@
                         <label class="col-xs-2 control-label">Descripción zona:</label>
                         <div class="col-xs-4">
                             <input type="text" name="opciones[]" id="opcion_z<?php echo $zUsr->id; ?>" class="form-control input-sm required" maxlength="50"
-                                value="<?php echo $zUsr->znombre; ?>">
+                                value="<?php echo $zUsr->znombre; ?>-<?php echo $zUsr->descripcion; ?>">
                         </div>
                         <div class="col-xs-2">
                             <a class="btn btn-danger" title="Eliminar" onclick="eliminarOpcionesAgregadas(<?php echo $zUsr->id; ?>);">

@@ -98,6 +98,26 @@ class Usuario{
          return $datos;
     }
 
+    public static function obtieneZonasTiposXususario($persona_id)
+    {
+        $conec = new Conexion;
+        $conexion = $conec->abreConexion();
+        $sql = "SELECT z.id, z.zona_id, zo.nombre as znombre, tp.descripcion
+                FROM persona_zona z
+                INNER JOIN zona zo
+                on zo.id = z.zona_id
+                INNER JOIN tipo_persona tp
+                on tp.id = z.tipo_id
+                WHERE z.persona_id = ".$persona_id." AND zo.status = 1 order by zo.nombre asc";
+         $stmt = sqlsrv_query( $conexion, $sql);
+         $datos = array();
+         while( $obj = sqlsrv_fetch_object($stmt)) {
+         
+             $datos[] =  $obj;       
+         }
+         return $datos;
+    }
+
     public static function obtieneestadosZonasXususario($persona_id)
     {
         $conec = new Conexion;
@@ -198,7 +218,7 @@ class Usuario{
          return $datos;
     }
 
-    public static function guardarSQLpersonaZona($zona_id, $persona_id){
+    public static function guardarSQLpersonaZona($zona_id, $persona_id, $tipo_id){
 
         $regi=My_Comun::obtenerFiltroSQL("persona_zona");
         $idPer = Zend_Auth::getInstance()->getIdentity()->id;
@@ -206,7 +226,7 @@ class Usuario{
         $bandera=false;
 
         foreach ($regi as $pZona){
-            if( ($pZona->zona_id == $zona_id && $pZona->persona_id == $persona_id )  ) {
+            if( ($pZona->zona_id == $zona_id && $pZona->persona_id == $persona_id && $pZona->tipo_id == $tipo_id  )  ) {
                 echo("<script>console.log('PHP: ".$pZona->zona_id." usuario ".$pZona->persona_id."');</script>");
                 $bandera=true;
             }
@@ -216,7 +236,7 @@ class Usuario{
             $conec = new Conexion;
             $conexion = $conec->abreConexion();
 
-                $sql ="INSERT INTO dbo.persona_zona([persona_id],[zona_id]) VALUES ($persona_id, $zona_id)";
+                $sql ="INSERT INTO dbo.persona_zona([persona_id],[zona_id],[tipo_id]) VALUES ($persona_id, $zona_id, $tipo_id)";
                 // echo("<script>console.log('PHP: ".$sql."');</script>");
 
             $s = sqlsrv_prepare($conexion, $sql);

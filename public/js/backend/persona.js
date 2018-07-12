@@ -88,13 +88,15 @@ function masZonas()
 	var cantidad = 1;
 	var zona_id = $("#zona_id").val();
 	var persona_id = $("#persona_id").val(); 
+	var tipo_id = $("#tipo_id").val();
+	
 	// console.log(persona_id);
 
 	if (tipo != '') {
 		$.ajax({
 			url: '/backend/persona/mas-zonas',
 			type: 'POST',
-			data: {tipo: tipo, cantidad: cantidad, zona_id: zona_id, persona_id: persona_id},
+			data: {tipo: tipo, cantidad: cantidad, zona_id: zona_id, persona_id: persona_id, tipo_id: tipo_id},
 			success: function(res){
 				$("#opciones").append(res);
 			}
@@ -185,6 +187,71 @@ function cambiaEstado(estado_id) {
 		});
 	}
 }
+
+function cambiaEstadoAZ(estado_id) {
+	console.log("estado seleccionado: "+estado_id.value);
+	var estado = estado_id.value;
+	
+	// updateByEstado(estado);
+
+	if (estado != '') {
+		$.ajax({
+			url: '/backend/persona/on-change-estado-az',
+			type: 'POST',
+			data: {estado: estado},
+			success: function(res){
+				console.log('estado cambiado');
+                var objJSON = eval("(function(){return " + res + ";})()");
+                // var response = $.parseJSON(res);
+                // console.log("sucess " + objJSON[0].nombre);
+            var zonas = $('#zona_id');
+            zonas.empty();
+			$('#zona_id').append('<option value="">-Selecciona una zona-</option>');
+                for (var zona in objJSON) {
+                    console.log(objJSON[zona]['nombre']);
+                    zonas.append(
+                        $('<option>', {
+                        value: objJSON[zona]['id']
+                        }).text(objJSON[zona]['nombre'])
+                    );
+                    // $('#zona_id').append('<option value=' + objJSON[zona]['id'] + '>' + objJSON[zona]['nombre'] + '</option>');
+                }
+            }
+		});
+	}
+}
+
+function cambiaZonaAZ(zona_id) {
+	console.log("zona seleccionada: "+zona_id.value);
+	var zona = zona_id.value;
+	
+	// updateByEstado(estado);
+
+	if (zona != '') {
+		$.ajax({
+			url: '/backend/persona/on-change-zona-az',
+			type: 'POST',
+			data: {zona: zona},
+			success: function(res){
+				console.log('zona cambiada');
+                var objJSON = eval("(function(){return " + res + ";})()");
+            var tipos = $('#tipo_id');
+            tipos.empty();
+			$('#tipo_id').append('<option value="">-Selecciona un tipo-</option>');
+                for (var tipo in objJSON) {
+                    console.log(objJSON[tipo]['descripcion']);
+                    tipos.append(
+                        $('<option>', {
+                        value: objJSON[tipo]['id']
+                        }).text(objJSON[tipo]['descripcion'])
+                    );
+                    // $('#zona_id').append('<option value=' + objJSON[zona]['id'] + '>' + objJSON[zona]['nombre'] + '</option>');
+                }
+            }
+		});
+	}
+}
+
 
 function cambiaZona(zona_id){
 

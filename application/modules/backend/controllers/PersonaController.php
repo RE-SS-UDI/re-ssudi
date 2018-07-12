@@ -299,15 +299,17 @@ class Backend_PersonaController extends Zend_Controller_Action{
         $opciones = '';
         $zona_id = $_POST['zona_id'];
         $persona_id = $_POST['persona_id'];
+        $tipo_id = $_POST['tipo_id'];
 
         $zonaName = My_Comun::obtenerFiltroSQL('zona', ' WHERE id = '.$zona_id.' ', ' nombre asc');
+        $tiposPersona = My_Comun::obtenerFiltroSQL('tipo_persona', ' WHERE id = '.$tipo_id.' ', ' descripcion asc');
         $UsrPersona = Usuario::obtieneUsuarioPersona($persona_id);  
         // $idPer = Zend_Auth::getInstance()->getIdentity()->id;  
 
         // echo("<script>console.log('PHP: $UsrPersona->id +  ');</script>");
 
 
-        $usuarioId = Usuario::guardarSQLpersonaZona($zona_id, $persona_id);
+        $usuarioId = Usuario::guardarSQLpersonaZona($zona_id, $persona_id, $tipo_id);
         echo($usuarioId);
 
         if($usuarioId == null){
@@ -316,7 +318,7 @@ class Backend_PersonaController extends Zend_Controller_Action{
             $opciones .= '<div id="opcion_'.$time.'" class="col-xs-12 form-group">
                             <label class="col-xs-2 control-label">Descripción:</label>
                         <div class="col-xs-4">
-                            <input type="text" value="'.$zonaName[0]->nombre.'" name="opciones[]" id="opcion_'.$time.'" class="form-control input-sm required" maxlength="100">
+                            <input type="text" value="'.$zonaName[0]->nombre.' '.$tiposPersona[0]->descripcion.'" name="opciones[]" id="opcion_'.$time.'" class="form-control input-sm required" maxlength="100">
                         </div>
                         <div class="col-xs-2">
                             <a class="btn btn-danger" title="Eliminar" onclick="eliminaOpcion(\''.$time.'\')"><i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Eliminar</a>
@@ -394,14 +396,15 @@ class Backend_PersonaController extends Zend_Controller_Action{
         echo "<script>console.log( 'Debug Objects: " . $_POST["id"] . "' );</script>";
 
         $this->view->tipos = My_Comun::obtenerFiltroSQL('tipo_usuario', ' WHERE status = 1 ', ' descripcion asc');
-        $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', ' WHERE status = 1 ', ' nombre asc');
+        // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', ' WHERE status = 1 ', ' nombre asc');
+        $this->view->estados = My_Comun::obtenerFiltroSQL('estados', ' WHERE status = 1 ', ' estado asc');
 
         // $persona_fromUsr = Usuario::ObtienePersonaFromUsuario($_POST["id"]);
-        $this->view->zonasUsr = Usuario::obtieneZonasXususario($_POST["id"]);
-        // $this->view->zonasUsr = My_Comun::obtenerFiltroSQL('persona_zona', ' WHERE usuario_id = '.$_POST["id"].' ', ' id asc');
+        // $this->view->zonasUsr = Usuario::obtieneZonasXususario($_POST["id"]); 
+        $this->view->zonasUsr = Usuario::obtieneZonasTiposXususario($_POST["id"]); 
 
         $this->view->tipoUser = My_Comun::obtenertipoUSer($idPer);
-        $this->view->zonaUser = My_Comun::obtenerZonas($_POST["id"]);
+        // $this->view->zonaUser = My_Comun::obtenerZonas($_POST["id"]);
 
 
         if($this->view->tipoUser[0]->tipo_usuario == 3){
@@ -441,8 +444,42 @@ class Backend_PersonaController extends Zend_Controller_Action{
         echo json_encode($zonas);
     }
 
+    public function onChangeEstadoAzAction(){
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(TRUE);
+        // $estado = $_POST["estado"];
+  
+        $estado=$this->_getParam('estado');
+        $filtro = "WHERE status = 1";
+          
+        if($estado!='')
+        {
+            $filtro.=" AND (estado_id = $estado) ";
+        }
+        // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        $zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        echo json_encode($zonas);
+    }
+
     
     public function onChangeZonaAction(){
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(TRUE);
+        // $estado = $_POST["estado"];
+  
+        $zona=$this->_getParam('zona');
+        $filtro = "WHERE status = 1";
+          
+        if($zona!='')
+        {
+            $filtro.=" AND (zona_id = $zona) ";
+        }
+        // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        $tipo_Pregistro = My_Comun::obtenerFiltroSQL('tipo_persona',$filtro, ' descripcion asc');
+        echo json_encode($tipo_Pregistro);
+    }
+
+    public function onChangeZonaAzAction(){
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(TRUE);
         // $estado = $_POST["estado"];

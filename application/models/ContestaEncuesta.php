@@ -106,7 +106,7 @@ class ContestaEncuesta
         on z.id = ze.zona_id
         INNER JOIN persona_zona em
         on z.id = em.zona_id        
-        WHERE em.persona_id = '".$persona_id."' and z.id = '".$zona_id."'
+        WHERE ze.tipo_id = em.tipo_id AND em.persona_id = '".$persona_id."' AND z.id = '".$zona_id."'
       ";
               
         $stmt = sqlsrv_query( $conexion, $sql);
