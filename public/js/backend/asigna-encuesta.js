@@ -185,10 +185,10 @@ function cambiaStatus(id, estatus) {
     );
 } //function
 
-function updateByZona(zona_id) {
+function updateByEstado(estado_id) {
     var filtro2 = '/backend/asigna-encuesta/grid';
     console.log(zona_id);
-    filtro2 += "/zona_id/" + zona_id;
+    filtro2 += "/estado_id/" + estado_id;
 
     $("#flexigrid").flexOptions({
         url: filtro2,
@@ -197,10 +197,27 @@ function updateByZona(zona_id) {
     }).flexReload();
 }
 
-function updateByZonaTipo(zona_id, tipo_id) {
+function updateByZona(estado_id,zona_id) {
     var filtro2 = '/backend/asigna-encuesta/grid';
+    console.log(zona_id);
+    var tipo_id = $('#tipo_id').val();
+    filtro2 += "/estado_id/" + estado_id;
+    filtro2 += "/zona_id/" + zona_id;
+    filtro2 += "/tipo_id/" + tipo_id;
+
+    $("#flexigrid").flexOptions({
+        url: filtro2,
+        onSuccess: function () {}
+
+    }).flexReload();
+}
+
+function updateByEstadoZonaTipo(estado_id,zona_id, tipo_id) {
+    var filtro2 = '/backend/asigna-encuesta/grid';
+    console.log("Estado selected: " + estado_id);
     console.log("Zona selected: " + zona_id);
     console.log("Tipo selected: " + tipo_id);
+    filtro2 += "/estado_id/" + estado_id;
     filtro2 += "/zona_id/" + zona_id;
     filtro2 += "/tipo_id/" + tipo_id;
 
@@ -216,8 +233,9 @@ function cambiaZona() {
     var zona_id = $('#zona_id').val();
     console.log("zona seleccionada: " + zona_id);
     var zona = zona_id;
+    var estado = $('#estado_id').val();
 
-    updateByZona(zona);
+    // updateByZona(estado,zona);
 
     if (zona != '') {
         $.ajax({
@@ -242,17 +260,19 @@ function cambiaZona() {
                     );
                     // $('#zona_id').append('<option value=' + objJSON[zona]['id'] + '>' + objJSON[zona]['nombre'] + '</option>');
                 }
+                updateByZona(estado,zona);
             }
         });
     }
 }
 
     function cambiaTipo(tipo_id) {
-        console.log("estado seleccionado: " + tipo_id.value);
+        console.log("tipo seleccionado: " + tipo_id.value);
         var tipo = tipo_id.value;
         var zona = $('#zona_id').val();
+        var estado = $('#estado_id').val();
 
-        updateByZonaTipo(zona,tipo);
+        updateByEstadoZonaTipo(estado,zona,tipo);
     }
 
     // var filtro2 = '/backend/asigna-encuesta/grid';
@@ -300,6 +320,7 @@ function cambiaCategoria(categoria_id) {
                 // console.log("sucess " + objJSON[0].nombre);
                 var encuestas = $('#encuesta_id');
                 encuestas.empty();
+                $('#encuesta_id').append('<option value="">-Selecciona una encuesta-</option>');
                 for (var encuesta in objJSON) {
                     // console.log(objJSON[zona]['nombre']);
                     encuestas.append(
@@ -318,7 +339,7 @@ function cambiaEstado(estado_id) {
     console.log("estado seleccionado: " + estado_id.value);
     var estado = estado_id.value;
 
-    // updateByEstado(categoria);
+    updateByEstado(estado);
 
     if (estado != '') {
         $.ajax({
@@ -336,6 +357,8 @@ function cambiaEstado(estado_id) {
                 zona.empty();
                 var tipo = $('#tipo_id');
                 tipo.empty();
+                $('#zona_id').append('<option value="">Selecciona una zona</option>');
+                $('#tipo_id').append('<option value="">Selecciona un tipo</option>');
                 for (var zonas in objJSON) {
                     // console.log(objJSON[zona]['nombre']);
                     zona.append(

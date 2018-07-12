@@ -52,6 +52,7 @@ class Backend_ContestaEncuestaController extends Zend_Controller_Action{
                         $data2['persona_id'] = $_POST['persona_id'];
                         $data2['tipo'] = $separaId[2];
                         $data2['zona_id'] = $_POST['zona_ID'];
+                        $data2['tipo_persona_id'] = $_POST['tipo_persona_id'];
                         $data2['id'] = '';
                         
                        $preId = My_Comun::guardarSQL("respuesta", $data2, $data2['id'], $bitacora);
@@ -67,6 +68,7 @@ class Backend_ContestaEncuestaController extends Zend_Controller_Action{
                     $data['persona_id'] = $_POST['persona_id'];
                     $data['tipo'] = $separaId[2];
                     $data['zona_id'] = $_POST['zona_ID'];
+                    $data['tipo_persona_id'] = $_POST['tipo_persona_id'];
                     $data['id'] = $separaId[0];
                     
 //                    print_r($data);
@@ -165,7 +167,7 @@ class Backend_ContestaEncuestaController extends Zend_Controller_Action{
                     );
             
             foreach ($preguntas as $pregunta) {
-                $respuesta = Respuesta::obtieneRespuesta(Zend_Auth::getInstance()->getIdentity()->persona_id, $pregunta->id, $zona);
+                $respuesta = Respuesta::obtieneRespuesta(Zend_Auth::getInstance()->getIdentity()->persona_id, $pregunta->id, $zona, $encuesta->tipo_persona_id);
                 $i++;
                 if ($pregunta->tipo == 1 || $pregunta->tipo == 2 || $pregunta->tipo == 3) {
                     $data[] = array(                
@@ -176,7 +178,7 @@ class Backend_ContestaEncuestaController extends Zend_Controller_Action{
                     $respuestas_usuario = '';
                     $opciones = My_Comun::obtenerFiltroSQL('opciones_pregunta',' WHERE status=1 AND pregunta_id='.$pregunta->id,' opcion ASC ');
                     foreach ($opciones as $opcion) {
-                        $respuesta2 = Respuesta::obtieneRespuestaEspecial($opcion->opcion, $pregunta->id, $zona);
+                        $respuesta2 = Respuesta::obtieneRespuestaEspecial($opcion->opcion, $pregunta->id, $zona, $encuesta->tipo_persona_id);
                         if ($respuesta2->id!= ''){
                             $respuestas_usuario .= $opcion->opcion.', ';
                         }

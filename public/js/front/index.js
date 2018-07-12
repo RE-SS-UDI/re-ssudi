@@ -122,6 +122,8 @@ function onChangeEstado(estado_id)
             zonas.empty();
             var tipo = $('#tipo_id');
             tipo.empty();
+            $('#zona_id').append('<option value="">-Selecciona una zona-</option>');
+            $('#tipo_id').append('<option value="">-Selecciona una zona-</option>');
                 for (var zona in objJSON) {
                     console.log(objJSON[zona]['nombre']);
                     zonas.append(
@@ -152,6 +154,7 @@ function onChangeZona(zona_id)
                 // console.log("sucess " + objJSON[0].nombre);
             var tipo = $('#tipo_id');
             tipo.empty();
+            $('#tipo_id').append('<option value="">-Selecciona una zona-</option>');
                 for (var tipo in objJSON) {
                     console.log(objJSON[tipo]['descripcion']);
                     // tipo.append(

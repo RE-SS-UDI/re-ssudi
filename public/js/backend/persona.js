@@ -169,7 +169,9 @@ function cambiaEstado(estado_id) {
             var zonas = $('#zona_idS');
             zonas.empty();
             var tipo = $('#tipo_idS');
-            tipo.empty();
+			tipo.empty();
+			$('#zona_idS').append('<option value="">-Selecciona una zona-</option>');
+			$('#tipo_idS').append('<option value="">-Selecciona un tipo-</option>');
                 for (var zona in objJSON) {
                     console.log(objJSON[zona]['nombre']);
                     zonas.append(
@@ -202,7 +204,8 @@ if (zona != '') {
                 // var response = $.parseJSON(res);
                 // console.log("sucess " + objJSON[0].nombre);
             var tipo = $('#tipo_idS');
-            tipo.empty();
+			tipo.empty();
+			$('#tipo_idS').append('<option value="">-Selecciona un tipo-</option>');
                 for (var tipo in objJSON) {
                     console.log("de "+objJSON[tipo]['descripcion']);
                     // tipo.append(

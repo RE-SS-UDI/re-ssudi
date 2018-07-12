@@ -113,7 +113,9 @@ class My_PHPExcel_Excel extends PHPExcel
 			header("Cache-Control: post-check=0, pre-check=0", false);
 			header("Pragma: no-cache");
 			header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-			header('Content-Disposition: attachment;filename="'.utf8_decode($file_name).'.xlsx"');
+			header('Content-Disposition: attachment;filename="'.utf8_decode($file_name));
+			// header('Content-Disposition: attachment;filename="'.utf8_decode($file_name).'.xls"');
+			
 			
 			/*
 			header('Content-Type: application/vnd.ms-excel');

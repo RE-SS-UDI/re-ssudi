@@ -145,7 +145,8 @@ function cambiaEstado(estado_id) {
                 // console.log("sucess " + objJSON[0].nombre);
 			var zonas = $('#zona_id');
 			var cont = 0;
-            zonas.empty();
+			zonas.empty();
+			$('#zona_id').append('<option value="">Selecciona una zona</option>');
                 for (var zona in objJSON) {
 					if (cont < 1)
 						updateByZona(objJSON[zona]['id']);
