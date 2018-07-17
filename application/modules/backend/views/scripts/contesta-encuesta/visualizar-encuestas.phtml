@@ -91,7 +91,7 @@
 									<?php if ($pregunta->tipo == 4): ?>
 									<?php 
 			         				$respuestas_usuario = '';
-			         				$opciones = My_Comun::obtenerFiltroSQL('opciones_pregunta',' WHERE status=1 AND pregunta_id='.$pregunta->id.' AND zona_id='.$zname->id.' AND tipo_persona_id='.$encuesta->tipo_persona_id.' opcion ASC '); 
+			         				$opciones = My_Comun::obtenerFiltroSQL('opciones_pregunta',' WHERE status=1 AND pregunta_id='.$pregunta->id.'  opcion ASC '); 
 			         				?>
 									<?php foreach ($opciones as $opcion): ?>
 									<?php $respuesta2 = Respuesta::obtieneRespuestaEspecial($opcion->opcion, $pregunta->id, $zname->id, $encuesta->tipo_persona_id); ?>
