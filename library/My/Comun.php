@@ -1351,7 +1351,7 @@ public static function obtenerFiltroSQLZonasAdmin(){
 		//Verificamos si el registro ya está deshabilitado para entonces habilitarlo
 		$registro=My_Comun::obtenerSQL($modelo, "id", $id);
 
-		echo '<script>console.log("'.$registro->id.'");</script>';
+		// echo '<script>console.log("'.$registro->id.'");</script>';
 
 		if($registro->status==0)
 		{

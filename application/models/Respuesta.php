@@ -31,17 +31,17 @@ class Respuesta
 
 	public static function obtieneRespuestaEspecial($descripcion,$pregunta_id, $zona_id, $tipo_id)
 	{
-//		print_r($persona_id.'-'.$pregunta_id);
-//		exit;
+		// print_r($descripcion.'-'.$pregunta_id);
+		// exit;
         $conec = new Conexion;
         $conexion = $conec->abreConexion();
 
-        $sql = "  SELECT r.id
+        $sql = "  SELECT r.id.r.descripcion
 				  FROM respuesta r
 				  INNER JOIN pregunta pr
 				  on pr.id = r.pregunta_id
 				  WHERE r.descripcion = ".$descripcion." AND r.pregunta_id = ".$pregunta_id." AND r.persona_id = ".Zend_Auth::getInstance()->getIdentity()->persona_id." AND r.tipo_persona_id = ".$tipo_id." AND r.zona_id = ".$zona_id;
-        $stmt = sqlsrv_query( $conexion, $sql);
+		$stmt = sqlsrv_query( $conexion, $sql);
 
         if( $obj = sqlsrv_fetch_object($stmt)) {
         

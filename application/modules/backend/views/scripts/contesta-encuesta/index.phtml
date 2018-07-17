@@ -80,11 +80,11 @@
 										<?php endforeach ?>
 										<?php endif ?>
 										<?php if ($pregunta->tipo == 4): ?>
-										<?php $opciones = My_Comun::obtenerFiltroSQL('opciones_pregunta',' WHERE status=1 AND pregunta_id='.$pregunta->id.'  opcion ASC '); ?>
+										<?php $opciones = My_Comun::obtenerFiltroSQL('opciones_pregunta',' WHERE status=1 AND pregunta_id='.$pregunta->id,'  opcion ASC '); ?>
 										<?php foreach ($opciones as $opcion): ?>
 										<?php $respuesta2 = Respuesta::obtieneRespuestaEspecial($opcion->opcion, $pregunta->id, $zname->id, $encuesta->tipo_persona_id); ?>
 										<label class="radio-inline">
-											<input type="checkbox" name="opcion[<?php echo $respuesta->id; ?>_<?php echo $pregunta->id; ?>_<?php echo $pregunta->tipo; ?>][]"
+											<input type="checkbox" name="opcion[<?php echo $respuesta2->id; ?>_<?php echo $pregunta->id; ?>_<?php echo $pregunta->tipo; ?>][]"
 											    class="" value="<?php echo $opcion->opcion; ?>" <?php echo (($respuesta2->id!='')?'checked':''); ?> onclick="eliminaSeleccion(
 											<?php echo Zend_Auth::getInstance()->getIdentity()->persona_id; ?>,
 											<?php echo $pregunta->id; ?>,

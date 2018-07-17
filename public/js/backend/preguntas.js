@@ -115,12 +115,14 @@ function eliminaOpcion(id)
 
 function eliminarOpciones(id)
 {
+	
 	$.ajax({
 		url: '/backend/preguntas/eliminar-opciones',
 		type: 'POST',
 		data: {id: id},
 		success: function(res)
 		{
+			console.log(id);
 			if (res == 'El registro fue eliminado') {
 				$('#opcion_'+id).remove();
 			} 
