@@ -149,22 +149,30 @@ class Encuesta
         return $datos;
     }//funcion
 
-    public static function obtieneEncuesta($persona_id,$encuesta_id)
+    public static function obtieneEncuesta($persona_id,$encuesta_id,$zona,$tipo)
     {
         $conec = new Conexion;
         $conexion = $conec->abreConexion();
 
-        $sql = "  SELECT e.id,e.nombre
+        // $sql = "  SELECT e.id,e.nombre, ze.zona_id, ze.tipo_id
+        //           FROM encuesta e
+        //           INNER JOIN zona_encuesta ze
+        //           on e.id = ze.encuesta_id
+        //           INNER JOIN zona z
+        //           on z.id = ze.zona_id
+        //           INNER JOIN empresa em
+        //           on z.id = em.zona_id
+        //           INNER JOIN persona p
+        //           on em.id = p.empresa_id         
+        //           WHERE p.id = '".$persona_id."' and e.id = '".$encuesta_id."'
+        //         ";
+        $sql = "  SELECT e.id,e.nombre, ze.zona_id, ze.tipo_id
                   FROM encuesta e
                   INNER JOIN zona_encuesta ze
                   on e.id = ze.encuesta_id
-                  INNER JOIN zona z
-                  on z.id = ze.zona_id
-                  INNER JOIN empresa em
-                  on z.id = em.zona_id
-                  INNER JOIN persona p
-                  on em.id = p.empresa_id         
-                  WHERE p.id = '".$persona_id."' and e.id = '".$encuesta_id."'
+                  INNER JOIN persona_zona pz
+                  on pz.zona_id = ze.zona_id and pz.tipo_id = ze.tipo_id         
+                  WHERE pz.persona_id = '".$persona_id."' and e.id = '".$encuesta_id."' and ze.zona_id = '".$zona."' and ze.tipo_id = '".$tipo."'
                 ";
         //print_r($sql);
         //exit;

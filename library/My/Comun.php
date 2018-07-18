@@ -162,7 +162,7 @@ else select			0 as tipo_usuario_id, 0 as desc_tu , m.id, m.persona_origen_id,
 		return $datos;
 	}
 	
-public static function obtenerFiltroSQLConcentradoEncuestas($filtro_zona,$filtro_categoria){
+public static function obtenerFiltroSQLConcentradoEncuestas($filtro_zona,$filtro_categoria,$join_zona,$filtro_tipo_encuesta){
 		$conec = new Conexion;
         $conexion = $conec->abreConexion();
 		// $sql = "
@@ -172,10 +172,9 @@ public static function obtenerFiltroSQLConcentradoEncuestas($filtro_zona,$filtro
 		// 		where e.status = 1 ".$filtro_categoria.$filtro_zona."
 		// 		order by nombre asc";
 		$sql = "
-				select e.id, e.nombre, e.status, e.categoria_id from encuesta e
-				join zona_encuesta ze
-				on ze.encuesta_id = e.id
-				where e.status = 1 and 1+1=2 ".$filtro_categoria.$filtro_zona."
+				select distinct e.id, e.nombre, e.status, e.categoria_id from encuesta e
+				".$join_zona." 
+				where e.status = 1 and 1+1=2 ".$filtro_categoria.$filtro_zona.$filtro_tipo_encuesta."
 				order by e.nombre asc";
 		$stmt = sqlsrv_query( $conexion, $sql);
 		$datos = array();
@@ -184,7 +183,7 @@ public static function obtenerFiltroSQLConcentradoEncuestas($filtro_zona,$filtro
         }
 		return $datos;
 	}
-	public static function obtenerFiltroSQLConcentrado($filtro_zona,$filtro_nombre,$filtro_estado){
+	public static function obtenerFiltroSQLConcentrado($filtro_zona,$filtro_nombre,$filtro_estado,$filtro_tipo){
 		$conec = new Conexion;
         $conexion = $conec->abreConexion();
 		// $sql = "
@@ -196,14 +195,14 @@ public static function obtenerFiltroSQLConcentradoEncuestas($filtro_zona,$filtro
 		// where p.status = 1 ".$filtro_zona.$filtro_nombre."
 		//  order by p.nombre asc";
 		$sql = "
-		select e.nombre as empresa, p.id, p.nombre, p.apellido_pat, p.apellido_mat, uz.zona_id from persona p
+		select distinct e.nombre as empresa, e.contacto, p.id, p.nombre, p.apellido_pat, p.apellido_mat, uz.zona_id, uz.tipo_id from persona p
 		inner join persona_zona uz
 		on p.id = uz.persona_id
 		inner join zona zo
 		on zo.id = uz.zona_id
 		inner join empresa e
 		on uz.zona_id = e.zona_id
-		where p.status = 1 and 1=1 ".$filtro_zona.$filtro_nombre.$filtro_estado."
+		where p.status = 1 and 1=1 ".$filtro_zona.$filtro_nombre.$filtro_estado.$filtro_tipo."
 		 order by p.nombre asc";
 		$stmt = sqlsrv_query( $conexion, $sql);
 		$datos = array();
@@ -356,6 +355,23 @@ public static function obtenerFiltroSQLZonasAdmin(){
 				on e.zona_id = z.id 
 				where u.persona_id = ".$id;
 
+
+		$stmt = sqlsrv_query( $conexion, $sql);
+		$datos = array();
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+        	$datos[] = $obj;		     
+        }
+		return $datos;
+	}
+
+	public static function obtenerCategoriasXzonaXtipo($zona_id,$tipo_id){
+		$conec = new Conexion;
+        $conexion = $conec->abreConexion();
+		$sql = "select cat.* 
+				  FROM categoria cat 
+				  INNER JOIN zona_encuesta ze
+				  ON ze.categoria_id = cat.id
+				  WHERE ze.zona_id = ".$zona_id." AND ze.tipo_id = ".$tipo_id;
 
 		$stmt = sqlsrv_query( $conexion, $sql);
 		$datos = array();

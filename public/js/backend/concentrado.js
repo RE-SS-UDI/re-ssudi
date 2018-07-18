@@ -15,13 +15,13 @@ $(document).ready(function() {
 });
 
 
-function muestraEncuesta(persona, encuesta)
+function muestraEncuesta(persona, encuesta, zona, tipo)
 {
     $.ajax({
         type: "POST",
         url: '/backend/concentrado/encuesta',
         data: {
-            persona_id: persona, encuesta_id: encuesta
+            persona_id: persona, encuesta_id: encuesta, zona_id: zona, tipo_id: tipo
         }
         ,success: function(html)
         {
@@ -156,10 +156,22 @@ function filtrar()
 {
     var filtro='';
 
-    $("#frmFiltrosCategoria :input").each(function(){
-        if(this.id!='' && $("#"+this.id).val()!='')
-            filtro+="/"+this.name+"/"+$("#"+this.id).val();
-    });
+    // $("#frmFiltrosCategoria :input").each(function(){
+    //     if(this.id!='' && $("#"+this.id).val()!='')
+    //         filtro+="/"+this.name+"/"+$("#"+this.id).val();
+    // });
+    var nombre = $('#nombre').val();
+    var zona = $('#zona_id').val();
+    var tipo = $('#tipo_id').val();
+    var estado = $('#estado_id').val();
+    var categoria = $('#categoria_id').val();
+
+    filtro+="/zona_id/"+zona;
+    filtro+="/tipo_id/"+tipo;
+    filtro+="/estado_id/"+estado;
+    filtro+="/categoria_id/"+categoria;
+    filtro+="/nombre/"+nombre;
+
 
     $.ajax({
         url: '/backend/concentrado/tabla'+filtro,
@@ -179,7 +191,7 @@ function cambiaEstado(estado_id) {
 	console.log("estado seleccionado: "+estado_id.value);
 	var estado = estado_id.value;
 	
-	updateByEstado(estado);
+	// updateByEstado(estado);
 
 	if (estado != '') {
 		$.ajax({
@@ -217,7 +229,7 @@ function cambiaZona(zona_id){
 	console.log("zona slelected: "+zona);
 		var estado = $('#estado_id').val();
 		console.log("estado pre-seleccionado: "+estado);
-		 updateByEstadoZona(estado,zona);
+		//  updateByEstadoZona(estado,zona);
 
 if (zona != '') {
 		$.ajax({
@@ -250,5 +262,31 @@ function cambiaTipo(tipo_id) {
 	var tipo = tipo_id.value;
 	var estado = $('#estado_id').val();
 	var zona = $('#zona_id').val();
-	// updateByEstadoZonaTipo(estado,zona,tipo);
+    // updateByEstadoZonaTipo(estado,zona,tipo);
+    
+    if (tipo != '') {
+		$.ajax({
+			url: '/backend/concentrado/on-change-tipo',
+			type: 'POST',
+			data: {tipo: tipo, zona: zona},
+			success: function(res){
+                var objJSON = eval("(function(){return " + res + ";})()");
+                // var response = $.parseJSON(res);
+                // console.log("sucess " + objJSON[0].nombre);
+            var categoria = $('#categoria_id');
+			categoria.empty();
+			$('#categoria_id').append('<option value="" >-Selecciona una categoria-</option>');
+                for (var categoria in objJSON) {
+                    console.log("de "+objJSON[categoria]['descripcion']);
+                    // tipo.append(
+                    //     $('<option>', {
+                    //     value: objJSON[tipo]['id']
+                    //     }).text(objJSON[tipo]['descripcion'])
+                    // );
+					$('#categoria_id').append('<option value=' + objJSON[categoria]['id'] + '>' + objJSON[categoria]['nombre'] + '</option>');
+                }
+            }
+		});
+    }
+    
 }

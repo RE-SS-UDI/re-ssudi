@@ -1,8 +1,8 @@
 <thead>
     <tr class="">
         <th class="text-center ancho-celda" style="text-align: left;">Empresa</th>
-        <th class="text-center ancho-celda" style="text-align: left;">Nombre</th>
-        <?php  $filtro_zona .= " and zona_id = ".$zona->id." "; ?>
+        <th class="text-center ancho-celda" style="text-align: left;">Contacto</th>
+        
         <?php foreach ($this->encuestas as $encuesta): ?>
             <th class="text-center ancho-celda"><?php echo $encuesta->nombre; ?></th>
         <?php endforeach ?>
@@ -14,12 +14,13 @@
         <tr>
         <?php $contador = 0; ?>
             <td ><?php echo $persona->empresa; ?></td>
-            <td><?php echo $persona->nombre.' '.$persona->apellido_pat.' '.$persona->apellido_mat?></td>
+            <td><?php echo $persona->contacto?></td>
+            <!-- <td><?php echo $persona->nombre.' '.$persona->apellido_pat.' '.$persona->apellido_mat?></td> -->
             <?php foreach ($this->encuestas as $encuesta): ?>
                 <td class="text-center ancho-celda">
                     <?php if (Encuesta::verificaEncuesta($persona->id, $encuesta->id) == 1): ?>
                         <?php $contador = 1; ?>
-                        <a class="cursor-modificado" onclick="muestraEncuesta(<?php echo $persona->id ?>,<?php echo $encuesta->id; ?>);">
+                        <a class="cursor-modificado" onclick="muestraEncuesta(<?php echo $persona->id ?>,<?php echo $encuesta->id; ?>,<?php echo $persona->zona_id; ?>,<?php echo $persona->tipo_id; ?>);">
                             <i class="fa fa-check fa-lg"></i>
                         </a>
                     <?php endif ?>
@@ -27,7 +28,7 @@
             <?php endforeach ?>
             <td class="text-center">
                 <?php if ($contador == 1): ?>
-                    <a class="btn btn-sm btn-default" target="_blank" href="/backend/concentrado/exportar/persona/<?php echo $persona->id ?>">
+                    <a class="btn btn-sm btn-default" target="_blank" href="/backend/concentrado/exportar/persona/<?php echo $persona->id ?>/zona/<?php echo $persona->zona_id; ?>">
                         <i class="fa fa-file-excel-o fa-lg"></i>&nbsp;Exportar
                     </a>
                 <?php endif ?>
