@@ -244,6 +244,22 @@ public static function obtenerFiltroSQLConcentradoEncuestas($filtro_zona,$filtro
 			return $datos;
 		}
 
+		public static function obtenerFiltroSQLZonaPersonaXempresa($Empresa_id){
+			$conec = new Conexion;
+			$conexion = $conec->abreConexion();
+			$sql ="select tp.* from tipo_persona tp
+			inner join empresa e
+			on e.zona_id = tp.zona_id
+			where tp.status = 1 AND e.id = ".$Empresa_id."
+			order by tp.descripcion asc";
+			$stmt = sqlsrv_query( $conexion, $sql);
+			$datos = array();
+			while( $obj = sqlsrv_fetch_object($stmt)) {
+				$datos[] = $obj;		     
+			}
+			return $datos;
+		}
+
 	public static function obtenerFiltroSQLEmpresa($zonaUser){
 			$conec = new Conexion;
 			$conexion = $conec->abreConexion();
@@ -1615,7 +1631,9 @@ public static function obtenerFiltroSQLZonasAdmin(){
 
 	public static function correoElectronico($titulo, $cuerpo, $de, $de_nombre, $para, $para_nombre, $copia = "", $adjunto = ""){
 
-	$config = array("auth" => "login", "username" => "ressudi@utj.edu.mx", "password" => "adminca02", "port" => 587);
+	// $config = array("auth" => "login", "username" => "ressudi@utj.edu.mx", "password" => "adminca02", "port" => 587);
+	$config = array('ssl' => 'ssl', "auth" => "login", "username" => "ressudi@utj.edu.mx", "password" => "adminca02",  "port" => 465);
+
 	$transport = new Zend_Mail_Transport_Smtp("mail.utj.com.mx", $config);
       
   	$cuerpo_ = "
@@ -1682,7 +1700,8 @@ public static function obtenerFiltroSQLZonasAdmin(){
 	// $config = array("auth" => "login", "username" => "ressudi@utj.edu.mx", "password" => "adminca02",  "port" => 465);
 	// $transport = new Zend_Mail_Transport_Smtp("mail.utj.com.mx", $config);
 	
-	$config = array('ssl' => 'ssl', "auth" => "login", "username" => "ressudi.utj@gmail.com", "password" => "ressudiutj2018",  "port" => 465);
+	// $config = array('ssl' => 'ssl', "auth" => "login", "username" => "ressudi.utj@gmail.com", "password" => "ressudiutj2018",  "port" => 465);
+	$config = array('ssl' => 'ssl', "auth" => "login", "username" => "ressudi@utj.edu.mx", "password" => "Adminca02",  "port" => 465);
 	$transport = new Zend_Mail_Transport_Smtp("smtp.gmail.com", $config);
     Zend_Mail::setDefaultTransport($transport);
 	

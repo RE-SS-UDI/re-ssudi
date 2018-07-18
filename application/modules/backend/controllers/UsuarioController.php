@@ -611,7 +611,9 @@ class backend_UsuarioController extends Zend_Controller_Action{
         // echo("<script>console.log('PHP: usuario user: ".$usuario->usuario."');</script>");
         // echo("<script>console.log('PHP: usuario correo: ".$persona->correo."');</script>");
         
-        echo My_Comun::envioCorreo($titulo, $cuerpo,'ressudi.utj@gmail.com','Sinergia', $persona->correo, $persona->nombre);
+        echo My_Comun::envioCorreo($titulo, $cuerpo,'ressudi@utj.edu.mx','Sinergia', $persona->correo, $persona->nombre);
+
+        // echo My_Comun::envioCorreo($titulo, $cuerpo,'ressudi.utj@gmail.com','Sinergia', $persona->correo, $persona->nombre);
 
         // echo My_Comun::envioCorreo($titulo, $cuerpo,'ressudi@utj.edu.mx','Sinergia', $usuario->correo, $persona->nombre);
     }

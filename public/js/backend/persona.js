@@ -152,11 +152,53 @@ function eliminarOpcionesAgregadas(id)
 	});
 }
 
+function updateByEstado(estado_id){
+	var filtro2 = '/backend/persona/grid';
+// console.log(estado_id);
+			filtro2+="/estado_id/"+estado_id;
+
+		$("#flexigrid").flexOptions({
+			url: filtro2,
+			onSuccess: function(){
+			}
+
+		}).flexReload();
+	}
+
+function updateByEstadoZona(estado_id,zona_id){
+	var filtro2 = '/backend/persona/grid';
+	// console.log(estado_id);
+	filtro2+="/estado_id/"+estado_id;
+	filtro2+="/zona_id/"+zona_id;
+
+	$("#flexigrid").flexOptions({
+		url: filtro2,
+		onSuccess: function(){
+		}
+
+	}).flexReload();
+}
+
+function updateByEstadoZonaTipo(estado_id,zona_id,tipo_id){
+	var filtro2 = '/backend/persona/grid';
+	// console.log(estado_id);
+	filtro2+="/estado_id/"+estado_id;
+	filtro2+="/zona_id/"+zona_id;
+	filtro2+="/tipo_id/"+tipo_id;
+
+	$("#flexigrid").flexOptions({
+		url: filtro2,
+		onSuccess: function(){
+		}
+
+	}).flexReload();
+}
+
 function cambiaEstado(estado_id) {
 	console.log("estado seleccionado: "+estado_id.value);
 	var estado = estado_id.value;
 	
-	// updateByEstado(estado);
+	updateByEstado(estado);
 
 	if (estado != '') {
 		$.ajax({
@@ -259,7 +301,7 @@ function cambiaZona(zona_id){
 	console.log("zona slelected: "+zona);
 		var estado = $('#estado_idS').val();
 		console.log("estado pre-seleccionado: "+estado);
-		//  updateByEstadoZona(estado,zona);
+		 updateByEstadoZona(estado,zona);
 
 if (zona != '') {
 		$.ajax({
@@ -285,4 +327,48 @@ if (zona != '') {
             }
 		});
 	}
+}
+
+function cambiaEmpresa(empresa_id) {
+	console.log("empresa seleccionada: "+empresa_id.value);
+	var empresa = empresa_id.value;
+	
+	// updateByEstado(estado);
+
+	if (empresa != '') {
+		$.ajax({
+			url: '/backend/persona/on-change-empresa',
+			type: 'POST',
+			data: {empresa: empresa},
+			success: function(res){
+				console.log('empresa cambiada');
+                var objJSON = eval("(function(){return " + res + ";})()");
+                // var response = $.parseJSON(res);
+                // console.log("sucess " + objJSON[0].nombre);
+            var tipos = $('#tipo_id');
+            tipos.empty();
+			$('#tipo_id').append('<option value="">-Selecciona un tipo-</option>');
+                for (var zona in objJSON) {
+                    console.log(objJSON[zona]['descripcion']);
+                    tipos.append(
+                        $('<option>', {
+                        value: objJSON[zona]['id']
+                        }).text(objJSON[zona]['descripcion'])
+                    );
+                    // $('#zona_id').append('<option value=' + objJSON[zona]['id'] + '>' + objJSON[zona]['nombre'] + '</option>');
+                }
+            }
+		});
+	}
+}
+
+function cambiaTipo(tipo_id) {
+	console.log("tipo seleccionado: "+tipo_id.value);
+	var tipo = tipo_id.value;
+	var estado = $('#estado_id').val();
+	var zona = $('#zona_id').val();
+	
+	// updateByEstadoZonaTipo(estado,zona,tipo);
+
+
 }

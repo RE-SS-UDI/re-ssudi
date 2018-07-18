@@ -234,7 +234,7 @@ function updateByEstadoZona(estado_id,zona_id){
 }
 
 function updateByEstadoZonaTipo(estado_id,zona_id,tipo_id){
-	var filtro2 = '/backend/pre-registro/grid';
+	var filtro2 = '/backend/usuario/grid';
 	console.log(estado_id);
 	filtro2+="/estado_id/"+estado_id;
 	filtro2+="/zona_id/"+zona_id;
