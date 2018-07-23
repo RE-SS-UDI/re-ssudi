@@ -255,7 +255,7 @@ function cambiaZona(zona_id){
 	console.log("zona slelected: "+zona);
 		var estado = $('#estado_id').val();
 		console.log("estado pre-seleccionado: "+estado);
-		 updateByEstadoZona(estado,zona);
+		//  updateByEstadoZona(estado,zona);
 
 if (zona != '') {
 		$.ajax({
@@ -287,7 +287,7 @@ function cambiaEstado(estado_id) {
 	console.log("estado seleccionado: "+estado_id.value);
 	var estado = estado_id.value;
 	
-	updateByEstado(estado);
+	// updateByEstado(estado);
 
 	if (estado != '') {
 		$.ajax({
@@ -324,5 +324,5 @@ function cambiaTipo(tipo_id) {
 	var tipo = tipo_id.value;
 	var estado = $('#estado_id').val();
 	var zona = $('#zona_id').val();
-	updateByEstadoZonaTipo(estado,zona,tipo);
+	// updateByEstadoZonaTipo(estado,zona,tipo);
 }

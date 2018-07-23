@@ -49,7 +49,7 @@
 				<label>RFC:</label>
 			</div>
 			<div class="col-md-3">
-			<input type="text" onkeyup="this.value = this.value.toUpperCase();" name="rfc" placeholder="XXXXYYMMDDXX" class="form-control " maxlength="12">
+			<input type="text" onkeyup="this.value = this.value.toUpperCase();" name="rfc" placeholder="XXXXYYMMDDXXX" class="form-control " maxlength="13">
 
 				<!-- <input type="text" style="text-transform: uppercase;" name="rfc" placeholder="XXXXYYMMDDXX" class="form-control " maxlength="12"> -->
 				<?PHP /* $_POST['rfc'] = strtoupper($_POST['rfc']);  */?>
@@ -66,16 +66,21 @@
 				<label class="radio-inline"><input type="radio" name="genero" class="required" value="2">F</label>
 			</div>
 			<div class="col-md-1">
-				<label>*Tel&eacute;fono:</label>
+				<label>Tel&eacute;fono:</label>
 			</div>
 			<div class="col-md-3">
-				<input type="text" name="telefono" placeholder="Teléfono" class="form-control number required" minlength="10" maxlength="12">
+				<input type="text" name="telefono" placeholder="Teléfono" class="form-control number " minlength="8" maxlength="12">
 			</div>
 			<div class="col-md-1">
-				<label>Celular:</label>
+				<label>*Estado</label>
 			</div>
 			<div class="col-md-3">
-				<input type="text" name="celular" placeholder="Celular" class="form-control number " minlength="8" maxlength="12">
+				<select class="form-control required" name="estado_id" id="estado_id" onchange="onChangeEstado(this);">
+					<option value="" selected>Seleccione su estado</option>
+					<?php foreach ($this->estados as $estado): ?>
+						<option value="<?php echo $estado->id_estado; ?>"><?php echo $estado->estado; ?></option>
+					<?php endforeach ?>
+				</select>
 			</div>
 		</div>
 	</div>
@@ -88,16 +93,13 @@
 			<span id="endTimeLabel" style="color:red" hidden >Correo electrónico ya existe </span>
 				<input type="email" name="correo" id="correo" class="form-control mail required" placeholder="Correo electrónico" maxlength="100" onfocusout="checkExistsEmail()">
 			</div>
+			
+
 			<div class="col-md-1">
-				<label>*Estado</label>
+				<label>*Celular:</label>
 			</div>
 			<div class="col-md-3">
-				<select class="form-control required" name="estado_id" id="estado_id" onchange="onChangeEstado(this);">
-					<option value="" selected>Seleccione su estado</option>
-					<?php foreach ($this->estados as $estado): ?>
-						<option value="<?php echo $estado->id_estado; ?>"><?php echo $estado->estado; ?></option>
-					<?php endforeach ?>
-				</select>
+				<input type="text" name="celular" placeholder="Celular" class="form-control number required" minlength="10" maxlength="10">
 			</div>
 
 			 <div class="col-md-1">
@@ -123,6 +125,14 @@
 				<input type="email" name="correo2" id="correo2" class="form-control mail required" placeholder="Correo electrónico" maxlength="100" onfocusout="checkSameEmail()">
 				<span id="noIgual" style="color:red" hidden >Correo no coincide </span>
 			</div>
+
+			<div class="col-md-1">
+				<!-- <label>Celular:</label> -->
+			</div>
+			<div class="col-md-3">
+				<!-- <input type="text" name="celular" placeholder="Celular" class="form-control number " minlength="8" maxlength="12"> -->
+			</div>
+
 			<div class="col-md-1">
 				<label>*Tipo Registro</label>
 			</div>
@@ -146,3 +156,4 @@
 	</div>
 </form>
 </div>
+

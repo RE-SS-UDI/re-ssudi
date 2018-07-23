@@ -24,6 +24,10 @@ html
 
 }
 
+.form-input-required {
+    color: red;
+}
+
 .minGrid{
 	max-height: 100px;
 	overflow: hidden; 

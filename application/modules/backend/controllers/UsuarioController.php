@@ -13,6 +13,8 @@ class backend_UsuarioController extends Zend_Controller_Action{
         $this->view->puedeAgregar=strpos($sess->cliente->permisos,"AGREGAR_USUARIO")!==false;
         // $this->view->zonas = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
         $this->view->estados = Usuario::obtieneestadosZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+        $this->view->zonas = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+        $this->view->tipos = Usuario::obtieneZonasTiposXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
 
 
     }//function
@@ -51,18 +53,38 @@ class backend_UsuarioController extends Zend_Controller_Action{
         //     $filtro .= " AND e.zona_id = ".$zona->id." ";
         // }
 
-        if($estado!='')
-        {
-            $filtro.=" AND (z.estado_id = '".$estado."') ";
-        }
-        if($zona!='')
-        {
-            $filtro.=" AND (e.zona_id = '".$zona."') ";
-        }
-        if($tipo!='')
-        {
-            $filtro.=" AND (p.tipo_id = '".$tipo."') ";
-        }
+        if($estado!='' && $zona!='' && $tipo!=''){
+
+            if($estado!='')
+            {
+                $filtro.=" AND (z.estado_id = '".$estado."') ";
+            }
+            // else{
+            //     foreach ($this->estados as $est){
+            //          $filtro.=" AND (z.estado_id = '".$est->id_estado."') ";
+            //     }
+            // }
+            if($zona!='')
+            {
+                $filtro.=" AND (e.zona_id = '".$zona."') ";
+            }
+            // else{
+            //     foreach ($this->zonas as $zon){
+            //          $filtro.=" AND (e.zona_id = '".$zon->zona_id."') ";
+            //     }
+            // }
+            if($tipo!='')
+            {
+                $filtro.=" AND (p.tipo_id = '".$tipo."') ";
+            }
+            // else{
+            //     foreach ($this->tipos as $tip){
+            //          $filtro.=" AND (p.tipo_id = '".$tip->tipoID."') ";
+            //     }
+            // }
+    }else{
+        $filtro.=" AND (z.estado_id = 'cuiiiii') ";
+    }
         
         $consulta = "SELECT u.id,u.status,p.nombre,p.apellido_pat, p.apellido_mat, u.usuario, u.tipo_usuario, tu.descripcion, z.nombre as zona, e.nombre as empresa
                       FROM usuario u

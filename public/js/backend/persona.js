@@ -365,10 +365,12 @@ function cambiaEmpresa(empresa_id) {
 function cambiaTipo(tipo_id) {
 	console.log("tipo seleccionado: "+tipo_id.value);
 	var tipo = tipo_id.value;
-	var estado = $('#estado_id').val();
-	var zona = $('#zona_id').val();
+	var estado = $('#estado_idS').val();
+	var zona = $('#zona_idS').val();
+	//console.log("tipo seleccionado: "+estado);
+	//console.log("tipo seleccionado: "+zona);
 	
-	// updateByEstadoZonaTipo(estado,zona,tipo);
+	 updateByEstadoZonaTipo(estado,zona,tipo);
 
 
 }

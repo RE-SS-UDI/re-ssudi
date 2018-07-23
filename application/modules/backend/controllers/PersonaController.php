@@ -43,7 +43,7 @@ class Backend_PersonaController extends Zend_Controller_Action{
         
         
         if($this->_getParam('status')!="")
-            $filtro.=" AND status=".$this->_getParam('status');
+            $filtro.=" AND p.status=".$this->_getParam('status');
         
         if($nombre!='' )
         {
@@ -80,12 +80,12 @@ class Backend_PersonaController extends Zend_Controller_Action{
 
         if($zona!='')
         {
-            $filtro.=" AND (z.id = '".$zona."') ";
+            $filtro.=" AND (e.zona_id = '".$zona."') ";
         }
-        // if($tipo!='')
-        // {
-        //     $filtro.=" AND (p.tipo_id = '".$tipo."') ";
-        // }
+         if($tipo!='')
+         {
+             $filtro.=" AND (p.tipo_id = '".$tipo."') ";
+         }
         if($estado!='')
         {
             $filtro.=" AND (z.estado_id = '".$estado."') ";

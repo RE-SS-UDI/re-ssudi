@@ -147,6 +147,23 @@ function updateByEstadoZonaTipo(estado_id,zona_id,tipo_id){
 	}).flexReload();
 }
 
+function updateByEstadoZonaTipoNone(){
+	var estado = $('#estado_idS').val();
+	var zona = $('#zona_idS').val();
+	var tipo = $('#tipo_idS').val();
+	var filtro2 = '/backend/pre-registro/grid';
+	filtro2+="/estado_id/"+estado;
+	filtro2+="/zona_id/"+zona;
+	filtro2+="/tipo_id/"+tipo;
+
+	$("#flexigrid").flexOptions({
+		url: filtro2,
+		onSuccess: function(){
+		}
+
+	}).flexReload();
+}
+
 
 function cambiaZona(zona_id){
 
@@ -154,7 +171,7 @@ function cambiaZona(zona_id){
 	console.log("zona slelected: "+zona);
 		var estado = $('#estado_idS').val();
 		console.log("estado pre-seleccionado: "+estado);
-		 updateByEstadoZona(estado,zona);
+		//  updateByEstadoZona(estado,zona);
 
 if (zona != '') {
 		$.ajax({
@@ -166,7 +183,8 @@ if (zona != '') {
                 // var response = $.parseJSON(res);
                 // console.log("sucess " + objJSON[0].nombre);
             var tipo = $('#tipo_idS');
-            tipo.empty();
+			tipo.empty();
+			$('#tipo_idS').append('<option value="">Selecciona un tipo</option>');
                 for (var tipo in objJSON) {
                     console.log("de "+objJSON[tipo]['descripcion']);
                     // tipo.append(
@@ -185,7 +203,7 @@ function cambiaEstado(estado_id) {
 	console.log("estado seleccionado: "+estado_id.value);
 	var estado = estado_id.value;
 	
-	updateByEstado(estado);
+	// updateByEstado(estado);
 
 	if (estado != '') {
 		$.ajax({
@@ -201,8 +219,8 @@ function cambiaEstado(estado_id) {
             zonas.empty();
             var tipo = $('#tipo_idS');
 			tipo.empty();
-			$('#zona_idS').append('<option value="">-Selecciona una zona-</option>');
-			$('#tipo_idS').append('<option value="">-Selecciona un tipo-</option>');
+			$('#zona_idS').append('<option value="">Selecciona una zona</option>');
+			$('#tipo_idS').append('<option value="">Selecciona un tipo</option>');
                 for (var zona in objJSON) {
                     console.log(objJSON[zona]['nombre']);
                     zonas.append(
@@ -222,7 +240,7 @@ function cambiaTipo(tipo_id) {
 	var tipo = tipo_id.value;
 	var estado = $('#estado_idS').val();
 	var zona = $('#zona_idS').val();
-	updateByEstadoZonaTipo(estado,zona,tipo);
+	// updateByEstadoZonaTipo(estado,zona,tipo);
 	
 	// if (tipo != '') {
 	// 	$.ajax({

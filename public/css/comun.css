@@ -15,6 +15,10 @@
 	color: #F9F9F9;
 }
 
+.form-input-required {
+    color: red;
+}
+
 .panel-default {
     border-color: #54575c;
 }

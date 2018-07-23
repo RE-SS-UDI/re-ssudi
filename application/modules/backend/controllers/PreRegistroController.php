@@ -48,8 +48,7 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
         $status=$this->_getParam('status');
         $zona=$this->_getParam('zona_id');
         $estado=$this->_getParam('estado_id');
-        $tipo=$this->_getParam('tipo_id');
-        
+        $tipo=$this->_getParam('tipo_id');        
         
         if($this->_getParam('status')!="")
             $filtro.=" AND status=".$this->_getParam('status');
@@ -221,6 +220,7 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
             $data['telefono'] = $_POST['telefono'];
             $data['celular'] = $_POST['celular'];
             $data['empresa_id'] = $_POST['empresa_id'];
+            $data['tipo_id'] = $_POST['tipo_id'];
 
             $preId = My_Comun::guardarSQL("persona", $data, $data["id"], $bitacora);
 
@@ -236,7 +236,12 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
             $data2['contrasena'] = $pass;
             //Nuevo
             $data2['tipo_usuario'] = 6;
-            $data2['permisos'] = '';
+            //obtener permisos usuario
+            $permisos = My_Comun::obtenerFiltroSQL('tipo_usuario','WHERE status = 1 AND id=6');
+            foreach ($permisos as $permiso) {
+                $data2['permisos'] = $permiso->permisos;
+            }
+            
 
             $usuId = My_Comun::guardarSQL("usuario", $data2, $data2["id"], $bitacora);
             

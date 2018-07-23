@@ -22,8 +22,8 @@ $(document).ready(function(){
 
 	var filtro="/backend/empresa/grid";
 	if($("#fnombre").val()!="")       filtro+="/nombre/"+$("#fnombre").val();
-	if($("#frazon_social").val()!="")       filtro+="/razon_social/"+$("#frazon_social").val();
-	if($("#fcalle").val()!="")      filtro+="/calle/"+$("#fcalle").val();
+	// if($("#frazon_social").val()!="")       filtro+="/razon_social/"+$("#frazon_social").val();
+	// if($("#fcalle").val()!="")      filtro+="/calle/"+$("#fcalle").val();
 	if($("#festado").val()!="")      filtro+="/estado/"+$("#festado").val();
 	if($("#fstatus").val()!="")      filtro+="/status/"+$("#fstatus").val();
 	if($("#fcontacto").val()!="")      filtro+="/contacto/"+$("#fcontacto").val();
@@ -115,3 +115,105 @@ function guardarEmpresa(formulario)
     $("#"+formulario).submit();     
 }
 
+function updateByEstado(estado_id){
+	var filtro2 = '/backend/empresa/grid';
+console.log(estado_id);
+			filtro2+="/estado/"+estado_id;
+
+		$("#flexigrid").flexOptions({
+			url: filtro2,
+			onSuccess: function(){
+			}
+
+		}).flexReload();
+	}
+
+function updateByEstadoZona(estado_id,zona_id){
+	var filtro2 = '/backend/empresa/grid';
+	console.log(estado_id);
+	filtro2+="/estado/"+estado_id;
+	filtro2+="/zona/"+zona_id;
+
+	$("#flexigrid").flexOptions({
+		url: filtro2,
+		onSuccess: function(){
+		}
+
+	}).flexReload();
+}
+
+function cambiaEstado(estado_id) {
+	console.log("estado seleccionado: "+estado_id.value);
+	var estado = estado_id.value;
+
+	// updateByEstado(estado);
+
+	if (estado != '') {
+		$.ajax({
+			url: '/backend/empresa/on-change-estado',
+			type: 'POST',
+			data: {estado: estado},
+			success: function(res){
+				console.log('estado cambiado');
+                var objJSON = eval("(function(){return " + res + ";})()");
+                // var response = $.parseJSON(res);
+                // console.log("sucess " + objJSON[0].nombre);
+			var zonas = $('#zona');
+			var zonas2 = $('#zona_id');
+			zonas.empty();
+			zonas2.empty();
+			zonas.append('<option value="">Selecciona una zona</option>');
+			zonas2.append('<option value="">Selecciona una zona</option>');
+			// tipo.append('<option value="">Selecciona un tipo</option>');
+                for (var zona in objJSON) {
+                    console.log(objJSON[zona]['nombre']);
+                    zonas.append(
+                        $('<option>', {
+                        value: objJSON[zona]['id']
+                        }).text(objJSON[zona]['nombre'])
+					);
+					zonas2.append(
+                        $('<option>', {
+                        value: objJSON[zona]['id']
+                        }).text(objJSON[zona]['nombre'])
+                    );
+                    // $('#zona_id').append('<option value=' + objJSON[zona]['id'] + '>' + objJSON[zona]['nombre'] + '</option>');
+                }
+            }
+		});
+	}
+}
+
+function cambiaZona(zona_id){
+
+	var zona = zona_id.value;
+	console.log("zona slelected: "+zona);
+		var estado = $('#estado').val();
+		console.log("estado pre-seleccionado: "+estado);
+		//  updateByEstadoZona(estado,zona);
+
+// if (zona != '') {
+// 		$.ajax({
+// 			url: '/backend/empresa/on-change-zona',
+// 			type: 'POST',
+// 			data: {zona: zona},
+// 			success: function(res){
+//                 var objJSON = eval("(function(){return " + res + ";})()");
+//                 // var response = $.parseJSON(res);
+//                 // console.log("sucess " + objJSON[0].nombre);
+//             var tipo = $('#tipo_id');
+// 			tipo.empty();
+// 			$('#tipo_id').append('<option value="" >Selecciona un tipo</option>');
+//                 for (var tipo in objJSON) {
+//                     console.log("de "+objJSON[tipo]['descripcion']);
+//                     // tipo.append(
+//                     //     $('<option>', {
+//                     //     value: objJSON[tipo]['id']
+//                     //     }).text(objJSON[tipo]['descripcion'])
+//                     // );
+// 					$('#tipo_id').append('<option value=' + objJSON[tipo]['id'] + '>' + objJSON[tipo]['descripcion'] + '</option>');
+//                 }
+//             }
+// 		});
+// 	}
+}

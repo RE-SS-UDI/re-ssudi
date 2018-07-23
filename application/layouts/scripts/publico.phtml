@@ -22,6 +22,11 @@
  <?php echo $this->headLink(); ?>
  
 </head>
+<style>
+form-control input:required {
+  border-left-color: palegreen;
+}
+</style>
 <body style= "background-image: url('/img/fondoUTJ1.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center; background-attachment: fixed;">
 <!--header-->
 <header id="header">
@@ -106,7 +111,7 @@
 
   <!-- La carga de los scripts debe hacerse al final -->
   <script src="/recursos/jquery_2_2_1/jquery2_2_1.js"></script>
-  <script src="/recursos/jquery_ui_1_11_4/jquery-ui.js"></script>
+  <script src="/recursos/jquery-ui.js"></script>
   <script src="/js/modernizr-2.6.2.js"></script>
   <script src="/js/bootstrap.js"></script>
   <script src="/js/respond.js"></script>
@@ -116,6 +121,8 @@
   <script src="/recursos/jquery_validation_1_13_0/dist/localization/messages_es.min.js"></script>    
   
   <script src="/js/backend/comun.js"></script>
+
+
   <?php echo $this->headScript(); ?>        
 
 	<!--[if lt IE 9]>

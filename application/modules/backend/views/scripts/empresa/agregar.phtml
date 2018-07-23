@@ -58,7 +58,7 @@
     <div class="col-xs-12 form-group"> 
         <label for="estado_id" class="col-xs-2 control-label"><span class="naranja">*</span>Estado:</label>
         <div class="col-xs-4">
-            <select name="estado_id" class="form-control required" id="estado_id" onchange="cambiaEstado(this.value);">
+            <select name="estado_id" class="form-control required" id="estado_id" onchange="cambiaEstado(this);">
                 <option value="" selected>Escoge un estado</option>
                 <?php foreach ($this->estados as $estado): ?>
                     <option value="<?php echo $estado->id_estado ?>" <?php echo (($this->registro->estado_id==$estado->id_estado)?'selected':'') ?>><?php echo utf8_encode($estado->estado) ?></option>
@@ -93,9 +93,9 @@
         <div class="col-xs-4">
             <select name="zona_id" class="form-control required" id="zona_id">
                 <option value="" selected>Escoge una zona</option>
-                <?php foreach ($this->zonasFiltro as $zona): ?>
+                <!-- <?php foreach ($this->zonasFiltro as $zona): ?>
                     <option value="<?php echo $zona->id ?>" <?php echo (($this->registro->zona_id==$zona->id)?'selected':'') ?>><?php echo $zona->nombre ?></option>
-                <?php endforeach ?>
+                <?php endforeach ?> -->
             </select>
         </div>
         <label for="status" class="col-xs-2 control-label"><span class="naranja"></span>Estatus:</label>

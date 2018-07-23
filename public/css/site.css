@@ -30,6 +30,16 @@ textarea {
 	}
 }
 
+.form-input-required {
+    color: red;
+}
+
+
+.form-control input:required {
+  border-left-color: palegreen;
+}
+
+
 
 .datos{
     border: 2px solid #C6C6C6;

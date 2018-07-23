@@ -118,6 +118,25 @@ class ContestaEncuesta
         return $datos;
     }//funcion
 
+    public static function obtieneTiposXZonas($zona_id)
+    {
+        $conec = new Conexion;
+        $conexion = $conec->abreConexion();
+
+        $sql = "SELECT tp.*
+        FROM tipo_persona tp       
+        WHERE tp.status = 1 AND tp.zona_id = '".$zona_id."' 
+        ";
+              
+        $stmt = sqlsrv_query( $conexion, $sql);
+        $datos = array();
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+        
+            $datos[] =  $obj;       
+        }
+        return $datos;
+    }//funcion
+
     public static function obtieneZona_UsuarioZona($persona_id)
     {
         $conec = new Conexion;

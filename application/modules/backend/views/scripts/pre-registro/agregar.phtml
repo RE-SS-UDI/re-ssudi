@@ -77,13 +77,19 @@
         </div>
         <label for="empresa_id" class="col-xs-2 control-label"><span class="naranja">*</span>Estado:</label>
         <div class="col-xs-4">
-        <input type="text" id="celular" name="celular" class="form-control input-sm" value="<?php echo $this->registro->celular ?>" readonly="readonly" maxlength="100" placeholder="Estado" />
+        <?php 
+        $estado = My_Comun::obtenerFiltroSQL('estados',' WHERE id_estado='.$this->registro->estado_id); 
+        ?>
+        <?php foreach ($estado as $est): ?>
+        <input type="text" id="estado" name="estado" class="form-control input-sm" value="<?php echo $est->estado ?>" readonly="readonly" maxlength="100" placeholder="Estado" />
+        <?php endforeach ?>
         </div>
     </div>
     <br>    
     
     <div class="col-xs-12 text-right">
-    <input type="hidden" name="id" id="id" value="<?php echo $this->registro->id; ?>" /> <!-- cuando no es nuevo -->
+    <input type="hidden" name="id" id="id" value="<?php echo $this->registro->id; ?>" />
+    <input type="hidden" name="tipo_id" id="tipo_id" value="<?php echo $this->registro->tipo_id; ?>" /> <!-- cuando no es nuevo -->
     <button class="btn btn-rojo-1" onclick="guardarPreregistro('frmPreRegistro','frmFiltrosPreRegistro','/backend/pre-registro/grid','/backend/pre-registro/imprimir','/pre-registro/exportar');" type="button" ><i class="fa fa-check-circle"></i> Aceptar</button>
     <button class="btn btn-rojo-1" onclick="cancelar();" type="button" ><i class="fa fa-times-circle"></i> Cancelar</button>
     </div>

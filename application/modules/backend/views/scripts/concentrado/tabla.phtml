@@ -13,8 +13,9 @@
     <?php foreach ($this->personas as $persona): ?>
         <tr>
         <?php $contador = 0; ?>
-            <td ><?php echo $persona->empresa; ?></td>
-            <td><?php echo $persona->contacto?></td>
+            <td ><?php echo $persona->empresa ; ?></td>  
+            <!-- p.nombre, p.apellido_pat, p.apellido_mat -->
+            <td><?php echo $persona->nombre.' '.$persona->apellido_pat.' '.$persona->apellido_mat   ;?></td>
             <!-- <td><?php echo $persona->nombre.' '.$persona->apellido_pat.' '.$persona->apellido_mat?></td> -->
             <?php foreach ($this->encuestas as $encuesta): ?>
                 <td class="text-center ancho-celda">

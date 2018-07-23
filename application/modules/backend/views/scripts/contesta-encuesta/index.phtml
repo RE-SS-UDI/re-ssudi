@@ -10,6 +10,18 @@
 			<?php } ?>
 		</ul>
 
+		<ul class="nav nav-tabs menu  col-md-10" role="tablist">
+		<h3>Tipo</h3>
+			<?php foreach ($this->zonasName as $zname){ ?>
+				<?php $tipos_personas = ContestaEncuesta::obtieneTiposXZonas($zname->id); ?>
+				<?php foreach ($tipos_personas as $tp){ ?>
+			<li role="presentation" class="<?php echo (($tp->id == $this->num_encuesta)?'active':''); ?>">
+				<a href="#set<?php echo $tp->id; ?>"  title="<?php echo $tp->descripcion; ?>" role="tab" data-toggle="tab" ><?php echo substr($tp->descripcion, 0,15).'...'; ?></a>
+			</li>
+			<?php } ?>
+			<?php } ?>
+		</ul>
+
 		<div class="col-md-12">
 			<h3>Indicadores</h3>
 			<!-- tabs left -->

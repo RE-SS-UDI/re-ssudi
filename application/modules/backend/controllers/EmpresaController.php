@@ -10,7 +10,9 @@ class Backend_EmpresaController extends Zend_Controller_Action{
         $sess=new Zend_Session_Namespace('permisos');
         $this->view->puedeAgregar=strpos($sess->cliente->permisos,"AGREGAR_EMPRESA")!==false;
         $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', ' WHERE status = 1 ', ' nombre asc');
-        $this->view->estados = My_Comun::obtenerFiltroSQL('estados', ' WHERE 1 = 1 ', ' estado asc');
+       // $this->view->estados = My_Comun::obtenerFiltroSQL('estados', ' WHERE status = 1 ', ' estado asc');
+        $this->view->estados = Usuario::obtieneestadosZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+
 
         
     }//function
@@ -132,7 +134,7 @@ class Backend_EmpresaController extends Zend_Controller_Action{
         $this->_helper->layout->disableLayout();
         $this->view->llave = My_Comun::aleatorio(20);
         
-        $this->view->estados = My_Comun::obtenerFiltroSQL('estados', ' where 1 = 1 ', ' estado asc');
+        $this->view->estados = My_Comun::obtenerFiltroSQL('estados', ' where status = 1 ', ' estado asc');
         //$this->view->zonas = My_Comun::obtenerFiltroSQL('zona', ' where status = 1 ', ' nombre asc');
 
 
@@ -222,6 +224,41 @@ class Backend_EmpresaController extends Zend_Controller_Action{
 
             }
     }//function
+    
+
+        public function onChangeEstadoAction(){
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(TRUE);
+        // $estado = $_POST["estado"];
+  
+        $estado=$this->_getParam('estado');
+        $filtro = "WHERE status = 1";
+          
+        if($estado!='')
+        {
+            $filtro.=" AND (estado_id = $estado) ";
+        }
+        // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        $zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        echo json_encode($zonas);
+    }
+
+    public function onChangeZonaAction(){
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(TRUE);
+        // $estado = $_POST["estado"];
+  
+        $zona=$this->_getParam('zona');
+        $filtro = "WHERE status = 1";
+          
+        if($zona!='')
+        {
+            $filtro.=" AND (zona_id = $zona) ";
+        }
+        // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        $zonas = My_Comun::obtenerFiltroSQL('tipo_persona', $filtro, ' descripcion asc');
+        echo json_encode($zonas);
+    }
 
 }//class
 ?>

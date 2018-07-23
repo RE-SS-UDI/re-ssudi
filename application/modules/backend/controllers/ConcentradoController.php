@@ -335,8 +335,8 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
         $filtro = "WHERE status = 1";
           
         // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
-        $zonas = My_Comun::obtenerCategoriasXzonaXtipo($zona,$tipo);
-        echo json_encode($zonas);
+        $categorias = My_Comun::obtenerCategoriasXzonaXtipo($zona,$tipo);
+        echo json_encode($categorias);
     }
 
 }//class

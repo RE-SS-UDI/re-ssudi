@@ -383,11 +383,11 @@ public static function obtenerFiltroSQLZonasAdmin(){
 	public static function obtenerCategoriasXzonaXtipo($zona_id,$tipo_id){
 		$conec = new Conexion;
         $conexion = $conec->abreConexion();
-		$sql = "select cat.* 
+		$sql = "select distinct cat.* 
 				  FROM categoria cat 
 				  INNER JOIN zona_encuesta ze
 				  ON ze.categoria_id = cat.id
-				  WHERE ze.zona_id = ".$zona_id." AND ze.tipo_id = ".$tipo_id;
+				  WHERE cat.status = 1 AND ze.zona_id = ".$zona_id." AND ze.tipo_id = ".$tipo_id;
 
 		$stmt = sqlsrv_query( $conexion, $sql);
 		$datos = array();

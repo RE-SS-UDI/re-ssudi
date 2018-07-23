@@ -102,7 +102,7 @@ class Usuario{
     {
         $conec = new Conexion;
         $conexion = $conec->abreConexion();
-        $sql = "SELECT z.id, z.zona_id, zo.nombre as znombre, tp.descripcion
+        $sql = "SELECT z.id, z.zona_id, zo.nombre as znombre, tp.descripcion, tp.id as tipoID
                 FROM persona_zona z
                 INNER JOIN zona zo
                 on zo.id = z.zona_id
