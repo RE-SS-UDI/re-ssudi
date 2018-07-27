@@ -75,7 +75,7 @@ class Backend_EstadoController extends Zend_Controller_Action{
                
             if($registros['registros'][$k]->status == 0)
             {
-                $grid[$i]['habilitar'] = '<span onclick="cambiaStatus('.$registros['registros'][$k]->id_estado.', '.$registros['registros'][$k]->status.' );" title="Cambia"><i class="boton fa fa-check-square-o fa-lg azul"></i></span>';
+                $grid[$i]['habilitar'] = '<span onclick="cambiaStatus('.$registros['registros'][$k]->id_estado.', '.$registros['registros'][$k]->status.' );" title="Cambia"><i class="boton fa fa-check-square-o fa-lg text-danger"></i></span>';
 
                 $grid[$i]['editar'] = '<i class="boton fa fa-pencil fa-lg text-danger"></i>';
                 
