@@ -50,7 +50,7 @@ class Respuesta
         
 	}
 
-	public static function eliminaRespuestaTipo($persona_id,$pregunta_id,$tipo)
+	public static function eliminaRespuestaTipo($persona_id,$pregunta_id,$tipo,$tipo_persona)
 	{
 //		print_r($persona_id.'-'.$tipo);
 //		exit;
@@ -58,7 +58,7 @@ class Respuesta
         $conexion = $conec->abreConexion();
 
         $sql = "DELETE respuesta
-				  WHERE persona_id = ".$persona_id." AND pregunta_id = ".$pregunta_id." AND tipo = '".$tipo."' ";
+				  WHERE persona_id = ".$persona_id." AND tipo_persona_id = ".$tipo_persona." AND pregunta_id = ".$pregunta_id." AND tipo = '".$tipo."' ";
         $stmt = sqlsrv_query( $conexion, $sql);
 
         if( $obj = sqlsrv_fetch_object($stmt)) {
