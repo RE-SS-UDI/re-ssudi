@@ -51,10 +51,6 @@ class Backend_EmpresaController extends Zend_Controller_Action{
         {
             $filtro.=" AND (e.razon_social LIKE '%".$razon_social."%') ";
         }//if
-        if($estado!='')
-        {
-            $filtro.=" AND (e.estado_id = '".$estado."') ";
-        }//if
         if($calle!='')
         {
             $filtro.=" AND (e.calle LIKE '%".$calle."%') ";
@@ -66,7 +62,15 @@ class Backend_EmpresaController extends Zend_Controller_Action{
         if($zona!='')
         {
             $filtro.=" AND (e.zona_id = '".$zona."') ";
-        }//if
+        }else{
+            $filtro.=" AND (e.zona_id = '0') ";
+        }
+        if($estado!='')
+        {
+            $filtro.=" AND (e.estado_id = '".$estado."') ";
+        }else{
+            $filtro.=" AND (e.estado_id = '0') ";
+        }
 
         if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario != 3){
             $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->persona_id);

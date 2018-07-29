@@ -15,19 +15,19 @@
 				<label>*Nombre:</label>
 			</div>
 			<div class="col-md-3">
-				<input type="text" onkeyup="this.value = this.value.toUpperCase();" name="nombre" placeholder="Nombre" class="form-control required" maxlength="100">
+				<input type="text" onkeyup="this.value = this.value.toUpperCase();" name="nombre" id="nombre" placeholder="Nombre" class="form-control required" maxlength="100">
 			</div>
 			<div class="col-md-1">
 				<label>*Apellido paterno:</label>
 				</div>
 			<div class="col-md-3">
-				<input type="text" onkeyup="this.value = this.value.toUpperCase();" name="apellido_pat" placeholder="Apellido paterno" class="form-control required" maxlength="50">
+				<input type="text" onkeyup="this.value = this.value.toUpperCase();" name="apellido_pat" id="apellidoP" placeholder="Apellido paterno" class="form-control required" maxlength="50">
 			</div>
 			<div class="col-md-1">
 				<label>*Apellido materno:</label>
 			</div>
 			<div class="col-md-3">
-				<input type="text" onkeyup="this.value = this.value.toUpperCase();" name="apellido_mat" placeholder="Apellido materno" class="form-control required" maxlength="50">
+				<input type="text" onkeyup="this.value = this.value.toUpperCase();" name="apellido_mat" id="apellidoM" placeholder="Apellido materno" class="form-control required" maxlength="50">
 			</div>
 		</div>
 	</div>
@@ -61,9 +61,9 @@
 			<div class="col-md-1">
 				<label>*Género</label>
 			</div>
-			<div class="col-md-3">
-				<label class="radio-inline"><input type="radio" name="genero" class="required" value="1">M</label>
-				<label class="radio-inline"><input type="radio" name="genero" class="required" value="2">F</label>
+			<div class="col-md-3 ">
+				<label class="radio-inline"><input type="radio" name="genero" class="" value="1" required>M</label>
+				<label class="radio-inline"><input type="radio" name="genero" class="" value="2" required>F</label>
 			</div>
 			<div class="col-md-1">
 				<label>Tel&eacute;fono:</label>
@@ -99,7 +99,7 @@
 				<label>*Celular:</label>
 			</div>
 			<div class="col-md-3">
-				<input type="text" name="celular" placeholder="Celular" class="form-control number required" minlength="10" maxlength="10">
+				<input type="text" name="celular" placeholder="Celular" id="celular" class="form-control number required" minlength="10" maxlength="10">
 			</div>
 
 			 <div class="col-md-1">
@@ -150,7 +150,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="col-md-2 col-md-offset-5">
-				<a onclick="guardarPreRegistro('frmPreRegistro');" class="btn btn-primary"><i class="fa fa-check"></i> Enviar</a>
+				<a onclick="shakeEmpys(); guardarPreRegistro('frmPreRegistro');" class="btn btn-primary"><i class="fa fa-check"></i> Enviar</a>
 			</div>
 		</div>
 	</div>

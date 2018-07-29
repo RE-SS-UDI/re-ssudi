@@ -326,3 +326,34 @@ function cambiaTipo(tipo_id) {
 	var zona = $('#zona_id').val();
 	// updateByEstadoZonaTipo(estado,zona,tipo);
 }
+
+function shakeEmpys(){
+    // var cat = $('#categoria_id').val();
+    var tipoF = document.getElementById("tipo_id");
+    var zonaf = document.getElementById("zona_id");
+    var estadoF = document.getElementById("estado_id");
+
+
+    if(tipoF.value === "") {
+        // console.log("falta " +catF.value);
+        tipoF.classList.add("apply-shake");
+    }
+    if(zonaf.value === "") {
+        // console.log("falta " +catF.value);
+        zonaf.classList.add("apply-shake");
+    }
+    if(estadoF.value === "") {
+        // console.log("falta " +catF.value);
+        estadoF.classList.add("apply-shake");
+    }
+
+    tipoF.addEventListener("animationend", (e) => {
+        tipoF.classList.remove("apply-shake");
+    });
+    zonaf.addEventListener("animationend", (e) => {
+        zonaf.classList.remove("apply-shake");
+    });
+    estadoF.addEventListener("animationend", (e) => {
+        estadoF.classList.remove("apply-shake");
+    });
+}

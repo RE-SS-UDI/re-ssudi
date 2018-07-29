@@ -173,6 +173,9 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
             $filtro_tipo.=' AND uz.tipo_id = '.$tipo;
             $filtro_tipo_encuesta.=' AND ze.tipo_id = '.$tipo;
         }
+        else{
+            $filtro_tipo_encuesta.=' AND ze.tipo_id = 0';
+        }
 
         if ($categoria != '') {
             $filtro_categoria = ' AND e.categoria_id = '.$categoria; 

@@ -217,3 +217,26 @@ function cambiaZona(zona_id){
 // 		});
 // 	}
 }
+
+function shakeEmpys(){
+    // var cat = $('#categoria_id').val();
+
+    var zonaf = document.getElementById("zona");
+    var estadoF = document.getElementById("estado");
+
+    if(zonaf.value === "") {
+        // console.log("falta " +catF.value);
+        zonaf.classList.add("apply-shake");
+    }
+    if(estadoF.value === "") {
+        // console.log("falta " +catF.value);
+        estadoF.classList.add("apply-shake");
+    }
+
+    zonaf.addEventListener("animationend", (e) => {
+        zonaf.classList.remove("apply-shake");
+    });
+    estadoF.addEventListener("animationend", (e) => {
+        estadoF.classList.remove("apply-shake");
+    });
+}

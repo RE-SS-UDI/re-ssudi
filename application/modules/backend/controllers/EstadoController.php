@@ -44,8 +44,10 @@ class Backend_EstadoController extends Zend_Controller_Action{
         $nombre=$this->_getParam('estado');
         
         
-        if($this->_getParam('status')!="")
+        if($this->_getParam('status')!=""){
             $filtro.=" AND status=".$this->_getParam('status');
+        }
+
         if($nombre!='')
         {
             $filtro.=" AND (es.estado LIKE '%".$nombre."%')";

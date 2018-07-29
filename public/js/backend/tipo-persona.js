@@ -148,8 +148,8 @@ function cambiaEstado(estado_id) {
 			zonas.empty();
 			$('#zona_id').append('<option value="">Selecciona una zona</option>');
                 for (var zona in objJSON) {
-					if (cont < 1)
-						updateByZona(objJSON[zona]['id']);
+					// if (cont < 1)
+					// 	updateByZona(objJSON[zona]['id']);
 
 
 					console.log(objJSON[zona]['nombre']);
@@ -164,4 +164,28 @@ function cambiaEstado(estado_id) {
             }
 		});
 	}
+}
+
+function shakeEmpys(){
+    // var cat = $('#categoria_id').val();
+
+    var zonaf = document.getElementById("zona_id");
+    var estadoF = document.getElementById("estado_id");
+
+
+    if(zonaf.value === "") {
+        // console.log("falta " +catF.value);
+        zonaf.classList.add("apply-shake");
+    }
+    if(estadoF.value === "") {
+        // console.log("falta " +catF.value);
+        estadoF.classList.add("apply-shake");
+    }
+
+    zonaf.addEventListener("animationend", (e) => {
+        zonaf.classList.remove("apply-shake");
+    });
+    estadoF.addEventListener("animationend", (e) => {
+        estadoF.classList.remove("apply-shake");
+    });
 }

@@ -56,6 +56,7 @@
 					</ul>
 
 					<div class="tab-content">
+						
 						<?php $contador2 = 0; ?>
 						<?php foreach ($encuestasZonas as $encuesta): ?>
 						<div class="tab-pane <?php echo (($contador2 == $this->num_encuesta)?'active':''); ?>" id="_<?php echo $encuesta->id; ?>_<?php echo$zname->id;?>_<?php echo$encuesta->tipo_persona_id;?>">
@@ -66,7 +67,10 @@
 								<div class="col-xs-10 cuerpo-encuesta">
 									<h3 class="col-xs-12 text-center">
 										<?php echo $encuesta->nombre; ?> -
-										<?php echo $encuesta->tipo_persona; ?>
+										<?php echo $encuesta->tipo_persona; ?> 
+										<!-- <?php //echo $encuesta->id;?> *
+										<?php //echo $encuesta->tipo_persona_id;?> /
+										<?php //echo $zname->id;?> -->
 									</h3>
 									<?php $preguntas = Preguntas::obtienePreguntasEncuesta($encuesta->id); ?>
 									

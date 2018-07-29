@@ -43,7 +43,7 @@ class Backend_ContestaEncuestaController extends Zend_Controller_Action{
 
 
                 if (is_array($value)) {
-//                    print_r('Es arreglo');
+                //    print_r('Es arreglo');
                     Respuesta::eliminaRespuestaTipo($_POST['persona_id'], $separaId[1], $separaId[2],$_POST['tipo_persona_id']);
                     foreach ($value as $v) {
                         $data2 = array();
@@ -61,14 +61,14 @@ class Backend_ContestaEncuestaController extends Zend_Controller_Action{
                     }                   
 
                 } else {
-//                    print_r('No es arreglo');
+                //    print_r('No es arreglo');
 //                    $separaId = explode('_',$key);
                     $data['descripcion'] = $value;
                     $data['pregunta_id'] = $separaId[1];
                     $data['persona_id'] = $_POST['persona_id'];
                     $data['tipo'] = $separaId[2];
                     $data['zona_id'] = $_POST['zona_ID'];
-                    $data['tipo_persona_id'] = "";
+                    $data['tipo_persona_id'] =  $_POST['tipo_persona_id'];
                     $data['id'] = $separaId[0];
                     
 //                    print_r($data);

@@ -37,9 +37,9 @@ class Backend_PersonaController extends Zend_Controller_Action{
         $paterno=$this->_getParam('paterno');
         $materno=$this->_getParam('materno');
         $status=$this->_getParam('status');
-        $zona=$this->_getParam('zona_id');
-        $estado=$this->_getParam('estado_id');
-        $tipo=$this->_getParam('tipo_id');
+        $zona=$this->_getParam('zona_idS');
+        $estado=$this->_getParam('estado_idS');
+        $tipo=$this->_getParam('tipo_idS');
         
         
         if($this->_getParam('status')!="")
@@ -81,14 +81,20 @@ class Backend_PersonaController extends Zend_Controller_Action{
         if($zona!='')
         {
             $filtro.=" AND (e.zona_id = '".$zona."') ";
+        }else{
+            $filtro.=" AND (e.zona_id = '0') ";
         }
          if($tipo!='')
          {
              $filtro.=" AND (p.tipo_id = '".$tipo."') ";
+         }else{
+            $filtro.=" AND (p.tipo_id = '0') ";
          }
         if($estado!='')
         {
             $filtro.=" AND (z.estado_id = '".$estado."') ";
+        }else{
+            $filtro.=" AND (z.estado_id = '0') ";
         }
         // if($estado!='')
         // {

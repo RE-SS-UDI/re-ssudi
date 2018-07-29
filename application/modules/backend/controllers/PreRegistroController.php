@@ -68,10 +68,14 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
         if($zona!='')
         {
             $filtro.=" AND (pr.zona_id = '".$zona."') ";
+        }else{
+            $filtro.=" AND (pr.zona_id = '0') ";
         }
         if($tipo!='')
         {
             $filtro.=" AND (pr.tipo_id = '".$tipo."') ";
+        }else{
+            $filtro.=" AND (pr.tipo_id = '0') ";
         }
         if($estado!='')
         {
