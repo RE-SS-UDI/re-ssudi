@@ -236,10 +236,11 @@ function cambiaEstado(estado_id) {
 }
 
 function cambiaTipo(tipo_id) {
-	console.log("tipo seleccionado: "+tipo_id.value);
 	var tipo = tipo_id.value;
 	var estado = $('#estado_idS').val();
 	var zona = $('#zona_idS').val();
+	console.log("tipo seleccionado: "+tipo_id.value + " Estado: "+ estado + " Zona:" + zona);
+	
 	// updateByEstadoZonaTipo(estado,zona,tipo);
 	
 	// if (tipo != '') {

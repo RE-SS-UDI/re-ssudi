@@ -46,9 +46,9 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
         $materno=$this->_getParam('materno');
         $paterno=$this->_getParam('paterno');
         $status=$this->_getParam('status');
-        $zona=$this->_getParam('zona_id');
-        $estado=$this->_getParam('estado_id');
-        $tipo=$this->_getParam('tipo_id');        
+        $zona=$this->_getParam('zona_idS');
+        $estado=$this->_getParam('estado_idS');
+        $tipo=$this->_getParam('tipo_idS');        
         
         if($this->_getParam('status')!="")
             $filtro.=" AND status=".$this->_getParam('status');
@@ -81,7 +81,8 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
         {
             $filtro.=" AND (pr.estado_id = '".$estado."') ";
         }else{
-            $filtro.=" AND (pr.estado_id = '".$k."') ";
+            // $filtro.=" AND (pr.estado_id = '".$k."') ";
+            $filtro.=" AND (pr.estado_id = '0') ";
         }
 
         $consulta = "SELECT pr.id, pr.nombre, pr.apellido_pat, pr.apellido_mat, pr.correo, pr.telefono, pr.status, z.nombre as zNombre, es.estado
@@ -231,7 +232,11 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
             //Se define una cadena de caractares. Te recomiendo que uses esta.
             $cadena = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
             $pass = $this->generaUsuarioContrasena($cadena, 8);
-            $armando = trim($_POST['nombre'].$_POST['apellido_pat'].$_POST['apellido_mat']," ");
+            $nombre = $_POST['nombre'];
+            $apeP = $_POST['apellido_pat'];
+            $apeM = $_POST['apellido_mat'];
+            $merge = $this->cleanString($nombre.$apeP.$apeM);
+            $armando = trim($merge," ");
             $usu = $this->generaUsuarioContrasena($armando,6);
             $data2 = array();
             $data2['persona_id'] = $preId;
@@ -264,6 +269,14 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
             echo($preId);
             // echo("Agregado correctamente!");
     }//guardar
+
+    function cleanString($string)
+    {
+        echo "<script>console.log( 'Debug Objects: " . $string . "' );</script>";
+        $string = str_replace('', '-', $string);
+        $string = str_replace("'", '', $string);
+      return preg_replace('/[^A-Za-z0-9\-\']/', '', $string);
+    }
 	
     function eliminarAction()
     {
