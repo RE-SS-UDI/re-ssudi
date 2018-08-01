@@ -12,8 +12,58 @@ $(document).ready(function() {
 
     cargaTabla();
 
+
+
+
+
+    // if(input.value === "") {
+    //     input.classList.add("apply-shake");
+    // }
+
+
+    // input.classList.remove("apply-shake");
+
+
 });
 
+
+function shakeEmpys(){
+    // var cat = $('#categoria_id').val();
+    var catF = document.getElementById("categoria_id");
+    var tipoF = document.getElementById("tipo_id");
+    var zonaf = document.getElementById("zona_id");
+    var estadoF = document.getElementById("estado_id");
+
+    if(catF.value === "") {
+        // console.log("falta " +catF.value);
+        catF.classList.add("apply-shake");
+    }
+    if(tipoF.value === "") {
+        // console.log("falta " +catF.value);
+        tipoF.classList.add("apply-shake");
+    }
+    if(zonaf.value === "") {
+        // console.log("falta " +catF.value);
+        zonaf.classList.add("apply-shake");
+    }
+    if(estadoF.value === "") {
+        // console.log("falta " +catF.value);
+        estadoF.classList.add("apply-shake");
+    }
+
+    catF.addEventListener("animationend", (e) => {
+        catF.classList.remove("apply-shake");
+    });
+    tipoF.addEventListener("animationend", (e) => {
+        tipoF.classList.remove("apply-shake");
+    });
+    zonaf.addEventListener("animationend", (e) => {
+        zonaf.classList.remove("apply-shake");
+    });
+    estadoF.addEventListener("animationend", (e) => {
+        estadoF.classList.remove("apply-shake");
+    });
+}
 
 function muestraEncuesta(persona, encuesta, zona, tipo)
 {
@@ -154,6 +204,7 @@ function updateByEstadoZona(estado_id,zona_id){
 
 function filtrar()
 {
+    shakeEmpys();
     var filtro='';
 
     // $("#frmFiltrosCategoria :input").each(function(){
@@ -166,11 +217,16 @@ function filtrar()
     var estado = $('#estado_id').val();
     var categoria = $('#categoria_id').val();
 
-    filtro+="/zona_id/"+zona;
-    filtro+="/tipo_id/"+tipo;
-    filtro+="/estado_id/"+estado;
-    filtro+="/categoria_id/"+categoria;
     filtro+="/nombre/"+nombre;
+
+    if (zona != "" && tipo != "" && estado != "" && categoria != ""){
+        filtro+="/zona_id/"+zona;
+        filtro+="/tipo_id/"+tipo;
+        filtro+="/estado_id/"+estado;
+        filtro+="/categoria_id/"+categoria;
+    }
+
+
 
 
     $.ajax({

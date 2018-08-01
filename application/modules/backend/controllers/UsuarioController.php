@@ -37,54 +37,47 @@ class backend_UsuarioController extends Zend_Controller_Action{
         if($this->_getParam('status')!="")			
             $filtro.=" AND u.status=".$this->_getParam('status');
         
-        if($nombre!='')
-        {
-            $nombre=explode(" ", trim($nombre));
-            for($i=0; $i<=$nombre[$i]; $i++)
-            {
-                $nombre[$i]=trim(str_replace(array("'","\"",),array("�","�"),$nombre[$i]));
-        		if($nombre[$i]!="")
-                    $filtro.=" AND (p.nombre LIKE '%".$nombre[$i]."%') OR (p.apellido_pat LIKE '%".$nombre[$i]."%') OR (p.apellido_mat LIKE '%".$nombre[$i]."%') ";
-            }//for
-        }//if
+        
         //Verificamos el tipo d usurio
         // if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario != 3){
         //     $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->persona_id);
         //     $filtro .= " AND e.zona_id = ".$zona->id." ";
         // }
 
-        if($estado!='' && $zona!='' && $tipo!=''){
+
 
             if($estado!='')
             {
                 $filtro.=" AND (z.estado_id = '".$estado."') ";
             }
-            // else{
-            //     foreach ($this->estados as $est){
-            //          $filtro.=" AND (z.estado_id = '".$est->id_estado."') ";
-            //     }
-            // }
+            else{
+                $filtro.=" AND (z.estado_id = '0') ";
+            }
             if($zona!='')
             {
                 $filtro.=" AND (e.zona_id = '".$zona."') ";
             }
-            // else{
-            //     foreach ($this->zonas as $zon){
-            //          $filtro.=" AND (e.zona_id = '".$zon->zona_id."') ";
-            //     }
-            // }
+            else{
+                $filtro.=" AND (e.zona_id = '0') ";
+            }
             if($tipo!='')
             {
                 $filtro.=" AND (p.tipo_id = '".$tipo."') ";
+                if($nombre!='')
+        {
+            $nombre=explode(" ", trim($nombre));
+            for($i=0; $i<=$nombre[$i]; $i++)
+            {
+                $nombre[$i]=trim(str_replace(array("'","\"",),array("�","�"),$nombre[$i]));
+                if($nombre[$i]!="")
+                    $filtro.=" AND (p.nombre LIKE '%".$nombre[$i]."%') OR (p.apellido_pat LIKE '%".$nombre[$i]."%') OR (p.apellido_mat LIKE '%".$nombre[$i]."%') ";
+            }//for
+        }//if
             }
-            // else{
-            //     foreach ($this->tipos as $tip){
-            //          $filtro.=" AND (p.tipo_id = '".$tip->tipoID."') ";
-            //     }
-            // }
-    }else{
-        $filtro.=" AND (z.estado_id = 'cuiiiii') ";
-    }
+            else{
+                $filtro.=" AND (p.tipo_id = '0') ";
+            }
+
         
         $consulta = "SELECT u.id,u.status,p.nombre,p.apellido_pat, p.apellido_mat, u.usuario, u.tipo_usuario, tu.descripcion, z.nombre as zona, e.nombre as empresa
                       FROM usuario u
@@ -99,6 +92,9 @@ class backend_UsuarioController extends Zend_Controller_Action{
                     WHERE ".$filtro;
     
         $registros = My_Comun::registrosGridQuerySQL($consulta);
+        // global $tipoFiltro;
+        $GLOBALS['tipoFiltro'] = $tipo;
+        // $tipoFiltro = $tipo;
 
         $grid=array();
  
@@ -433,6 +429,7 @@ class backend_UsuarioController extends Zend_Controller_Action{
         $this->_helper->viewRenderer->setNoRender(TRUE);
           
         $nombre= $this->_getParam('nombre');
+        $tipo=$this->_getParam('tipo_id');
        
         $filtro=" WHERE 1=1 ";
         $i=6;
@@ -461,10 +458,24 @@ class backend_UsuarioController extends Zend_Controller_Action{
             }  
         }
 
+        if($tipo!='')
+            {
+                $filtro.=" AND (p.tipo_id = '".$tipo."') ";
+                $i++;
+            }
+
+
+        // if($GLOBALS['tipoFiltro'] !=''){
+        // $filtro.=" AND (p.tipo_id = '".$GLOBALS['tipoFiltro']."') ";
+        // $i++;
+        // }
        
         $i++;
         // $registros=  My_Comun::obtenerFiltro("Usuario", $filtro, "nombre ASC");
+
+       
         $registros = My_Comun::obtenerFiltroSQLPersonaUsuario($filtro);
+
          // encode response to json format
          $result = json_decode($registros, true);
 

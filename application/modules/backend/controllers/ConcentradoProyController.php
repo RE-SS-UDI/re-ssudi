@@ -31,7 +31,7 @@ class Backend_ConcentradoProyController extends Zend_Controller_Action
         $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->persona_id);
         $filtro_zona .= " and zona_id = ".$zona->id." ";
         
-        $idPer = Zend_Auth::getInstance()->getIdentity()->id;
+        $idPer = Zend_Auth::getInstance()->getIdentity()->persona_id;
         $this->view->tipo_usuario = Zend_Auth::getInstance()->getIdentity()->tipo_usuario;
 
         $this->view->zonaUser = My_Comun::obtenerZonas($idPer);

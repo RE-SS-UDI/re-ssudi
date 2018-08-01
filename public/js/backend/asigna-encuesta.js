@@ -104,7 +104,11 @@ function guardarAsignacion(formulario) {
                 success: function (respuesta) {
                         if (!isNaN(respuesta)) {
 
-                            cambiaZona();
+                            // cambiaZona();
+                            // var tipo_id = $('#tipo_id').val();
+                            // cambiaTipo(tipo_id);
+                            recargar();
+
                             _mensaje('#_mensaje-1', 'Se guardó la asignación de forma correcta.');
                         } else {
                             _mensaje("#_mensaje-1", respuesta);
@@ -227,6 +231,7 @@ function updateByEstadoZonaTipo(estado_id,zona_id, tipo_id) {
 
     }).flexReload();
 }
+
 
 
 function cambiaZona() {

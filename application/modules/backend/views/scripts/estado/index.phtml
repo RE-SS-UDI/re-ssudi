@@ -13,6 +13,14 @@
                     <label for="fnombre" class="sr-only">Estado</label>
                     <input type="text" name="estado" id="fnombre" class="form-control input-sm" value="" placeholder="Buscar Estado"/>
                 </div>
+                <div class="col-xs-2">
+                <label for="fstatus" class="sr-only">Estatus</label>
+                    <select id="fstatus" name="status" class="form-control input-sm">
+                        <option value="">- Todos los estatus -</option>
+                        <option value="1">Habilitado</option>
+                        <option value="0">Deshabilitado</option>
+                    </select>
+                </div>
 
                 <div class="col-xs-3 text-right">
                     <button class="btn btn-sm btn-default" type="button" onclick="filtrar('frmFiltrosPreRegistro','/backend/estado/grid','/backend/estado/imprimir','/backend/estado/exportar');">

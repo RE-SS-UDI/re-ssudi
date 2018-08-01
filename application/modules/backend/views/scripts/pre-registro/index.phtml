@@ -24,7 +24,20 @@
                     <input type="text" name="materno" id="fmaterno" class="form-control input-sm" value="" placeholder="Buscar apellido materno"
                     />
                 </div>
-                <div class="col-xs-2">
+                
+
+                 <div class="col-xs-4 text-right pull-right ">
+                    <button class="btn btn-sm btn-default" type="button" onclick="shakeEmpys(); filtrar('frmFiltrosPreRegistro','/backend/pre-registro/grid','/backend/pre-registro/imprimir','/backend/pre-registro/exportar');updateByEstadoZonaTipoNone();">
+                        <i class="fa fa-search"></i>&nbsp;Filtrar
+                    </button>
+                    <button class="btn btn-sm btn-default" type="button" onclick="limpiar('frmFiltrosPreRegistro','/backend/pre-registro/grid');">
+                        <i class="fa fa-eraser"></i>&nbsp;Limpiar
+                    </button>
+                </div>
+
+            </div>
+            <div class="row margin-bottom-3">
+               <div class="col-xs-2">
                     <label for="fmaterno" class="sr-only">Estados</label>
                     <select name="estado_idS" id="estado_idS" class="form-control input-sm " onchange="cambiaEstado(this);">
                     <option value="">Selecciona un estado</option>
@@ -54,19 +67,9 @@
                     <option value="">Selecciona un Tipo</option>
                         <!-- <?php foreach ($this->zonas as $zona): ?>
                         <?php  echo "<script>console.log( 'Debug Objects: " . $zona->zona_id . "' );</script>"; ?>
-			    			<option value="<?php echo $zona->zona_id ?>"><?php echo $zona->znombre; ?></option>
-			    		<?php endforeach ?> -->
+                            <option value="<?php echo $zona->zona_id ?>"><?php echo $zona->znombre; ?></option>
+                        <?php endforeach ?> -->
                     </select>
-                </div>
-            </div>
-            <div class="row margin-bottom-3">
-                <div class="col-xs-4 ">
-                    <button class="btn btn-sm btn-default" type="button" onclick="filtrar('frmFiltrosPreRegistro','/backend/pre-registro/grid','/backend/pre-registro/imprimir','/backend/pre-registro/exportar');updateByEstadoZonaTipoNone();">
-                        <i class="fa fa-search"></i>&nbsp;Filtrar
-                    </button>
-                    <button class="btn btn-sm btn-default" type="button" onclick="limpiar('frmFiltrosPreRegistro','/backend/pre-registro/grid');">
-                        <i class="fa fa-eraser"></i>&nbsp;Limpiar
-                    </button>
                 </div>
             </div>
         </form>

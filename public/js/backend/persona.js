@@ -198,7 +198,7 @@ function cambiaEstado(estado_id) {
 	console.log("estado seleccionado: "+estado_id.value);
 	var estado = estado_id.value;
 	
-	updateByEstado(estado);
+	// updateByEstado(estado);
 
 	if (estado != '') {
 		$.ajax({
@@ -301,7 +301,7 @@ function cambiaZona(zona_id){
 	console.log("zona slelected: "+zona);
 		var estado = $('#estado_idS').val();
 		console.log("estado pre-seleccionado: "+estado);
-		 updateByEstadoZona(estado,zona);
+		//  updateByEstadoZona(estado,zona);
 
 if (zona != '') {
 		$.ajax({
@@ -370,7 +370,40 @@ function cambiaTipo(tipo_id) {
 	//console.log("tipo seleccionado: "+estado);
 	//console.log("tipo seleccionado: "+zona);
 	
-	 updateByEstadoZonaTipo(estado,zona,tipo);
+	//  updateByEstadoZonaTipo(estado,zona,tipo);
 
 
+}
+
+function shakeEmpys(){
+    // var cat = $('#categoria_id').val();
+
+    var tipoF = document.getElementById("tipo_idS");
+    var zonaf = document.getElementById("zona_idS");
+    var estadoF = document.getElementById("estado_idS");
+
+
+    if(tipoF.value === "") {
+        // console.log("falta " +catF.value);
+        tipoF.classList.add("apply-shake");
+    }
+    if(zonaf.value === "") {
+        // console.log("falta " +catF.value);
+        zonaf.classList.add("apply-shake");
+    }
+    if(estadoF.value === "") {
+        // console.log("falta " +catF.value);
+        estadoF.classList.add("apply-shake");
+    }
+
+
+    tipoF.addEventListener("animationend", (e) => {
+        tipoF.classList.remove("apply-shake");
+    });
+    zonaf.addEventListener("animationend", (e) => {
+        zonaf.classList.remove("apply-shake");
+    });
+    estadoF.addEventListener("animationend", (e) => {
+        estadoF.classList.remove("apply-shake");
+    });
 }

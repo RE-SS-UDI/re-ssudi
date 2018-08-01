@@ -169,4 +169,33 @@ function onChangeZona(zona_id)
 	}
 }
 
+function shakeEmpys(){
+    // var cat = $('#categoria_id').val();
+    var celularF = document.getElementById("celular");
+    var tipoF = document.getElementById("tipo_id");
+    var correoF = document.getElementById("correo");
+    var correo2F = document.getElementById("correo2");
+    var zonaF = document.getElementById("zona_id");
+    var estadoF = document.getElementById("estado_id");
+    var fechaNasF = document.getElementById("fecha_nacimiento");
+    var nombreF = document.getElementById("nombre");
+    var apellidopF = document.getElementById("apellidoP");
+    var apellidomF = document.getElementById("apellidoM");
 
+    var fields = [document.getElementById("celular"), document.getElementById("tipo_id"), document.getElementById("correo"), document.getElementById("correo2"), 
+    document.getElementById("zona_id"), document.getElementById("estado_id"), document.getElementById("fecha_nacimiento"),  document.getElementById("nombre"),
+    document.getElementById("apellidoP"), document.getElementById("apellidoM")];
+
+    fields.forEach(function(entry) {
+        if( entry.value === "") {
+            entry.classList.add("apply-shake");
+        }  
+    });
+
+    fields.forEach(function(entry) {
+        entry.addEventListener("animationend", (e) => {
+            entry.classList.remove("apply-shake");
+        });
+    });
+
+}

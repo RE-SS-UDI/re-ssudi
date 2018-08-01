@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="col-xs-4 pull-right">
-                   <button class="btn btn-sm btn-default" type="button" onclick="filtrar('frmFiltrosUsuario','/backend/usuario/grid','/backend/usuario/imprimir','/backend/usuario/exportar');">
+                   <button class="btn btn-sm btn-default" type="button" onclick="shakeEmpys(); filtrar('frmFiltrosUsuario','/backend/usuario/grid','/backend/usuario/imprimir','/backend/usuario/exportar');">
                         <i class="fa fa-search"></i>&nbsp;Filtrar
                     </button>
                     <button class="btn btn-sm btn-default" type="button" onclick="limpiar('frmFiltrosUsuario','/backend/usuario/grid');">
@@ -58,20 +58,20 @@
                     <label for="fmaterno" class="sr-only">Zonas</label>
                     <select name="zona_id" id="zona_id" class="form-control input-sm required" onchange="cambiaZona(this);">
                     <option value="">Selecciona una zona</option>
-			    		<?php foreach ($this->zonas as $zona): ?>
+			    		<!-- <?php foreach ($this->zonas as $zona): ?>
                         <?php  echo "<script>console.log( 'Debug Objects: " . $zona->zona_id . "' );</script>"; ?>
 			    			<option value="<?php echo $zona->zona_id ?>"><?php echo $zona->znombre; ?></option>
-			    		<?php endforeach ?>
+			    		<?php endforeach ?> -->
 			    	</select>
                 </div>
                 <div class="col-xs-2">
                     <label for="fmaterno" class="sr-only">Tipo</label>
                     <select name="tipo_id" id="tipo_id" class="form-control input-sm required" onchange="cambiaTipo(this);">
                     <option value="">Selecciona un Tipo</option>
-			    		<?php foreach ($this->zonas as $zona): ?>
+			    		<!-- <?php foreach ($this->zonas as $zona): ?>
                         <?php  echo "<script>console.log( 'Debug Objects: " . $zona->zona_id . "' );</script>"; ?>
 			    			<option value="<?php echo $zona->zona_id ?>"><?php echo $zona->znombre; ?></option>
-			    		<?php endforeach ?>
+			    		<?php endforeach ?> -->
 			    	</select>
                 </div>
             </div>

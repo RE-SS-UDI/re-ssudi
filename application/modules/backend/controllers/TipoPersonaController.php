@@ -55,7 +55,8 @@ class Backend_TipoPersonaController extends Zend_Controller_Action{
         {
             $filtro.=" AND (tp.zona_id = '".$zona."') ";
         }else{
-            $filtro.=" AND (tp.zona_id = '".$k."') ";
+            // $filtro.=" AND (tp.zona_id = '".$k."') "; //pone por default zonas asignadas a la persona
+            $filtro.=" AND (tp.zona_id = '0') ";
         }
 
         $consulta = "SELECT tp.id, tp.descripcion, tp.status, tp.zona_id, z.nombre
