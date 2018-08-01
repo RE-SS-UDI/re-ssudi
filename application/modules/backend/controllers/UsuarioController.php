@@ -37,16 +37,7 @@ class backend_UsuarioController extends Zend_Controller_Action{
         if($this->_getParam('status')!="")			
             $filtro.=" AND u.status=".$this->_getParam('status');
         
-        if($nombre!='')
-        {
-            $nombre=explode(" ", trim($nombre));
-            for($i=0; $i<=$nombre[$i]; $i++)
-            {
-                $nombre[$i]=trim(str_replace(array("'","\"",),array("�","�"),$nombre[$i]));
-        		if($nombre[$i]!="")
-                    $filtro.=" AND (p.nombre LIKE '%".$nombre[$i]."%') OR (p.apellido_pat LIKE '%".$nombre[$i]."%') OR (p.apellido_mat LIKE '%".$nombre[$i]."%') ";
-            }//for
-        }//if
+
         //Verificamos el tipo d usurio
         // if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario != 3){
         //     $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->persona_id);
@@ -72,6 +63,17 @@ class backend_UsuarioController extends Zend_Controller_Action{
             if($tipo!='')
             {
                 $filtro.=" AND (p.tipo_id = '".$tipo."') ";
+
+                if($nombre!='')
+                {
+                    $nombre=explode(" ", trim($nombre));
+                    for($i=0; $i<=$nombre[$i]; $i++)
+                    {
+                        $nombre[$i]=trim(str_replace(array("'","\"",),array("�","�"),$nombre[$i]));
+                        if($nombre[$i]!="")
+                            $filtro.=" AND (p.nombre LIKE '%".$nombre[$i]."%') OR (p.apellido_pat LIKE '%".$nombre[$i]."%') OR (p.apellido_mat LIKE '%".$nombre[$i]."%') ";
+                    }//for
+                }//if
             }
             else{
                 $filtro.=" AND (p.tipo_id = '0') ";

@@ -128,10 +128,12 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
         $zona_id=$this->_getParam('zona_id');
         $tipo_id=$this->_getParam('tipo_id');
         
-        echo("<script>console.log('PHP: default - obtiene encuesta: ".$persona_id.$encuesta_id.$zona_id.$tipo_id."');</script>");
+        echo("<script>console.log('PHP: default - obtiene encuesta: persona_id: ".$persona_id." encuesta_id: ".$encuesta_id." zona_id: ".$zona_id." tipo_id: ".$tipo_id."');</script>");
 
 
-		$this->view->encuesta=Encuesta::obtieneEncuesta( $persona_id, $encuesta_id,$zona_id, $tipo_id);
+        $this->view->encuesta=Encuesta::obtieneEncuesta( $persona_id, $encuesta_id,$zona_id, $tipo_id);
+        $this->view->zona_seleccionada = $zona_id;
+        $this->view->tipo_seleccionado =$tipo_id;
         $this->view->persona_seleccionada = $persona_id;
             // $this->view->encuesta=Encuesta::obtieneEncuesta($_POST["persona_id"], $_POST["encuesta_id"]);
             // $this->view->persona_seleccionada = $_POST["persona_id"];
@@ -157,6 +159,7 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
         $filtro_tipo = '';
         $filtro_tipo_encuesa = '';
         $filtro_categoria = ' ';
+        $filtro_categoria_per = ' ';
        
 
         if ($nombre != '') {
@@ -170,7 +173,7 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
 
         if($tipo!='')
         {
-            $filtro_tipo.=' AND uz.tipo_id = '.$tipo;
+            $filtro_tipo.=' AND uz.tipo_persona_id = '.$tipo;
             $filtro_tipo_encuesta.=' AND ze.tipo_id = '.$tipo;
         }
         else{
@@ -201,13 +204,13 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
                      $filtro_zona .= "";
                 // }
             }
-            echo("<script>console.log('PHP: default - filtro personas: ".$filtro_usuario_zona.$filtro_nombre.$filtro_estado.$filtro_tipo."');</script>");
-            echo("<script>console.log('PHP: default - filtro encuestas: ".$filtro_zona.$filtro_categoria."');</script>");
+            echo("<script>console.log('PHP: default - filtro personas: ".$filtro_usuario_zona.$filtro_categoria.$filtro_tipo."');</script>");
+            echo("<script>console.log('PHP: default - filtro encuestas: ".$filtro_zona.$filtro_categoria.$filtro_tipo_encuesta."');</script>");
             
         // }//fin if
 
         $this->view->encuestas = My_Comun::obtenerFiltroSQLConcentradoEncuestas($filtro_zona, $filtro_categoria, $join_zona, $filtro_tipo_encuesta);
-        $this->view->personas = My_Comun::obtenerFiltroSQLConcentrado($filtro_usuario_zona,$filtro_nombre,$filtro_estado,$filtro_tipo);
+        $this->view->personas = My_Comun::obtenerFiltroSQLConcentrado($filtro_usuario_zona,$filtro_tipo, $filtro_categoria);
         //print_r($this->view->encuestas);
     }
 
@@ -218,6 +221,8 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
           
         $persona_id=$this->_getParam('persona');
         $zona=$this->_getParam('zona');
+        $encuesta_id=$this->_getParam('encuesta');
+        $tipo_id=$this->_getParam('tipo');
        
         $filtro=" 1=1 ";
         $i=6;
@@ -227,7 +232,8 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
         $i++;
 
         // $encuestas = Encuesta::obtieneEncuestasPersona($persona_id);
-        $encuestas = ContestaEncuesta::obtieneEncuestas_UsuarioZonaById($persona_id, $zona);
+        // $encuestas = Encuesta::obtieneEncuesta( $persona_id, $encuesta_id,$zona_id, $tipo_id);
+        $encuestas = ContestaEncuesta::obtieneEncuestas_UsuarioZonaByIdconcentrado($persona_id, $zona,$tipo_id);
 
 //        $registros=  My_Comun::obtenerFiltro("Usuario", $filtro, "nombre ASC");
 
@@ -265,7 +271,7 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
                     );
             
             foreach ($preguntas as $pregunta) {
-                $respuesta = Respuesta::obtieneRespuesta($persona_id, $pregunta->id, $zona, $encuesta->tipo_persona_id);
+                $respuesta = Respuesta::obtieneRespuesta($persona_id, $pregunta->id, $zona, $tipo_id);
                 $i++;
                 if ($pregunta->tipo == 1 || $pregunta->tipo == 2 || $pregunta->tipo == 3) {
                     $data[] = array(                
@@ -276,7 +282,7 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
                     $respuestas_usuario = '';
                     $opciones = My_Comun::obtenerFiltroSQL('opciones_pregunta',' WHERE status=1 AND pregunta_id='.$pregunta->id,' opcion ASC ');
                     foreach ($opciones as $opcion) {
-                        $respuesta2 = Respuesta::obtieneRespuestaEspecial($opcion->opcion, $pregunta->id, $zona, $encuesta->tipo_persona_id);
+                        $respuesta2 = Respuesta::obtieneRespuestaEspecial($opcion->opcion, $pregunta->id, $zona, $tipo_id);
                         if ($respuesta2->id!= ''){
                             $respuestas_usuario .= $opcion->opcion.', ';
                         }

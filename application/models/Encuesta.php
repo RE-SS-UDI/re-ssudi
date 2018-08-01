@@ -166,14 +166,20 @@ class Encuesta
         //           on em.id = p.empresa_id         
         //           WHERE p.id = '".$persona_id."' and e.id = '".$encuesta_id."'
         //         ";
-        $sql = "  SELECT e.id,e.nombre, ze.zona_id, ze.tipo_id
-                  FROM encuesta e
-                  INNER JOIN zona_encuesta ze
-                  on e.id = ze.encuesta_id
-                  INNER JOIN persona_zona pz
-                  on pz.zona_id = ze.zona_id and pz.tipo_id = ze.tipo_id         
-                  WHERE pz.persona_id = '".$persona_id."' and e.id = '".$encuesta_id."' and ze.zona_id = '".$zona."' and ze.tipo_id = '".$tipo."'
-                ";
+
+        // $sql = "  SELECT e.id,e.nombre, ze.zona_id, ze.tipo_id
+        //           FROM encuesta e
+        //           INNER JOIN zona_encuesta ze
+        //           on e.id = ze.encuesta_id
+        //           INNER JOIN persona_zona pz
+        //           on pz.zona_id = ze.zona_id and pz.tipo_id = ze.tipo_id         
+        //           WHERE pz.persona_id = '".$persona_id."' and e.id = '".$encuesta_id."' and ze.zona_id = '".$zona."' and ze.tipo_id = '".$tipo."'
+        //         ";
+
+        $sql = "  SELECT e.id,e.nombre
+        FROM encuesta e
+        WHERE e.id = '".$encuesta_id."'
+      ";
         //print_r($sql);
         //exit;
         $stmt = sqlsrv_query( $conexion, $sql);

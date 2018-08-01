@@ -79,6 +79,41 @@ class ContestaEncuesta
         return $datos;
     }//funcion
 
+    public static function obtieneEncuestas_UsuarioZonaByIdconcentrado($persona_id,$zona_id,$tipo_id)
+    {
+        $conec = new Conexion;
+        $conexion = $conec->abreConexion();
+        
+        //  $sql = "SELECT e.id,e.nombre,z.nombre as 'Zona_nombre'
+        //         FROM encuesta e
+        //         INNER JOIN zona_encuesta ze
+        //         on e.id = ze.encuesta_id
+        //         INNER JOIN zona z
+        //         on z.id = ze.zona_id
+        //         INNER JOIN persona_zona em
+        //         on z.id = em.zona_id        
+        //         WHERE em.persona_id = '".$persona_id."' and z.id = '".$zona_id."'
+        //       ";
+        $sql = "SELECT distinct e.id,e.nombre
+        from persona p
+		inner join respuesta res
+		on p.id = res.persona_id
+		inner join pregunta pre
+		on pre.id = res.pregunta_id
+		inner join encuesta e
+		on e.id = pre.encuesta_id      
+        WHERE e.status = 1 AND res.tipo_persona_id = '".$tipo_id."' AND res.persona_id = '".$persona_id."' AND res.zona_id = '".$zona_id."'
+      ";
+              
+        $stmt = sqlsrv_query( $conexion, $sql);
+        $datos = array();
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+        
+            $datos[] =  $obj;       
+        }
+        return $datos;
+    }//funcion
+
     
 
     public static function obtieneEncuestas_UsuarioZonaById($persona_id,$zona_id)
@@ -150,10 +185,13 @@ class ContestaEncuesta
     {
         $conec = new Conexion;
         $conexion = $conec->abreConexion();
+        $per = Zend_Auth::getInstance()->getIdentity()->persona_id;
 
         $sql = "SELECT tp.*
-        FROM tipo_persona tp       
-        WHERE tp.status = 1 AND tp.zona_id = '".$zona_id."' 
+        FROM tipo_persona tp   
+        inner join persona_zona pz
+        on pz.tipo_id = tp.id 
+        WHERE tp.status = 1 AND pz.persona_id = ".$per."  AND tp.zona_id = '".$zona_id."' 
         ";
               
         $stmt = sqlsrv_query( $conexion, $sql);

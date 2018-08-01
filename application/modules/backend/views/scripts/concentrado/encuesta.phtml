@@ -14,7 +14,7 @@
 			         		</div>
 										         		
 							<div class="col-xs-12">
-		         			<?php $respuesta = Respuesta::obtieneRespuesta($this->persona_seleccionada, $pregunta->id, $this->encuesta->zona_id, $this->encuesta->tipo_id); ?>
+		         			<?php $respuesta = Respuesta::obtieneRespuesta($this->persona_seleccionada, $pregunta->id, $this->zona_seleccionada, $this->tipo_seleccionado); ?>
 		         			<?php if ($pregunta->tipo == 1): //pregunta corta ?>
 		         				<p class="text-justify">R: <?php echo $respuesta->descripcion; ?></p>
 		         			<?php endif ?>
@@ -30,7 +30,7 @@
 		         				$opciones = My_Comun::obtenerFiltroSQL('opciones_pregunta',' WHERE status=1 AND pregunta_id='.$pregunta->id,' opcion ASC '); 
 		         				?>
 		         				<?php foreach ($opciones as $opcion): ?>
-				         			<?php $respuesta2 = Respuesta::obtieneRespuestaEspecial($opcion->opcion, $pregunta->id, $this->encuesta->zona_id, $this->encuesta->tipo_id); ?>
+				         			<?php $respuesta2 = Respuesta::obtieneRespuestaEspecial($opcion->opcion, $pregunta->id, $this->zona_seleccionada, $this->tipo_seleccionado); ?>
 		         					<?php if ($respuesta2->id!= ''){
 		         						$respuestas_usuario .= $opcion->opcion.', ';
 		         					 } ?>
