@@ -260,6 +260,8 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
             $cuerpo = 'Ha sido aceptado en el sistema de "Ressudi", podrá aceder al sistema con la siguiente información:<br>';
             $cuerpo .= 'Usuario: '.$usu;
             $cuerpo .= '<br>Password: '.$pass;
+            $cuerpo .= '<br><a href=\"http://ca02.utj.edu.mx/\">http://ca02.utj.edu.mx/</a>';
+
 
             $respuesta = My_Comun::envioCorreo($titulo, $cuerpo, 'ressudi@utj.edu.mx', 'Ressudi', $_POST['correo'], $_POST['nombre'].' '.$_POST['apellido_pat'].' '.$_POST['apellido_mat']);
 

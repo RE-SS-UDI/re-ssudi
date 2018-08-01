@@ -15,6 +15,10 @@ $(document).ready(function(){
 	if($("#fnombre").val()!="")       filtro+="/nombre/"+$("#fnombre").val();
 	if($("#fpaterno").val()!="")       filtro+="/paterno/"+$("#fpaterno").val();
 	if($("#fmaterno").val()!="")       filtro+="/materno/"+$("#fmaterno").val();
+
+	if($("#estado_idS").val()!="")       filtro+="/estado_idS/"+$("#estado_idS").val();
+	if($("#zona_idS").val()!="")       filtro+="/zona_idS/"+$("#zona_idS").val();
+	if($("#tipo_idS").val()!="")       filtro+="/tipo_idS/"+$("#tipo_idS").val();
 	
         $("#flexigrid").flexigrid({
 		url: filtro,
@@ -69,11 +73,13 @@ function guardarPreregistro(formulario, frmFiltro, filtroinicial, urlImprimir, u
 	                    {   
 							
 	                        $("#_dialogo-1").dialog("close");
-	                        recargar();
+	                       // recargar();
+	                       updateByEstadoZonaTipoNone(); 
 	                        _mensaje('#_mensaje-1',  'Se guardó de forma correcta');                       
 	                    }else{    
 							$("#_dialogo-1").dialog("close");
-							recargar();                  
+							//recargar();      
+						updateByEstadoZonaTipoNone();            
 							// _mensaje("#_mensaje-1",  respuesta ); 
 							_mensaje("#_mensaje-1",  'Se guardó de forma correcta' );
 							
@@ -152,9 +158,9 @@ function updateByEstadoZonaTipoNone(){
 	var zona = $('#zona_idS').val();
 	var tipo = $('#tipo_idS').val();
 	var filtro2 = '/backend/pre-registro/grid';
-	filtro2+="/estado_id/"+estado;
-	filtro2+="/zona_id/"+zona;
-	filtro2+="/tipo_id/"+tipo;
+	filtro2+="/estado_idS/"+estado;
+	filtro2+="/zona_idS/"+zona;
+	filtro2+="/tipo_idS/"+tipo;
 
 	$("#flexigrid").flexOptions({
 		url: filtro2,

@@ -188,7 +188,7 @@ class ContestaEncuesta
         $per = Zend_Auth::getInstance()->getIdentity()->persona_id;
 
         $sql = "SELECT tp.*
-        FROM tipo_persona tp   
+        FROM tipo_persona tp  
         inner join persona_zona pz
         on pz.tipo_id = tp.id 
         WHERE tp.status = 1 AND pz.persona_id = ".$per."  AND tp.zona_id = '".$zona_id."' 

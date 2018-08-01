@@ -1659,7 +1659,7 @@ public static function obtenerFiltroSQLZonasAdmin(){
                         
                         <table style=\"width: 100%; font-family: Tahoma, Arial; font-size: 12px; border: none 0; border-spacing: 0; border-collapse: collapse; padding: 0;\" border=\"0\">
                             <tr>
-                                <td style=\"height:3px; background-color: #ed3023;\"></td>
+                                <td style=\"height:3px; background-color: green;\"></td>
                             </tr>
                             
                             <tr>
@@ -1667,9 +1667,7 @@ public static function obtenerFiltroSQLZonasAdmin(){
 								<img src=\"http://ca02.utj.edu.mx/public/img/logo_ca.png\" alt=\"Sinergia\" title=\"Sinergia\"/></td>
                             </tr>
                             
-                            <tr>
-                                <td style=\"height:3px; background-color: #0079c2;\"></td>
-                            </tr>
+                        
                             
                             <tr>
                                 <td align=\"left\" valign=\"middle\" style=\"padding:10px; color:#14374A; font-size:18px;\">
@@ -1680,11 +1678,13 @@ public static function obtenerFiltroSQLZonasAdmin(){
                             <tr>
                                 <td align=\"left\" valign=\"top\" style=\"padding:20px; color:#444444; font-size:12px;\">
                                     ".$cuerpo."
+                                    
 				</td>
                             </tr>
                             
                             <tr>
                                 <td align=\"left\" valign=\"top\" style=\"color:#444444; font-size:10px;\">
+                                <a href='http://ca02.utj.edu.mx'>Ingresa aqui</a>
                                     Este correo electrónico ha sido enviado de la página de Sinergia.
                                 </td>
                             </tr>
@@ -1729,7 +1729,7 @@ public static function obtenerFiltroSQLZonasAdmin(){
                         
                         <table style=\"width: 100%; font-family: Tahoma, Arial; font-size: 12px; border: none 0; border-spacing: 0; border-collapse: collapse; padding: 0;\" border=\"0\">
                             <tr>
-                                <td style=\"height:3px; background-color: #ed3023;\"></td>
+                                <td style=\"height:3px; background-color: green;\"></td>
                             </tr>
                             
                             <tr>
@@ -1737,9 +1737,7 @@ public static function obtenerFiltroSQLZonasAdmin(){
 								<img src=\"http://ca02.utj.edu.mx/public/img/logo_ca2.png\" alt=\"Sinergia\" title=\"Sinergia\"/></td>
                             </tr>
                             
-                            <tr>
-                                <td style=\"height:3px; background-color: #0079c2;\"></td>
-                            </tr>
+                         
                             
                             <tr>
                                 <td align=\"left\" valign=\"middle\" style=\"padding:10px; color:#14374A; font-size:18px;\">

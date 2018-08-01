@@ -63,16 +63,16 @@ class backend_UsuarioController extends Zend_Controller_Action{
             if($tipo!='')
             {
                 $filtro.=" AND (p.tipo_id = '".$tipo."') ";
-
                 if($nombre!='')
-                {
-                    $nombre=explode(" ", trim($nombre));
-                    for($i=0; $i<=$nombre[$i]; $i++)
-                    {
-                        $nombre[$i]=trim(str_replace(array("'","\"",),array("�","�"),$nombre[$i]));
-                        if($nombre[$i]!="")
-                            $filtro.=" AND (p.nombre LIKE '%".$nombre[$i]."%') OR (p.apellido_pat LIKE '%".$nombre[$i]."%') OR (p.apellido_mat LIKE '%".$nombre[$i]."%') ";
-                    }//for
+        {
+            $nombre=explode(" ", trim($nombre));
+            for($i=0; $i<=$nombre[$i]; $i++)
+            {
+                $nombre[$i]=trim(str_replace(array("'","\"",),array("�","�"),$nombre[$i]));
+                if($nombre[$i]!="")
+                    $filtro.=" AND (p.nombre LIKE '%".$nombre[$i]."%') OR (p.apellido_pat LIKE '%".$nombre[$i]."%') OR (p.apellido_mat LIKE '%".$nombre[$i]."%') ";
+            }//for
+        }//if
                 }//if
             }
             else{
