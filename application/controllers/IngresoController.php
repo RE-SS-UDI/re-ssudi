@@ -39,7 +39,7 @@ class IngresoController extends Zend_Controller_Action
 
     public function recuperaAction()
     {
-      
+
     }
 
     public function recuperarAction(){
@@ -50,14 +50,35 @@ class IngresoController extends Zend_Controller_Action
         $persona = My_Comun::obtenerSQL('persona', 'correo', $_POST['correo_electronico'], ' and status = 1');
         $usuario = My_Comun::obtenerSQL('usuario', 'persona_id', $persona->id, ' and status = 1');
 
-        $titulo = "Recuperar contraseña";
+        // echo("<script>console.log('PHP: persona id: ".$persona->id."');</script>");
+
+
+        $titulo = "Ressudi UTJ";
         $cuerpo = "
-            Usuario:&nbsp;".$usuario->usuario."
+            Hola ".$persona->nombre.",
+
+            <p><strong>Sistema Administrativo RESSUDI</strong></p>
+
+            <a href=\"http://ca02.utj.edu.mx/\">http://ca02.utj.edu.mx/</a>
+
             <br />
-            Contrase&ntilde;a:&nbsp;".$usuario->contrasena."
+
+            <p>A continuacion, usuario y contrase&ntilde;a:</p>
+
+            
+            <strong>Usuario:</strong>&nbsp;".$usuario->usuario."
+            <br />
+            <strong> Contrase&ntilde;a:</strong>&nbsp;".$usuario->contrasena."
         ";
 
-        echo My_Comun::correoElectronico($titulo, $cuerpo,'esau.toc@hotmail.com','Sinergia', $usuario->correo, $usuario->nombre);
+        // echo("<script>console.log('PHP: usuario contra: ".$usuario->contrasena."');</script>");
+        // echo("<script>console.log('PHP: usuario user: ".$usuario->usuario."');</script>");
+        // echo("<script>console.log('PHP: usuario correo: ".$persona->correo."');</script>");
+        
+        // echo My_Comun::envioCorreo($titulo, $cuerpo,'ressudi.utj@gmail.com','Sinergia', $persona->correo, $persona->nombre);
+        echo My_Comun::envioCorreo($titulo, $cuerpo,'ressudi@utj.edu.mx','Sinergia', $persona->correo, $persona->nombre);
+
+        // echo My_Comun::envioCorreo($titulo, $cuerpo,'ressudi@utj.edu.mx','Sinergia', $usuario->correo, $persona->nombre);
     }
 
     public function salirAction(){

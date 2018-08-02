@@ -93,10 +93,32 @@
                                     Ingresar
                                 </button>
                                 <br/><br/><br/>
-                        
-                           <button type="button" class="btn btn-link" onclick="recupera();" style="position: relative; margin: auto; width:90% ">
+                                <button type="button" class="btn btn-link" onClick="recupera()" style="position: relative; margin: auto; width:90% ">
+                           <!-- <button type="button" class="btn btn-link" data-toggle="modal" data-target="#myModal" style="position: relative; margin: auto; width:90% "> -->
                                 <i class="fa fa-key"></i> Recuperar contrase&ntilde;a
                             </button>
+
+                            <!-- Modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Modal Header</h4>
+        </div>
+        <div class="modal-body">
+        <input type="email" id="email" name="email" class="form-control required" value="" placeholder="Correo Electronico">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" onClick="recupera2()" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
                             </form>
                         </div>
                     </div>
@@ -107,7 +129,7 @@
 
 
 
-        
+       <!-- 
         <footer>
             <div class="container body-content">
               <hr />
@@ -133,6 +155,7 @@
             </div>
 
         </footer>
+        -->
         <input type="hidden" name="_peticion" id="_peticion" value="<?php echo $this->peticion; ?>" />
         <input type="hidden" name="_modulo" id="_modulo" value="<?php echo $this->modulo; ?>" />
         <input type="hidden" name="_controlador" id="_controlador" value="<?php echo $this->controlador; ?>" />

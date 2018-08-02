@@ -4,8 +4,6 @@ html
 	background-image: url('/img/fondoUTJ1.jpg');
 	background-position: center;
 	background-repeat: repeat;
-	background-size: cover;
-	background-attachment: fixed;
 	height: 100%;
 }
 #contenedor_imagen{
@@ -25,6 +23,34 @@ html
 	width: 100%;
 
 }
+
+.form-input-required {
+    color: red;
+}
+
+/* Standard syntax */
+@keyframes shake {
+	10%, 90% {
+	  transform: translate3d(-1px, 0, 0);
+	}
+  
+	20%, 80% {
+	  transform: translate3d(2px, 0, 0);
+	}
+  
+	30%, 50%, 70% {
+	  transform: translate3d(-4px, 0, 0);
+	}
+  
+	40%, 60% {
+	  transform: translate3d(4px, 0, 0);
+	}
+  }
+  .apply-shake {
+	animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+	border-bottom: 5px solid red;
+}
+
 
 .minGrid{
 	max-height: 100px;
@@ -260,4 +286,22 @@ footer{
 }
 .margen-top{
 	margin-top: 15px;
+}
+.ajuste-etiqueta{
+	word-wrap: break-word;
+    text-align: left !important;
+}
+
+.ancho-celda{
+	width: 200px;
+}
+.cuerpo-concentrado{
+	max-width: 1200px;
+	width: 1200px;
+	overflow-x: scroll;
+	background-color: #fff;
+}
+
+.cursor-modificado{
+	cursor: pointer;
 }

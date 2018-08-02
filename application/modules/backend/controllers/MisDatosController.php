@@ -1,7 +1,8 @@
 <?php
 class Backend_MisDatosController extends Zend_Controller_Action{
     public function init(){
-        $this->view->headScript()->appendFile('/js/backend/usuario.js');
+        $this->view->headScript()->appendFile('/js/backend/comun.js?');
+        $this->view->headScript()->appendFile('/js/backend/usuario.js?'.time());
        
     }//function
  
@@ -30,13 +31,13 @@ class Backend_MisDatosController extends Zend_Controller_Action{
             $data = array();
             $data2 = array();
 
-            $data['nombre'] = strtoupper($_POST['nombre']);
-            $data['apellido_pat'] = strtoupper($_POST['apellido_pat']);
-            $data['apellido_mat'] = strtoupper($_POST['apellido_mat']);
+            $data['nombre'] = $_POST['nombre'];
+            $data['apellido_pat'] = $_POST['apellido_pat'];
+            $data['apellido_mat'] = $_POST['apellido_mat'];
             $data['genero'] = $_POST['genero'];
             $data['fecha_nacimiento'] = $_POST['fecha_nacimiento'];
-            $data['curp'] = strtoupper($_POST['curp']);
-            $data['rfc'] = strtoupper($_POST['rfc']);
+            $data['curp'] = $_POST['curp'];
+            $data['rfc'] = $_POST['rfc'];
             $data['telefono'] = $_POST['telefono'];
             $data['celular'] = $_POST['celular'];
             $data['id'] = $_POST['persona_id'];

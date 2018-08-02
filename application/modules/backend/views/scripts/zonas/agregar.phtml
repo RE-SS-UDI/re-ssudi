@@ -23,6 +23,17 @@
                 </select>
         </div>
     </div>
+    <div class="col-xs-12 form-group"> 
+        <label for="estado_id" class="col-xs-2 control-label"><span class="naranja">*</span>Estado:</label>
+        <div class="col-xs-4">
+                <select id="estado_id" name="estado_id" class="form-control input-sm">
+                <option value="" selected>Seleccione un estado</option>
+                <?php foreach ($this->estados as $estado): ?>
+                    <option value="<?php echo $estado->estadoId; ?>" <?php echo (($estado->estadoId==$this->registro->estado_id)?'selected':'') ?>><?php echo $estado->estado; ?></option>
+                <?php endforeach ?>
+                </select>
+        </div>
+    </div>
 
     <br>    
     

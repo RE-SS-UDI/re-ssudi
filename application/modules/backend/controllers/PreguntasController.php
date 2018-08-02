@@ -1,7 +1,8 @@
 <?php
 class Backend_PreguntasController extends Zend_Controller_Action{
     public function init(){
-        $this->view->headScript()->appendFile('/js/backend/preguntas.js');
+        $this->view->headScript()->appendFile('/js/backend/comun.js?');
+        $this->view->headScript()->appendFile('/js/backend/preguntas.js?'.time());
        
     }//function
  
@@ -9,6 +10,7 @@ class Backend_PreguntasController extends Zend_Controller_Action{
     	$sess=new Zend_Session_Namespace('permisos');
     	$this->view->puedeAgregar=strpos($sess->cliente->permisos,"AGREGAR_PREGUNTAS")!==false;
         $this->view->categorias = My_Comun::obtenerFiltroSQL('categoria', ' WHERE status = 1 ', ' nombre asc');
+        $this->view->encuestas = My_Comun::obtenerFiltroSQL('encuesta', ' WHERE status = 1 ', ' nombre asc');
     }//function
 
     public function gridAction()
@@ -36,7 +38,7 @@ class Backend_PreguntasController extends Zend_Controller_Action{
             $filtro.=" AND e.categoria_id=".$categoria;
 
         if($nombre_encuesta!="")
-            $filtro.=" AND (e.nombre LIKE '%".$nombre_encuesta."%') ";
+            $filtro.=" AND (e.id = '".$nombre_encuesta."') ";
 
         
         if($nombre!='')
@@ -88,13 +90,7 @@ class Backend_PreguntasController extends Zend_Controller_Action{
                     $tipo = 'Múltiples respuestas';
                     break;
             }
-                
-                $grid[$i]['descripcion'] =$registros['registros'][$k]->descripcion;
-                $grid[$i]['tipo'] =$tipo;
-                $grid[$i]['encuesta'] =$registros['registros'][$k]->encuesta;
-                $grid[$i]['categoria'] =$registros['registros'][$k]->categoria;
-                $grid[$i]['status']=(($registros['registros'][$k]->status)?'Habilitado':'Inhabilitado');
-               
+
             if($registros['registros'][$k]->status == 0)
             {
                 $grid[$i]['editar'] = '<i class="boton fa fa-pencil fa-lg text-danger"></i>';
@@ -118,9 +114,16 @@ class Backend_PreguntasController extends Zend_Controller_Action{
                     $grid[$i]['eliminar'] = '<span onclick="eliminar('.$registros['registros'][$k]->id.','.$registros['registros'][$k]->status.');" title="Deshabilitar / Habilitar"><i class="boton fa fa-times-circle fa-lg azul"></i></i></span>';
                 }
                 else{
-                    $grid[$i]['eliminar'] = '<i class="boton fa fa-times-circle fa-lg text-danger"></i>';						
+                    $grid[$i]['eliminar'] = '<i class="boton fa fa-times-circle fa-lg text-danger"></i>';                       
                 }
             }
+                
+                $grid[$i]['descripcion'] =$registros['registros'][$k]->descripcion;
+                $grid[$i]['tipo'] =$tipo;
+                $grid[$i]['encuesta'] =$registros['registros'][$k]->encuesta;
+                $grid[$i]['categoria'] =$registros['registros'][$k]->categoria;
+                $grid[$i]['status']=(($registros['registros'][$k]->status)?'Habilitado':'Inhabilitado');
+               
     				
             $i++;
     	}//foreach
@@ -236,5 +239,19 @@ class Backend_PreguntasController extends Zend_Controller_Action{
         echo My_Comun::eliminarSQL("opciones_pregunta", $_POST["id"], $bitacora);
     }//function
 
+    function obtieneEncuestasAction()
+    {
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(TRUE);
+
+        $opciones = '<option value="" selected>Todas las empresas</option>';
+        $encuestas = My_Comun::obtenerFiltroSQL('encuesta', ' WHERE status = 1 AND categoria_id = '.$_POST['id'], ' nombre asc');
+
+        foreach ($encuestas as $empresa) {
+            $opciones .= '<option value="'.$empresa->id.'">'.$empresa->nombre.'</option>';
+        }
+
+        echo $opciones;
+    }
 }//class
 ?>

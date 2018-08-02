@@ -1,76 +1,130 @@
-<div class="container">
 	<div class="panel-body">
-	    <br/>  
-	    <div class="col-md-12">
-	    <h3>Encuestas</h3>
-	          	
-	      <!-- tabs left -->
-	      <div class="tabbable tabs-left">
-	        <ul class="nav nav-tabs">
-	        	<?php $contador = 0; ?>
-			<?php foreach ($this->encuestas as $encuesta){ ?>
+<div class="container">
+		<!-- <div class="tabbable boxed parentTabs"> -->
+		<ul class="nav nav-tabs menu col-md-12">
+		<div class="col-md-12 text-right">
+				<!-- <a class="btn btn-sm btn-default" target="#" href="/backend/contesta-encuesta/exportar?zona=1">
+					<i class="fa fa-file-excel-o fa-lg"></i>&nbsp;Exportar
+				</a> -->
+				<!--  <a class="btn btn-sm btn-default <?php echo($this->puedeObtenerTodos?"":"hide"); ?>" target="_blank" href="/backend/contesta-encuesta/exportar-todos">
+                    <i class="fa fa-file-excel-o fa-lg"></i>&nbsp;Exportar todos
+                </a> -->
+			</div>
+		<h3>Categor&iacute;as</h3>
+			<?php foreach ($this->zonasName as $zname){ ?>
 
-		        <li class="<?php echo (($contador == $this->num_encuesta)?'active':''); ?>"><a href="#_<?php echo $encuesta->id; ?>" data-toggle="tab"><?php echo $encuesta->nombre; ?></a></li>
-		        <?php $contador++; ?>
+				
+	
+			<li role="presentation" class="<?php echo (($zname->id == $this->num_encuesta)?'active':''); ?>">
+				<a href="#set<?php echo $zname->id; ?>"  title="<?php echo $zname->zona_nombre; ?>" role="tab" data-toggle="tab" ><?php echo substr($zname->zona_nombre, 0,15).'...'; ?></a>
+			</li>
 			<?php } ?>
-<!--	          <li><a href="#a" data-toggle="tab">One</a></li>
+		</ul>
+
+		<div class="col-md-12">
+			<h3>Indicadores</h3>
+			<div class="tab-content">
+
+			<!-- tabs left -->
+			<?php $text = "tabs-left fade active in" ?>
+			<?php foreach ($this->zonasName as $zname){ ?>
+			
+			<div class="<?php echo $text; ?>" role="tabpanel" id="set<?php echo $zname->id; ?>">
+			<?php $text = "tabs-left fade" ?> <!-- reset message for active tabs -->
+				<ul class="nav nav-tabs" role="tablist">
+					<?php $contador = 0; ?>
+					<?php $encuestasZonas = ContestaEncuesta::obtieneEncuestas_UsuarioZonaById(Zend_Auth::getInstance()->getIdentity()->persona_id, $zname->id); ?>
+					
+					<?php foreach ($encuestasZonas as $encuesta){ ?>
+					<li role="presentation" class="<?php echo (($contador == $this->num_encuesta)?'active':''); ?>">
+						<a href="#_<?php echo $encuesta->id; ?>_<?php echo$zname->id;?>_<?php echo$encuesta->tipo_persona_id;?>" data-toggle="tab" title="<?php echo $encuesta->nombre; ?>">
+							<?php echo substr($encuesta->nombre, 0,15).'...'; ?>
+						</a>
+					</li>
+					<?php $contador++; ?>
+					<?php }  ?>
+					<!--	          <li><a href="#a" data-toggle="tab">One</a></li>
 	          <li class="active"><a href="#b" data-toggle="tab">Two</a></li>
 	          <li><a href="#c" data-toggle="tab">Twee</a></li>
--->	        </ul>
-	        <div class="tab-content">
-	        <?php $contador2 = 0; ?>
-	        <?php foreach ($this->encuestas as $encuesta): ?>
-		         <div class="tab-pane <?php echo (($contador2 == $this->num_encuesta)?'active':''); ?>" id="_<?php echo $encuesta->id; ?>">
-			         <div class="col-xs-10 cuerpo-encuesta">
-			         	<h3 class="col-xs-12 text-center"><?php echo $encuesta->nombre; ?></h3>
-			         <?php $preguntas = Preguntas::obtienePreguntasEncuesta($encuesta->id); ?>
-			         <?php foreach ($preguntas as $pregunta): ?>
-			         	<div class="col-xs-6 form-group">
-			         		<label class="col-xs-12"><?php echo $pregunta->descripcion; ?></label>
-			         		<div class="col-xs-12">
-			         			<?php $respuesta = Respuesta::obtieneRespuesta(Zend_Auth::getInstance()->getIdentity()->persona_id, $pregunta->id); ?>
-			         			<?php if ($pregunta->tipo == 1): //pregunta corta ?>
-			         				<p class="text-justify">R: <?php echo $respuesta->descripcion; ?></p>
-			         			<?php endif ?>
-			         			<?php if ($pregunta->tipo == 2): //pregunta larga ?>
-			         				<p class="text-justify">R: <?php echo $respuesta->descripcion; ?></p>
-			         			<?php endif ?>
-			         			<?php if ($pregunta->tipo == 3): ?>
-				         				<p class="text-justify">R: <?php echo $respuesta->descripcion; ?></p>
-			         			<?php endif ?>
-			         			<?php if ($pregunta->tipo == 4): ?>
-			         				<?php 
+-->
+				</ul>
+				
+				<div class="tab-content">
+				
+					<?php $contador2 = 0; ?>
+					<?php foreach ($encuestasZonas as $encuesta): ?>
+					<div role="tabpanel" class="tab-pane <?php echo (($contador2 == $this->num_encuesta)?'active':''); ?>" id="_<?php echo $encuesta->id; ?>_<?php echo$zname->id;?>_<?php echo$encuesta->tipo_persona_id;?>">
+						<div class="col-xs-10 cuerpo-encuesta">
+							<div class="col-md-12 text-right">
+								<a class="btn btn-sm btn-success "  target="#" href="/backend/contesta-encuesta/exportar?zona=<?php echo $zname->id; ?>" > 
+									<i class="fa fa-file-excel-o fa-lg"></i>&nbsp;Exportar
+								</a>
+							</div>
+							<h3 class="col-xs-12 text-center">
+								<?php echo $encuesta->nombre; ?> - <?php echo $encuesta->tipo_persona; ?>
+							</h3>
+							<?php $preguntas = Preguntas::obtienePreguntasEncuesta($encuesta->id); ?>
+							<?php foreach ($preguntas as $pregunta): ?>
+							<div class="col-xs-6 form-group">
+								<div class="col-xs-12">
+									<label class="ajuste-etiqueta control-label">
+										<?php echo $pregunta->descripcion; ?>
+									</label>
+								</div>
+								<div class="col-xs-12">
+									<?php $respuesta = Respuesta::obtieneRespuesta(Zend_Auth::getInstance()->getIdentity()->persona_id, $pregunta->id, $zname->id, $encuesta->tipo_persona_id); ?>
+									<?php if ($pregunta->tipo == 1): //pregunta corta ?>
+									<p class="text-justify">R:
+										<?php echo $respuesta->descripcion; ?>
+									</p>
+									<?php endif ?>
+									<?php if ($pregunta->tipo == 2): //pregunta larga ?>
+									<p class="text-justify">R:
+										<?php echo $respuesta->descripcion; ?>
+									</p>
+									<?php endif ?>
+									<?php if ($pregunta->tipo == 3): ?>
+									<p class="text-justify">R:
+										<?php echo $respuesta->descripcion; ?>
+									</p>
+									<?php endif ?>
+									<?php if ($pregunta->tipo == 4): ?>
+									<?php 
 			         				$respuestas_usuario = '';
-			         				$opciones = My_Comun::obtenerFiltroSQL('opciones_pregunta',' WHERE status=1 AND pregunta_id='.$pregunta->id,' opcion ASC '); 
+			         				$opciones = My_Comun::obtenerFiltroSQL('opciones_pregunta',' WHERE status=1 AND pregunta_id='.$pregunta->id.'  opcion ASC '); 
 			         				?>
-			         				<?php foreach ($opciones as $opcion): ?>
-					         			<?php $respuesta2 = Respuesta::obtieneRespuestaEspecial($opcion->opcion, $pregunta->id); ?>
-			         					<?php if ($respuesta2->id!= ''){
+									<?php foreach ($opciones as $opcion): ?>
+									<?php $respuesta2 = Respuesta::obtieneRespuestaEspecial($opcion->opcion, $pregunta->id, $zname->id, $encuesta->tipo_persona_id); ?>
+									<?php if ($respuesta2->id!= ''){
 			         						$respuestas_usuario .= $opcion->opcion.', ';
 			         					 } ?>
-			         				<?php endforeach ?>
-			         				<?php $respuestas_usuario = substr($respuestas_usuario, 0, -2); ?>
-				         				<p class="text-justify">R: <?php echo $respuestas_usuario; ?></p>
-			         			<?php endif ?>
-<!--			         				<input type="hidden" name="pregunta_id[<?php echo $pregunta->id; ?>]" value="<?php echo $pregunta->id; ?>">-->
-			         		</div>
-			         	</div>
-			         <?php endforeach ?>
-			         </div>
-		         </div>
-		         <?php $contador2++; ?>
-	        <?php endforeach ?>
-	        </div>
-	      </div>
-	      <!-- /tabs -->
-	      
-	    </div>
-
-	    <br>    
-	  	<?php if ($this->registro->id == ''): ?>
-		    <div class="col-xs-12 text-right mb40px">
-<!--		        <button class="btn btn-rojo-1" onclick="limpiar('frmContestaEncuesta');" type="button" ><i class="fa fa-eraser"></i> Limpiar</button>-->
-		    </div>
-	  	<?php endif ?>  
+									<?php endforeach ?>
+									<?php $respuestas_usuario = substr($respuestas_usuario, 0, -2); ?>
+									<p class="text-justify">R:
+										<?php echo $respuestas_usuario; ?>
+									</p>
+									<?php endif ?>
+									<!--			         				<input type="hidden" name="pregunta_id[<?php echo $pregunta->id; ?>]" value="<?php echo $pregunta->id; ?>">-->
+								</div>
+							</div>
+							<?php endforeach ?>
+						</div>
+					</div>
+					<?php $contador2++; ?>
+					<?php endforeach ?>
+				</div>
+			</div>
+			</div>
+			<?php }  ?>
+			<!-- /tabs -->
+		</div>
+		<br>
+		<?php if ($this->registro->id == ''): ?>
+		<div class="col-xs-12 text-right mb40px">
+			<!--		        <button class="btn btn-rojo-1" onclick="limpiar('frmContestaEncuesta');" type="button" ><i class="fa fa-eraser"></i> Limpiar</button>-->
+		</div>
+		<?php endif ?>
 	</div>
 </div>
+</div>
+

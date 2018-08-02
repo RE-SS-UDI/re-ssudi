@@ -25,7 +25,7 @@
                 </div>
                 <div class="col-xs-3">
                 <label for="fcategoria" class="sr-only">Categoria</label>
-                    <select id="fcategoria" name="categoria" class="form-control input-sm">
+                    <select id="fcategoria" name="categoria" class="form-control input-sm" onchange="obtieneEncuestas();">
                         <option value="" selected>- Todos las categorías -</option>
                         <?php foreach ($this->categorias as $categoria): ?>
                             <option value="<?php echo $categoria->id; ?>"><?php echo $categoria->nombre; ?></option>
@@ -44,7 +44,12 @@
             <div class="row margin-bottom-3">
                 <div class="col-xs-3">
                     <label for="fnombre_encuesta" class="sr-only">Nombre encuesta</label>
-                    <input type="text" name="nombre_encuesta" id="fnombre_encuesta" class="form-control input-sm" value="" placeholder="Buscar encuesta"/>
+                    <select id="fnombre_encuesta" name="nombre_encuesta" class="form-control input-sm">
+                        <option value="" selected>- Todas las encuestas -</option>
+                        <?php foreach ($this->encuestas as $encuesta): ?>
+                            <option value="<?php echo $encuesta->id; ?>"><?php echo $encuesta->nombre; ?></option>
+                        <?php endforeach ?>
+                    </select>
                 </div>
                 <div class="col-xs-3">
                 <label for="fstatus" class="sr-only">Estatus</label>

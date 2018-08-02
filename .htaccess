@@ -13,3 +13,5 @@ RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^.*$ – [NC,L]
 #Todo lo que venga /public/cualquiercosa lo redireccionamos al index.php para que el bootstrap haga su #trabajo
 RewriteRule ^public/.*$ /public/index.php [NC,L]
+php_value upload_max_filesize 20M
+php_value post_max_size 20M

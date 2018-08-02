@@ -1,0 +1,45 @@
+<div class="panel panel-default" style="margin: 5px 0;">
+    <div class="pnl-heading-rojo-1 clearfix">
+        <h3 class="panel-title pull-left">Proyectos</h3>
+        <button type="button" onclick="agregar('/backend/proyecto/agregar', 0, 'frmProyecto','Registrar Proyecto');" class="btn btn-sm btn-default pull-right <?php echo($this->puedeAgregar?"":"hide"); ?>">
+            <i class="fa fa-plus"></i>&nbsp;Agregar
+        </button>
+    </div>
+    <div class="panel-body">
+        <form name="frmFiltrosProyecto" id="frmFiltrosProyecto">
+            <div class="row margin-bottom-3">
+                
+                <div class="col-xs-3">
+                    <label for="fdescripcion" class="sr-only">Descripcion</label>
+                    <input type="text" name="descripcion" id="fdescripcion" class="form-control input-sm" value="" placeholder="Buscar descripcion"/>
+                </div>
+             
+                <div class="col-xs-3">
+                    <label for="farea" class="sr-only">Area</label>
+                    <input type="text" name="area" id="farea" class="form-control input-sm" value="" placeholder="Buscar area"/>
+                </div>
+
+                <div class="col-xs-3">
+                <label for="fstatus" class="sr-only">Estatus</label>
+                    <select id="fstatus" name="status" class="form-control input-sm">
+                        <option value="">- Todos los estatus -</option>
+                        <option value="1">Habilitado</option>
+                        <option value="0">Deshabilitado</option>
+                    </select>
+                </div>
+                <div class="col-xs-3 text-right">
+                    <button class="btn btn-sm btn-default" type="button" onclick="filtrar('frmFiltrosProyecto','/backend/proyecto/grid','/backend/proyecto/imprimir','/backend/proyecto/exportar');">
+                        <i class="fa fa-search"></i>&nbsp;Filtrar
+                    </button>
+                    <button class="btn btn-sm btn-default" type="button" onclick="limpiar('frmFiltrosProyecto','/backend/proyecto/grid');">
+                        <i class="fa fa-eraser"></i>&nbsp;Limpiar
+                    </button>
+                </div>
+    	    </div>
+            <div class="row margin-bottom-3">
+            </div>
+        </form>
+    </div>
+</div>
+<div id="flexigrid"></div>
+<div class="height-5"></div>

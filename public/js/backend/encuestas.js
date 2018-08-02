@@ -1,6 +1,18 @@
 urlEliminar='/backend/encuestas/eliminar';
 
 $(document).ready(function(){
+    var value = __obtenerTiempo ();
+
+    $('#mainContent').idle({
+       onIdle: function(){
+        $.ajax({url: "ingreso/salir", success: function(result){
+                        __mensajeSinBoton('#_mensaje-1',  'Cerrando aplicacion por falta de actividad...');
+                        __delayRefreshPage(600);
+        }});
+          },
+          idle: value  //10 segundos
+        })
+
 	var filtro="/backend/encuestas/grid";
 	if($("#fnombre").val()!="")       filtro+="/nombre/"+$("#fnombre").val();
 
@@ -9,8 +21,8 @@ $(document).ready(function(){
 		url: filtro,
 		dataType: "xml",
 		colModel: [
-			{display: "Nombre",           name:"e.nombre",       width: 200, sortable: true, align: "center"},
-			{display: "Categoría",name:"e.categoria_id",       width: 200, sortable: true, align: "center"},			
+			{display: "Nombre",           name:"e.nombre",       width: 430, sortable: true, align: "center"},
+			{display: "Categoría",name:"e.categoria_id",       width: 412, sortable: true, align: "center"},			
 			{display: 'Estatus',           name:"e.status",       width: 100, sortable : false, align: 'center'},
 			{display: 'Editar',           name:"editar",       width: 100, sortable : false, align: 'center'},
 			{display: 'Habilitar/deshabilitar',         name:"eliminar",     width: 150, sortable : false, align: 'center'}
@@ -28,6 +40,8 @@ $(document).ready(function(){
 	});
 
 });
+
+
 
 function agregarEncuesta(urlDestino, identificador, form, titulo)
 {

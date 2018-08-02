@@ -1,7 +1,8 @@
 <?php
 class Backend_EncuestasController extends Zend_Controller_Action{
     public function init(){
-        $this->view->headScript()->appendFile('/js/backend/encuestas.js');
+        $this->view->headScript()->appendFile('/js/backend/comun.js?');
+        $this->view->headScript()->appendFile('/js/backend/encuestas.js?'.time());
        
     }//function
  

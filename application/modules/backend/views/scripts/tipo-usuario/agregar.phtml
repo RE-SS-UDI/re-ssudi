@@ -13,7 +13,7 @@
     <div class="col-xs-12 form-group"> 
         <label for="descripcion" class="col-xs-2 control-label"><span class="naranja">*</span>Desripción:</label>
         <div class="col-xs-4">
-            <input name="descripcion" id="descripcion" class="form-control input-sm required" maxlength="100" placeholder="Descripción" value="<?php echo $this->registro->descripcion; ?>">
+            <td name="descripcion" id="descripcion" class="form-control input-sm required" maxlength="100" placeholder="Descripción" value="<?php echo $this->registro->descripcion; ?>">
         </div>
     </div>
     <div class="col-xs-12 form-group">
@@ -50,6 +50,15 @@
                             <td align="center"><input type="checkbox" name="permisos[]" value="PERMISOS_USUARIO" <?php echo (in_array("PERMISOS_USUARIO",$this->permisos))?"checked":""?>/></td>
                         </tr>
                         <tr>
+                            <td>Tipo de persona</td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="VER_TIPO_PERSONA" <?php echo (in_array("VER_TIPO_PERSONA",$this->permisos))?"checked":""?> /></td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="AGREGAR_TIPO_PERSONA" <?php echo (in_array("AGREGAR_TIPO_PERSONA",$this->permisos))?"checked":""?> /></td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="EDITAR_TIPO_PERSONA" <?php echo (in_array("EDITAR_TIPO_PERSONA",$this->permisos))?"checked":""?> /></td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="ELIMINAR_TIPO_PERSONA" <?php echo (in_array("ELIMINAR_TIPO_PERSONA",$this->permisos))?"checked":""?>/></td>
+                            <!--<td align="center"></td>-->
+                            <td align="center"><input type="checkbox" name="permisos[]" value="PERMISOS_TIPO_PERSONA" <?php echo (in_array("PERMISOS_TIPO_PERSONA",$this->permisos))?"checked":""?>/></td>
+                        </tr>
+                        <tr>
                             <td>Tipo de usuario</td>
                             <td align="center"><input type="checkbox" name="permisos[]" value="VER_TIPO_USUARIO" <?php echo (in_array("VER_TIPO_USUARIO",$this->permisos))?"checked":""?> /></td>
                             <td align="center"><input type="checkbox" name="permisos[]" value="AGREGAR_TIPO_USUARIO" <?php echo (in_array("AGREGAR_TIPO_USUARIO",$this->permisos))?"checked":""?> /></td>
@@ -66,7 +75,17 @@
                             <td align="center"><input type="checkbox" name="permisos[]" value="EDITAR_PERSONA" <?php echo (in_array("EDITAR_PERSONA",$this->permisos))?"checked":""?> /></td>
                             <td align="center"><input type="checkbox" name="permisos[]" value="ELIMINAR_PERSONA" <?php echo (in_array("ELIMINAR_PERSONA",$this->permisos))?"checked":""?>/></td>
                             <!--<td align="center"></td>-->
-                            <td align="center"><!--<input type="checkbox" name="permisos[]" value="PERMISOS_SECCION" <?php echo (in_array("PERMISOS_PERSONA",$this->permisos))?"checked":""?>/>--></td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="PERMISOS_PERSONA" <?php echo (in_array("PERMISOS_PERSONA",$this->permisos))?"checked":""?>/></td>
+                        </tr>
+
+                        <tr>
+                            <td>Estados</td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="VER_ESTADO" <?php echo (in_array("VER_ESTADO",$this->permisos))?"checked":""?> /></td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="AGREGAR_ESTADO" <?php echo (in_array("AGREGAR_ESTADO",$this->permisos))?"checked":""?> /></td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="EDITAR_ESTADO" <?php echo (in_array("EDITAR_ESTADO",$this->permisos))?"checked":""?> /></td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="ELIMINAR_ESTADO" <?php echo (in_array("ELIMINAR_ESTADO",$this->permisos))?"checked":""?>/></td>
+                            <!--<td align="center"></td>-->
+                            <td align="center"><input type="checkbox" name="permisos[]" value="PERMISOS_ESTADO" <?php echo (in_array("PERMISOS_ESTADO",$this->permisos))?"checked":""?>/></td>
                         </tr>
 
                         <tr>
@@ -101,11 +120,11 @@
                         <tr>
                             <td>Contesta Encuesta</td>
                             <td align="center"><input type="checkbox" name="permisos[]" value="VER_CONTESTA_ENCUESTA" <?php echo (in_array("VER_CONTESTA_ENCUESTA",$this->permisos))?"checked":""?> /></td>
-                            <td align="center"></td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="VER_VISUALIZAR_ENCUESTA" <?php echo (in_array("VER_VISUALIZAR_ENCUESTA",$this->permisos))?"checked":""?> /></td>
                             <td align="center"></td>
                             <td align="center"></td>
                             <!--<td align="center"></td>-->
-                            <td align="center"><!--<input type="checkbox" name="permisos[]" value="PERMISOS_CONTESTA_ENCUESTA" <?php echo (in_array("PERMISOS_CONTESTA_ENCUESTA",$this->permisos))?"checked":""?>/>--></td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="PERMISOS_CONTESTA_ENCUESTA" <?php echo (in_array("PERMISOS_CONTESTA_ENCUESTA",$this->permisos))?"checked":""?>/></td>
                         </tr>
                         <tr>
                             <td>Empresas</td>
@@ -136,7 +155,7 @@
                             <td align="center"><input type="checkbox" name="permisos[]" value="VER_ASIGNA_ENCUESTA" <?php echo (in_array("VER_ASIGNA_ENCUESTA",$this->permisos))?"checked":""?> /></td>
                             <td align="center">&nbsp;</td>
                             <td align="center">&nbsp;</td>
-                            <!--<td align="center">&nbsp;</td>-->
+                            <td align="center">&nbsp;</td>
                             <td align="center">&nbsp;</td>
                         </tr>
                         <tr>
@@ -144,15 +163,7 @@
                             <td align="center"><input type="checkbox" name="permisos[]" value="VER_MIS_DATOS" <?php echo (in_array("VER_MIS_DATOS",$this->permisos))?"checked":""?> /></td>
                             <td align="center">&nbsp;</td>
                             <td align="center">&nbsp;</td>
-                            <!--<td align="center">&nbsp;</td>-->
                             <td align="center">&nbsp;</td>
-                        </tr>
-                        <tr>
-                            <td>Mi Currículum</td>
-                            <td align="center"><input type="checkbox" name="permisos[]" value="VER_MI_CURRICULUM" <?php echo (in_array("VER_MI_CURRICULUM",$this->permisos))?"checked":""?> /></td>
-                            <td align="center">&nbsp;</td>
-                            <td align="center">&nbsp;</td>
-                            <!--<td align="center">&nbsp;</td>-->
                             <td align="center">&nbsp;</td>
                         </tr>
                         <tr>
@@ -162,7 +173,67 @@
                             <td align="center">&nbsp;</td>
                             <!--<td align="center">&nbsp;</td>-->
                             <td align="center">&nbsp;</td>
+                            <td align="center">&nbsp;</td>
                         </tr>
+                        <tr>
+                            <td>Concentrado</td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="VER_CONCENTRADO" <?php echo (in_array("VER_CONCENTRADO",$this->permisos))?"checked":""?> /></td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="AGREGAR_CONCENTRADO" <?php echo (in_array("AGREGAR_CONCENTRADO",$this->permisos))?"checked":""?> /></td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="EDITAR_CONCENTRADO" <?php echo (in_array("EDITAR_CONCENTRADO",$this->permisos))?"checked":""?> /></td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="ELIMINAR_CONCENTRADO" <?php echo (in_array("ELIMINAR_CONCENTRADO",$this->permisos))?"checked":""?> /></td>
+                            <td align="center"></td>
+                        </tr>
+
+
+
+                        <!-- NUevos modulos desarrollados por Saverio -->
+                        <tr>
+                            <td>Mensajes</td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="VER_INICIO" <?php echo (in_array("VER_INICIO",$this->permisos))?"checked":""?> /></td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="VER_MENSAJE" <?php echo (in_array("VER_MENSAJE",$this->permisos))?"checked":""?> /></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <!--<td align="center"></td>-->
+                            <td align="center"></td>
+                        </tr>
+                        <tr>
+                            <td>Areas de Proyectos</td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="VER_AREAPROY" <?php echo (in_array("VER_AREAPROY",$this->permisos))?"checked":""?> /></td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="AGREGAR_AREAPROY" <?php echo (in_array("AGREGAR_AREAPROY",$this->permisos))?"checked":""?> /></td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="EDITAR_AREAPROY" <?php echo (in_array("EDITAR_AREAPROY",$this->permisos))?"checked":""?> /></td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="ELIMINAR_AREAPROY" <?php echo (in_array("ELIMINAR_AREAPROY",$this->permisos))?"checked":""?>/></td>
+                            <!--<td align="center"></td>-->
+                            <td align="center"></td>
+                        </tr>
+                        <tr>
+                            <td>Proyectos</td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="VER_PROYECTO" <?php echo (in_array("VER_PROYECTO",$this->permisos))?"checked":""?> /></td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="AGREGAR_PROYECTO" <?php echo (in_array("AGREGAR_PROYECTO",$this->permisos))?"checked":""?> /></td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="EDITAR_PROYECTO" <?php echo (in_array("EDITAR_PROYECTO",$this->permisos))?"checked":""?> /></td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="ELIMINAR_PROYECTO" <?php echo (in_array("ELIMINAR_PROYECTO",$this->permisos))?"checked":""?>/></td>
+                            <!--<td align="center"></td>-->
+                            <td align="center"></td>
+                        </tr>
+                        <tr>
+                            <td>Concentrado de Proyectos</td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="VER_CONCENTRADOPROY" <?php echo (in_array("VER_CONCENTRADOPROY",$this->permisos))?"checked":""?> /></td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="AGREGAR_CONCENTRADOPROY" <?php echo (in_array("AGREGAR_CONCENTRADOPROY",$this->permisos))?"checked":""?> /></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <!--<td align="center"></td>-->
+                            <td align="center"></td>
+                        </tr>
+                        <tr>
+                            <td>Editar Mensajes</td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="VER_EDITARMENSAJE" <?php echo (in_array("VER_EDITARMENSAJE",$this->permisos))?"checked":""?> /></td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="AGREGAR_MENSAJE" <?php echo (in_array("AGREGAR_MENSAJE",$this->permisos))?"checked":""?> /></td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="EDITAR_MENSAJE" <?php echo (in_array("EDITAR_MENSAJE",$this->permisos))?"checked":""?> /></td>
+                            <td align="center"><input type="checkbox" name="permisos[]" value="ELIMINAR_EDITARMENSAJE" <?php echo (in_array("ELIMINAR_EDITARMENSAJE",$this->permisos))?"checked":""?> /></td>
+                           
+                            <!--<td align="center"></td>-->
+                            <td align="center"></td>
+                        </tr>
+
                     </tbody>
                 </table>
             

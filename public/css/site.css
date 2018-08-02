@@ -9,16 +9,6 @@ body {
     padding-right: 15px;
 }
 
-.carousel-inner {
-    border-radius: 25px;
-    background-color: rgba(0,0,0,0);
-    overflow: hidden;
-}
-
-.well {
-    background-color: rgba(245, 245, 245, 0.4);
- }
-
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */
@@ -35,13 +25,43 @@ textarea {
 }
 
 @media only screen and (max-width : 767px) {
-	h2, h1, h3{
+	h2, h1{
 		font-size: 20px !important;
 	}
-    h3{
-    font-size: 16px !important;
-  }
 }
+
+.form-input-required {
+    color: red;
+}
+
+
+.form-control input:required {
+  border-left-color: palegreen;
+}
+
+/* Standard syntax */
+@keyframes shake {
+	10%, 90% {
+	  transform: translate3d(-1px, 0, 0);
+	}
+  
+	20%, 80% {
+	  transform: translate3d(2px, 0, 0);
+	}
+  
+	30%, 50%, 70% {
+	  transform: translate3d(-4px, 0, 0);
+	}
+  
+	40%, 60% {
+	  transform: translate3d(4px, 0, 0);
+	}
+  }
+  .apply-shake {
+	animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+	border-bottom: 5px solid red;
+}
+
 
 
 .datos{
@@ -77,6 +97,5 @@ footer{
 .carousel-inner > .item > a > img {
   width: 100% !important;
   margin: auto !important;
-  max-height: 350px;
-  height: 350px;
+  max-height: 460px;
 }

@@ -1,6 +1,21 @@
 $(document).ready(function() {
-	//alert('aqui');
+    
+    var value = __obtenerTiempo ();
+    var server = window.location.hostname;
+    var link = "http://"+server+"/backend/ingreso/salir";
+
+    $('#mainContent').idle({
+       onIdle: function(){
+        $.ajax({url: link, success: function(result){
+                        __mensajeSinBoton('#_mensaje-1',  'Cerrando aplicacion por falta de actividad...');
+                        __delayRefreshPage(600);
+        }});
+          },
+          idle: value  //10 segundos
+        })
 });
+
+
 function guardarEncuesta(formulario,encuesta)
 {
     $("#"+formulario).validate({
@@ -69,4 +84,39 @@ function eliminaSeleccion(persona,pregunta,tipo,valor)
         
     }
 
+}
+
+function exportaEncuestas(zona_id){
+
+    console.log("zona seleccionada: "+zona_id);
+	var zona = zona_id;
+		//  updateByEstadoZona(estado,zona);
+
+if (zona != '') {
+		$.ajax({
+			url: '/backend/contesta-encuesta/exportar',
+			type: 'POST',
+			data: {zona: zona},
+			success: function(res){
+            //     var objJSON = eval("(function(){return " + res + ";})()");
+            //     // var response = $.parseJSON(res);
+                console.log("sucess " +res );
+                
+                
+
+
+            // var tipo = $('#tipo_idS');
+            // tipo.empty();
+            //     for (var tipo in objJSON) {
+            //         console.log("de "+objJSON[tipo]['descripcion']);
+            //         // tipo.append(
+            //         //     $('<option>', {
+            //         //     value: objJSON[tipo]['id']
+            //         //     }).text(objJSON[tipo]['descripcion'])
+            //         // );
+            //          $('#tipo_idS').append('<option value=' + objJSON[tipo]['id'] + '>' + objJSON[tipo]['descripcion'] + '</option>');
+            //     }
+            }
+		});
+	}
 }

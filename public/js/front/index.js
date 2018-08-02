@@ -3,7 +3,7 @@ $(document).ready(function() {
         dateFormat: 'yy-mm-dd',
         changeMonth: true,
         changeYear: true,
-        maxDate: "+0d",
+        yearRange: "-87:-15",//rango del calendario seleccionable
         dayNamesMin: ["Do", "Lu", "Ma", "Mi", "Ju", "Vi", "Sa"],
         dayNamesShort: ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
         monthNames: 
@@ -103,3 +103,99 @@ function guardarPreRegistro(formulario)
     $("#"+formulario).submit();     
 }
 
+
+function onChangeEstado(estado_id)
+{
+	console.log("estado seleccionado: "+estado_id.value);
+    var estado = estado_id.value;
+
+	if (estado != '') {
+		$.ajax({
+			url: '/index/pre-register-onchange-estado',
+			type: 'POST',
+			data: {estado: estado},
+			success: function(res){
+                var objJSON = eval("(function(){return " + res + ";})()");
+                // var response = $.parseJSON(res);
+                // console.log("sucess " + objJSON[0].nombre);
+            var zonas = $('#zona_id');
+            zonas.empty();
+            var tipo = $('#tipo_id');
+            tipo.empty();
+            $('#zona_id').append('<option value="">-Selecciona una zona-</option>');
+            $('#tipo_id').append('<option value="">-Selecciona una zona-</option>');
+                for (var zona in objJSON) {
+                    console.log(objJSON[zona]['nombre']);
+                    zonas.append(
+                        $('<option>', {
+                        value: objJSON[zona]['id']
+                        }).text(objJSON[zona]['nombre'])
+                    );
+                    // $('#zona_id').append('<option value=' + objJSON[zona]['id'] + '>' + objJSON[zona]['nombre'] + '</option>');
+                }
+            }
+		});
+	}
+}
+
+function onChangeZona(zona_id)
+{
+	console.log("zona seleccionada: "+zona_id.value);
+    var zona = zona_id.value;
+
+	if (zona != '') {
+		$.ajax({
+			url: '/index/pre-register-onchange-zona',
+			type: 'POST',
+			data: {zona: zona},
+			success: function(res){
+                var objJSON = eval("(function(){return " + res + ";})()");
+                // var response = $.parseJSON(res);
+                // console.log("sucess " + objJSON[0].nombre);
+            var tipo = $('#tipo_id');
+            tipo.empty();
+            $('#tipo_id').append('<option value="">-Selecciona una zona-</option>');
+                for (var tipo in objJSON) {
+                    console.log(objJSON[tipo]['descripcion']);
+                    // tipo.append(
+                    //     $('<option>', {
+                    //     value: objJSON[tipo]['id']
+                    //     }).text(objJSON[tipo]['descripcion'])
+                    // );
+                    $('#tipo_id').append('<option value=' + objJSON[tipo]['id'] + '>' + objJSON[tipo]['descripcion'] + '</option>');
+                }
+            }
+		});
+	}
+}
+
+function shakeEmpys(){
+    // var cat = $('#categoria_id').val();
+    var celularF = document.getElementById("celular");
+    var tipoF = document.getElementById("tipo_id");
+    var correoF = document.getElementById("correo");
+    var correo2F = document.getElementById("correo2");
+    var zonaF = document.getElementById("zona_id");
+    var estadoF = document.getElementById("estado_id");
+    var fechaNasF = document.getElementById("fecha_nacimiento");
+    var nombreF = document.getElementById("nombre");
+    var apellidopF = document.getElementById("apellidoP");
+    var apellidomF = document.getElementById("apellidoM");
+
+    var fields = [document.getElementById("celular"), document.getElementById("tipo_id"), document.getElementById("correo"), document.getElementById("correo2"), 
+    document.getElementById("zona_id"), document.getElementById("estado_id"), document.getElementById("fecha_nacimiento"),  document.getElementById("nombre"),
+    document.getElementById("apellidoP"), document.getElementById("apellidoM")];
+
+    fields.forEach(function(entry) {
+        if( entry.value === "") {
+            entry.classList.add("apply-shake");
+        }  
+    });
+
+    fields.forEach(function(entry) {
+        entry.addEventListener("animationend", (e) => {
+            entry.classList.remove("apply-shake");
+        });
+    });
+
+}

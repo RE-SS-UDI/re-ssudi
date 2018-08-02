@@ -1,7 +1,8 @@
 <?php
 class Backend_CategoriaController extends Zend_Controller_Action{
     public function init(){
-        $this->view->headScript()->appendFile('/js/backend/categoria.js');
+        $this->view->headScript()->appendFile('/js/backend/comun.js?');
+        $this->view->headScript()->appendFile('/js/backend/categoria.js?'.time());
        
     }//function
  

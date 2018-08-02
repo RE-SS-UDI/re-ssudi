@@ -10,20 +10,32 @@
             <div class="row margin-bottom-3">
                 
                 <div class="col-xs-3">
+                    <label for="fnombre" class="sr-only">Nombre</label>
+                    <input type="text" name="nombre" id="fnombre" class="form-control input-sm" value="" placeholder="Buscar nombre"/>
+                </div>
+                <div class="col-xs-3">
+                    <label for="fcontacto" class="sr-only">Contacto</label>
+                    <input type="text" name="contacto" id="fcontacto" class="form-control input-sm" value="" placeholder="Buscar contacto"/>
+                </div>
+                 <div class="col-xs-3">
+                <label for="fstatus" class="sr-only">Estatus</label>
+                    <select id="fstatus" name="status" class="form-control input-sm">
+                        <option value="">- Todos los estatus -</option>
+                        <option value="1">Habilitado</option>
+                        <option value="0">Deshabilitado</option>
+                    </select>
+                </div>
+<!--                 <div class="col-xs-3">
                     <label for="frazon_social" class="sr-only">Nombre</label>
                     <input type="text" name="razon_social" id="frazon_social" class="form-control input-sm" value="" placeholder="Buscar razón social"/>
                 </div>
                 <div class="col-xs-3">
                     <label for="fcalle" class="sr-only">Calle</label>
                     <input type="text" name="calle" id="fcalle" class="form-control input-sm" value="" placeholder="Buscar calle"/>
-                </div>
-                <div class="col-xs-3">
-                    <label for="fcontacto" class="sr-only">Contacto</label>
-                    <input type="text" name="contacto" id="fcontacto" class="form-control input-sm" value="" placeholder="Buscar contacto"/>
-                </div>
+                </div> -->
             
                 <div class="col-xs-3 text-right">
-                    <button class="btn btn-sm btn-default" type="button" onclick="filtrar('frmFiltrosEmpresa','/backend/empresa/grid','/backend/empresa/imprimir','/backend/empresa/exportar');">
+                    <button class="btn btn-sm btn-default" type="button" onclick="filtrar('frmFiltrosEmpresa','/backend/empresa/grid','/backend/empresa/imprimir','/backend/empresa/exportar'); shakeEmpys();">
                         <i class="fa fa-search"></i>&nbsp;Filtrar
                     </button>
                     <button class="btn btn-sm btn-default" type="button" onclick="limpiar('frmFiltrosEmpresa','/backend/empresa/grid');">
@@ -32,22 +44,28 @@
                 </div>
     	    </div>
             <div class="row margin-bottom-3">
+                
                 <div class="col-xs-3">
-                    <label for="festado" class="sr-only">Estado</label>
-                    <input type="text" name="estado" id="festado" class="form-control input-sm" value="" placeholder="Buscar estado"/>
-                </div>
-                <div class="col-xs-3">
-                    <label for="fmunicipio" class="sr-only">Municipio</label>
-                    <input type="text" name="municipio" id="fmunicipio" class="form-control input-sm" value="" placeholder="Buscar municipio"/>
-                </div>
-                <div class="col-xs-3">
-                <label for="fstatus" class="sr-only">Estatus</label>
-                    <select id="fstatus" name="status" class="form-control input-sm">
-                        <option value="">- Todos los estatus -</option>
-                        <option value="1">Habilitado</option>
-                        <option value="0">Deshabilitado</option>
+                    <label for="estado" class="sr-only">Estado</label>
+                    <select id="estado" name="estado" class="form-control input-sm" onchange="cambiaEstado(this);">
+                        <option value="">- Todos las estados -</option>
+                        <?php foreach ($this->estados as $estado): ?>
+                            <option value="<?php echo $estado->estadoId; ?>"><?php echo utf8_encode($estado->estado); ?></option>
+                        <?php endforeach ?>
                     </select>
                 </div>
+                <div class="col-xs-3">
+                    <label for="zona" class="sr-only">Zona</label>
+                    <select id="zona" name="zona" class="form-control input-sm" onchange="cambiaZona(this);">
+                        <option value="">Selecciona una zona</option>
+                        <!-- <?php foreach ($this->zonas as $zona): ?>
+                            <option value="<?php echo $zona->id; ?>"><?php echo $zona->nombre; ?></option>
+                        <?php endforeach ?> -->
+                    </select>
+                </div>
+            </div>
+            <div class="row margin-bottom-3">
+               
             </div>
         </form>
     </div>

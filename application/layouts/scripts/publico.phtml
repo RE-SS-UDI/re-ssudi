@@ -4,9 +4,8 @@
 <meta charset="utf-8">
 <title>Cuerpo Acad&eacute;mico 02</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- <link rel="icon" href="favicon.ico" type="image/x-icon">
-<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" /> -->
-
+<!--<link rel="icon" href="img/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />-->
 
 <!--CSS-->
   <link rel="stylesheet" type="text/css" href="/recursos/jquery_ui_1_11_4/jquery-ui.css" />
@@ -23,6 +22,11 @@
  <?php echo $this->headLink(); ?>
  
 </head>
+<style>
+form-control input:required {
+  border-left-color: palegreen;
+}
+</style>
 <body style= "background-image: url('/img/fondoUTJ1.jpg'); background-repeat: no-repeat; background-size: cover; background-position: center; background-attachment: fixed;">
 <!--header-->
 <header id="header">
@@ -43,6 +47,7 @@
                     <li><a href="/index/contact">Contactanos</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
+              <li><a href="/recursos/manuales/ManualEncuestas.pdf" target="_blank" >Manual de Usuario</a></li>
               <li><a href="/index/pre-register" id="registerLink">Registro</a></li>
               <li><a href="/backend" id="loginLink">Acceso al sistema</a></li>
           </ul>
@@ -57,24 +62,37 @@
       <div class="container body-content">
         <hr />
             <div class="col-md-4">
-                <b>Universidad Tecnológica de Jalisco</b> <br />
-                <address>                    
-                    División de Desarrollo e Innovación Empresarial <br />
-                    Director de la División<br />
-                    Lic. Jorge Sandoval Rodríguez <br />
-                    Luis J. Jiménez #577 <br />
-                    <abbr title="Telefono">Teléfonos: </abbr><br />
-                    Conmutador: 30300900 Ext 7361 <br />
-                    Directo:    30300926
-                </address>
+           
+                <b>División Económico Administrativa</b>
+
+                 <br />
+                <p>Desarrolladores del sistema <br /> <br /> Karina Cuevas Valdovinos <br />Edgardo E. González del Castillo</p>
+                Modulos
+                <br />Capital Intelectual - Esaú Tolosa Carrillo<br /> Planeación Estratégica - Saverio Soto Caloca<br />
                 
+
               </div>
             <div class="col-md-4">
-               
-              <p>Desarrolladores del sistema <br /><br /> Edgardo E. González del Castillo <br /> Esau Tolosa Carrillo <br /> Jose Luis Lagunes Gomez</p>
+              <b>Agradecimientos </b></br>
+              
+              Consultoría</br>
+              &nbsp; &nbsp;María de Lourdes Espinoza Aguilar</br>
+              &nbsp; &nbsp;Investigación y Formación para el desarrollo social </br>&nbsp; &nbsp;sustentable</br>
+ Estadía Empresarial</br>
+              &nbsp; &nbsp;José Luis Lagunes Gómez </br>
+              </br> © 2017 Responsabilidad Social, Sustentabilidad y Desarrollo Integral para PyMES
+              
+
             </div>
             <div class="col-md-4">
-                <img src="/img/logo_ca.png" width="200" height="100" />
+            <img src="/img/cmic.png" width="180" height="40" align="center" /> &nbsp; &nbsp;
+                <img src="/img/logo_ca2.png" width="140" height="70" />  &nbsp; &nbsp; &nbsp; &nbsp;
+                <!--<img src="/img/esr.png" width="60" height="60" />-->
+               </br>  </br> 
+               Luis J. Jiménez 577, Colonia Primero de Mayo, C.P. 44979 Guadalajara, Jalisco, México 
+                </br> Teléfono: + 52 (33) 3030-0900, 01, 02, 03
+
+
             </div>
     </div>
   </footer>
@@ -93,7 +111,7 @@
 
   <!-- La carga de los scripts debe hacerse al final -->
   <script src="/recursos/jquery_2_2_1/jquery2_2_1.js"></script>
-  <script src="/recursos/jquery_ui_1_11_4/jquery-ui.js"></script>
+  <script src="/recursos/jquery-ui.js"></script>
   <script src="/js/modernizr-2.6.2.js"></script>
   <script src="/js/bootstrap.js"></script>
   <script src="/js/respond.js"></script>
@@ -103,6 +121,8 @@
   <script src="/recursos/jquery_validation_1_13_0/dist/localization/messages_es.min.js"></script>    
   
   <script src="/js/backend/comun.js"></script>
+
+
   <?php echo $this->headScript(); ?>        
 
 	<!--[if lt IE 9]>

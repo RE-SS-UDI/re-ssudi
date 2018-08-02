@@ -1,7 +1,8 @@
 <?php
 class Backend_ZonasController extends Zend_Controller_Action{
     public function init(){
-        $this->view->headScript()->appendFile('/js/backend/zonas.js');
+        $this->view->headScript()->appendFile('/js/backend/comun.js?');
+        $this->view->headScript()->appendFile('/js/backend/zonas.js?'.time());
        
     }//function
  
@@ -24,7 +25,7 @@ class Backend_ZonasController extends Zend_Controller_Action{
         
         
         if($this->_getParam('status')!="")
-            $filtro.=" AND status=".$this->_getParam('status');
+            $filtro.=" AND z.status=".$status;
         
         if($nombre!='')
         {
@@ -37,8 +38,10 @@ class Backend_ZonasController extends Zend_Controller_Action{
             }//for
         }//if
 
-        $consulta = "SELECT z.*
+        $consulta = "SELECT z.*, es.estado as estado
                       FROM zona z
+                      INNER JOIN estados es
+                      ON es.id_estado = z.estado_id
                       WHERE ".$filtro;
     
         $registros = My_Comun::registrosGridQuerySQL($consulta);
@@ -52,6 +55,7 @@ class Backend_ZonasController extends Zend_Controller_Action{
         {
                 
                 $grid[$i]['nombre'] =$registros['registros'][$k]->nombre;
+                $grid[$i]['estado'] =$registros['registros'][$k]->estado;
                 $grid[$i]['status']=(($registros['registros'][$k]->status)?'Habilitado':'Inhabilitado');
                
             if($registros['registros'][$k]->status == 0)
@@ -93,6 +97,8 @@ class Backend_ZonasController extends Zend_Controller_Action{
         if($_POST["id"]!="0"){
             $this->view->registro=My_Comun::obtenerSQL("zona", "id", $_POST["id"]);
         }
+        $this->view->estados = Usuario::obtieneestadosZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+
     }//function
 
     public function guardarAction(){
@@ -118,14 +124,14 @@ class Backend_ZonasController extends Zend_Controller_Action{
         
 			
         $bitacora = array();
-        $bitacora[0]["modelo"] = "CategoZonaría";
+        $bitacora[0]["modelo"] = "zona";
         $bitacora[0]["campo"] = "nombre";
         $bitacora[0]["id"] = $_POST["id"];
         $bitacora[0]["eliminar"] = "Eliminar zona";
         $bitacora[0]["deshabilitar"] = "Deshabilitar zona";
         $bitacora[0]["habilitar"] = "Habilitar zona";
 			
-        echo My_Comun::eliminarSQL("categoria", $_POST["id"], $bitacora);
+        echo My_Comun::eliminarSQL("zona", $_POST["id"], $bitacora);
     }//function
 
 }//class

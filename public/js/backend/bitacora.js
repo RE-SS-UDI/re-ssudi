@@ -1,4 +1,15 @@
 $(document).ready(function(){   
+    var value = __obtenerTiempo ();
+    $('#mainContent').idle({
+       onIdle: function(){
+        $.ajax({url: "ingreso/salir", success: function(result){
+                        __mensajeSinBoton('#_mensaje-1',  'Cerrando aplicacion por falta de actividad...');
+                        __delayRefreshPage(600);
+        }});
+          },
+          idle: value  //10 segundos
+        })
+
     if($("#fusuarioId").val()!="")       filtro+="/usuario/"+$("#fnombre").val();
     if($("#fmodelo").val()!="")       filtro+="/modelo/"+$("#fmodelo").val();
     if($("#faccion").val()!="")       filtro+="/accion/"+$("#faccion").val();
@@ -22,18 +33,18 @@ $(document).ready(function(){
 
     $("#flexigrid").flexigrid({
 
-        url: "/bitacora/grid"
+        url: "/backend/bitacora/grid"
         ,dataType: "xml"
         ,colModel: [
-            {display: "Fecha", name: "updated_at", width: 200, sortable: true, align: "center"}
+            {display: "Fecha", name: "bitacora.updated_at", width: 200, sortable: true, align: "center"}
             ,{display: "Usuario", name: "usuario", width: 250, sortable: true, align: "center"}
             ,{display: "M&oacute;dulo", name: "modelo", width: 190, sortable: true, align: "center"}
             ,{display: "Acci&oacute;n", name: "accion", width: 300, sortable: true, align: "center"}
             ,{display: "Referencia", name: "referencia", width: 200, sortable: true, align: "center"}
-            ,{display: "Id", name:"bit_id",width: 50, sortable: false, align: "center"}
+            ,{display: "Id", name:"bitacora.id",width: 50, sortable: false, align: "center"}
             
         ]
-        ,sortname: "updated_at"
+        ,sortname: "bitacora.updated_at"
         ,sortorder: "desc"
         ,usepager: true
         ,useRp: false
@@ -45,6 +56,8 @@ $(document).ready(function(){
         ,height: 300
     });
 });
+
+
 /*
 function filtrar(){
 

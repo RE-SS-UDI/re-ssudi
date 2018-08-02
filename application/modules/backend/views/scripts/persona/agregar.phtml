@@ -51,13 +51,13 @@
         </div>
         <label for="correo" class="col-xs-2 control-label"><span class="naranja">*</span>Correo electr&oacute;nico:</label>
         <div class="col-xs-4">
-            <input type="email" id="correo" name="correo" class="form-control input-sm required" value="<?php echo $this->registro->correo ?>" maxlength="100" placeholder="Correo" />
+            <input type="text" id="correo" name="correo" class="form-control input-sm required" value="<?php echo $this->registro->correo ?>" maxlength="100" placeholder="Correo" />
         </div>
     </div>  
     <div class="col-xs-12 form-group"> 
         <label for="telefono" class="col-xs-2 control-label"><span class="naranja">*</span>Tel&eacute;fono:</label>
         <div class="col-xs-4">
-            <input type="text" id="telefono" name="telefono" class="form-control input-sm required" value="<?php echo $this->registro->telefono ?>" maxlength="20" placeholder="Teléfono" />
+            <input type="text" id="telefono" name="telefono" class="form-control input-sm number required" value="<?php echo $this->registro->telefono ?>" maxlength="20" placeholder="Teléfono" />
         </div>
         <label for="celular" class="col-xs-2 control-label"><span class="naranja">*</span>Celular:</label>
         <div class="col-xs-4">
@@ -65,6 +65,15 @@
         </div>
     </div>  
     <div class="col-xs-12 form-group"> 
+        <label for="empresa_id" class="col-xs-2 control-label"><span class="naranja"></span>Empresa:</label>
+        <div class="col-xs-4">
+                <select id="empresa_id" name="empresa_id" class="form-control input-sm" onchange="cambiaEmpresa(this);">
+                    <option value="1" selected>Seleccione una empresa</option>
+                    <?php foreach ($this->empresas as $empresa): ?>
+                        <option value="<?php echo $empresa->id; ?>" <?php echo(($this->registro->empresa_id == $empresa->id)?'selected':'') ?>><?php echo $empresa->nombre; ?></option>
+                    <?php endforeach ?>
+                </select>
+        </div>
         <label for="status" class="col-xs-2 control-label"><span class="naranja"></span>Estatus:</label>
         <div class="col-xs-4">
                 <select id="status" name="status" class="form-control input-sm">
@@ -74,6 +83,17 @@
         </div>
 
     </div>  
+    <div class="col-xs-12 form-group"> 
+        <label for="tipo_id" class="col-xs-2 control-label"><span class="naranja"></span>Tipo persona:</label>
+        <div class="col-xs-4">
+                <select id="tipo_id" name="tipo_id" class="form-control input-sm">
+                    <option value="" selected>Seleccione un tipo</option>
+                    <?php foreach ($this->tipo_personas as $tPersonas): ?>
+                        <option value="<?php echo $tPersonas->id; ?>" <?php echo(($this->registro->tipo_id == $tPersonas->id)?'selected':'') ?>><?php echo $tPersonas->descripcion; ?></option>
+                    <?php endforeach ?>
+                </select>
+        </div>
+    </div> 
     <br>    
     
     <div class="col-xs-12 text-right">

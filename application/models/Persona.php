@@ -34,6 +34,31 @@ class Persona{
         return $datos;
     }
 
+    public static function obtenerPersonasZonas($idZona)
+    {
+        $conec = new Conexion;
+        $conexion = $conec->abreConexion();
+
+        $sql = "
+                SELECT p.id, p.nombre, p.apellido_pat, p.apellido_mat, e.zona_id 
+                  FROM persona p
+                  join empresa e 
+                  on p.empresa_id = e.id
+                  WHERE p.id not in(
+                    SELECT p.id
+                    FROM persona p
+                    inner join usuario u
+                    on u.persona_id = p.id
+                  ) and e.zona_id =".$idZona;
+        $stmt = sqlsrv_query( $conexion, $sql);
+        $datos = array();
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+        
+            $datos[] =  $obj;       
+        }
+        return $datos;
+    }
+
     public static function ingresar($usuario,$contrasena){
 
         $conec = new Conexion;

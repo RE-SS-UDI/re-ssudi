@@ -1,0 +1,125 @@
+<div id="es-1" name="es-1" class="alert alert-success hide" style="padding-bottom: 0;" role="alert">
+    Espere un momento, por favor...
+    <div class="progress">
+        <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0"
+            aria-valuemax="100" style="width: 100%">
+            <span class="sr-only">100% Completo</span>
+        </div>
+    </div>
+</div>
+
+<form id="frm1" name="frm1" class="form-horizontal" method="post" action="/backend/usuario/guardazona" role="form" enctype="multipart/form-data">
+    <br/>
+
+    <div class="col-xs-12 form-group">
+        <label for="usuario_id" class="col-xs-2 control-label">
+            <span class="naranja">*</span>Nombre:</label>
+        <div class="col-xs-4">
+            <?php if (!$this->bandera): ?>
+            <select class="form-control required" name="usuario_id" id="usuario_id">
+                <option value="" selected>Selecciona a una persona</option>
+                <?php foreach ($this->personas as $persona): ?>
+                <option value="<?php echo $persona->id ?>">
+                    <?php echo $persona->nombre.' '.$persona->apellido_pat.' '.$persona->apellido_mat; ?>
+                </option>
+                <?php endforeach ?>
+            </select>
+            <?php else: ?>
+            <?php $usuarioPersona = Usuario::obtieneUsuarioPersona( $this->registro->persona_id ); ?>
+
+            <input type="hidden" id="usuario_id" name="usuario_id" class="" value="<?php echo $usuarioPersona->id ?>" />
+            <input type="hidden" id="persona_id" name="" class="" value="<?php echo $this->registro->persona_id ?>" />
+            <label class="col-x s-4 control-label">
+                <?php echo $this->personas->nombre.' '.$this->personas->apellido_pat.' '.$this->personas->apellido_mat; ?>
+            </label>
+            <?php endif ?>
+        </div>
+    </div>
+
+    <div class="col-xs-12 form-group">
+        <label for="zona_id" class="col-xs-2 control-label">
+            <span class="naranja">*</span>Zonas:</label>
+        <div class="row">
+            <div class="col-xs-4">
+                <select class="form-control required" name="zona_id" id="zona_id">
+                    <option value="" selected>Selecciona a una zona</option>
+                    <?php foreach ($this->zonas as $zona): ?>
+                    <option value="<?php echo $zona->id ?>">
+                        <?php echo $zona->nombre; ?>
+                    </option>
+                    <?php endforeach ?>
+                </select>
+            </div>
+
+
+            <div class="col-xs-2 form-group">
+                <a class="btn btn-warning form-control" id="agregar" onclick="masZonas();">
+                    <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Agregar</a>
+
+                <label class="col-x s-4 control-label hidden" id="reg_id">
+                    <?php echo $this->registro->id; ?>
+                </label>
+            </div>
+
+    <div class="col-xs-12 form-group">
+        <label for="" class="col-xs-2 control-label">
+            <span class="naranja">*</span>Zonas Agregadas:</label>
+
+
+            </div>
+
+            <div class="col-xs-12 form-group ">
+                <div id="opciones">
+                <!-- opciones ya agregadas -->
+                <?php foreach ($this->zonasUsr as $zUsr){ ?>
+                    <div id="opcion_z<?php echo $zUsr->id; ?>" class="col-xs-12 form-group">
+                        <label class="col-xs-2 control-label">Descripción zona:</label>
+                        <div class="col-xs-4">
+                            <input type="text" name="opciones[]" id="opcion_z<?php echo $zUsr->id; ?>" class="form-control input-sm required" maxlength="50"
+                                value="<?php echo $zUsr->znombre; ?>">
+                        </div>
+                        <div class="col-xs-2">
+                            <a class="btn btn-danger" title="Eliminar" onclick="eliminarOpcionesAgregadas(<?php echo $zUsr->id; ?>);">
+                                <i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Eliminar</a>
+                        </div>
+                    </div>
+                <?php } ?>
+                    <!-- opciones agregables -->
+                    <?php foreach ($this->opciones as $opcion): ?>
+                    <div id="opcion_<?php echo $opcion->id; ?>" class="col-xs-12 form-group">
+                        <label class="col-xs-2 control-label">Descripción zona:</label>
+                        <div class="col-xs-4">
+                            <input type="text" name="opciones[]" id="opcion_<?php echo $opcion->id; ?>" class="form-control input-sm required" maxlength="100"
+                                value="<?php echo $opcion->opcion; ?>">
+                        </div>
+                        <div class="col-xs-2">
+                            <a class="btn btn-danger" title="Eliminar" onclick="eliminarOpciones(<?php echo $opcion->id; ?>);">
+                                <i class="fa fa-times-circle" aria-hidden="true"></i>&nbsp;Eliminar</a>
+                        </div>
+                    </div>
+                    <?php endforeach ?>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="col-xs-12 form-group mb40px">
+        <input type="hidden" name="status" value="1">
+    </div> -->
+    <br>
+
+    <div class="col-xs-12 text-right">
+        <input type="hidden" name="id" id="id" value="<?php echo $this->registro->id; ?>" />
+        <!-- cuando no es nuevo -->
+        <!-- <button class="btn btn-rojo-1" onclick="guardar('frm1','frmFiltrosUsuario','/backend/usuario/grid','/backend/usuario/imprimir','/backend/usuario/exportar');"
+            type="button"> -->
+            <button class="btn btn-rojo-1" onclick="cancelar();" type="button">
+            <i class="fa fa-check-circle"></i> Aceptar</button>
+        <button class="btn btn-rojo-1" onclick="cancelar();" type="button">
+            <i class="fa fa-times-circle"></i> Cancelar</button>
+    </div>
+    <br/>
+    <br/>
+    <br/>
+
+</form>

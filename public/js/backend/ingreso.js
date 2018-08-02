@@ -35,14 +35,70 @@ $(document).ready(function(){
 			}) //ajaxSubmit
 		} //submitHandler
 	}) //validate
+
+
+
+
+
+    
 });
+
+function recupera2(){
+    var email = $("#email").val();
+
+    $.ajax({
+        type: "POST",
+        url:"/ingreso/recuperar",
+        data: {
+            correo_electronico: email
+        }
+        ,success: function(html)
+        {
+            $("#_dialogo-1").html(html);
+
+
+            $("#_dialogo-1").dialog({              
+                width: "400",
+                height: "auto",
+                title: "Recuperar contraseña",
+                resizable: false,
+                draggable:false,
+                modal: true,
+                buttons: [              
+                    {
+                        id: "aceptar",
+                        text: "Aceptar",
+                        class: "btn btn-rojo-1",
+                        click: function(){
+                            
+                            $("#frm-2").submit();
+                        }
+                    },
+                    {
+                        id: "cancelar",
+                        text: "Cancelar",
+                        class: "btn btn-rojo-1",
+                        click: function(){
+
+                            $("#_dialogo-1").dialog("close");
+                        }
+                    }
+                ] //buttons
+            }) //dialog
+            
+        }//success
+        ,error: function(respuesta){
+            _mensaje("#_mensaje-1", "Ocurri&oacute; un error inesperado, int&eacute;ntelo de nuevo");
+        } //error
+    }) //$.ajax
+}
+
 
 function recupera(){
 
 	$.ajax({
-        
+        type: "POST",
         url:"/ingreso/recupera",
-
         success:function result(data){
             
             $("#_dialogo-1").html(data);
@@ -50,6 +106,7 @@ function recupera(){
             $("#frm-2").validate({
                 
                 submitHandler: function(form){
+
                     
                     $("#es-2").removeClass('hide');
                     $("#frm-2").addClass('hide');
