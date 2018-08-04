@@ -820,7 +820,7 @@ public static function obtenerFiltroSQLZonasAdmin(){
 					        	if ($error[ 'code']==2627) {
 						            return "¡ATENCIÓN! Ya existe un registro con la misma información.";
 					        	}
-				//descomentar de ser necesario para saber que errores hay
+				// descomentar de ser necesario para saber que errores hay
 					            // echo "SQLSTATE: ".$error[ 'SQLSTATE']."<br />";
 					            // echo "code: ".$error[ 'code']."<br />";
 					            // echo "message: ".$error[ 'message']."<br />";
@@ -831,7 +831,7 @@ public static function obtenerFiltroSQLZonasAdmin(){
 					$r = sqlsrv_fetch_array($s, SQLSRV_FETCH_ASSOC);
 					} catch (Exception $e) {
 				//descomentar de ser necesario para saber que errores hay
-						print_r($e);
+						// print_r($e);
 						exit;
 					}
 //				print_r($consulta);

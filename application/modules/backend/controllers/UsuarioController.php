@@ -74,7 +74,7 @@ class backend_UsuarioController extends Zend_Controller_Action{
             }//for
         }//if
                 }//if
-            }
+            
             else{
                 $filtro.=" AND (p.tipo_id = '0') ";
             }

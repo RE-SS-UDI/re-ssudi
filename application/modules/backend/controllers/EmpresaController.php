@@ -72,10 +72,10 @@ class Backend_EmpresaController extends Zend_Controller_Action{
             $filtro.=" AND (e.estado_id = '0') ";
         }
 
-        if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario != 3){
-            $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->persona_id);
-            $filtro .= " AND e.zona_id = ".$zona->id." ";
-        }
+        // if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario != 3){
+        //     $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+        //     $filtro .= " AND e.zona_id = ".$zona->id." ";
+        // }
 
         $consulta = "SELECT e.*
                       FROM empresa e
@@ -173,7 +173,7 @@ class Backend_EmpresaController extends Zend_Controller_Action{
         $this->_helper->viewRenderer->setNoRender(TRUE);
 
         $municipios = My_Comun::obtenerFiltroSQL('municipios', ' where estado_id = '.$_POST['id'],' nombre_municipio asc');
-        $opciones = '<option value="">Escoge un municipio</option>';
+        $opciones = '<option value="">Escoge un municipio--</option>';
         
         foreach ($municipios as $municipio) {
             if ($municipio->nombre_municipio != '') {
@@ -245,6 +245,23 @@ class Backend_EmpresaController extends Zend_Controller_Action{
         // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
         $zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
         echo json_encode($zonas);
+    }
+
+    public function onChangeEstadoMuniAction(){
+        $this->_helper->layout->disableLayout();
+        $this->_helper->viewRenderer->setNoRender(TRUE);
+        // $estado = $_POST["estado2"];
+  
+        $estado1=$this->_getParam('estado2');
+        $filtro1 = "";
+          
+        if($estado1!='')
+        {
+            $filtro1.=" WHERE estado_id = $estado1 ";
+        }
+        // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        $munis = My_Comun::obtenerFiltroSQL('municipios', $filtro1, ' nombre_municipio asc');
+        echo json_encode($munis);
     }
 
     public function onChangeZonaAction(){

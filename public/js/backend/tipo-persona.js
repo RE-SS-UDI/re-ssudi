@@ -71,8 +71,8 @@ function guardarPreregistro(formulario, frmFiltro, filtroinicial, urlImprimir, u
 	                    }else{    
 							$("#_dialogo-1").dialog("close");
 							recargar();                  
-							// _mensaje("#_mensaje-1",  respuesta ); 
-							_mensaje("#_mensaje-1",  'Se guardó de forma correcta' );
+							_mensaje("#_mensaje-1",  respuesta ); 
+							// _mensaje("#_mensaje-1",  'Se guardó de forma correcta' );
 							
 	                    }                        
 	                        
@@ -144,9 +144,12 @@ function cambiaEstado(estado_id) {
                 // var response = $.parseJSON(res);
                 // console.log("sucess " + objJSON[0].nombre);
 			var zonas = $('#zona_id');
+			var zonase = $('#zona_ide');
 			var cont = 0;
 			zonas.empty();
+			zonase.empty();
 			$('#zona_id').append('<option value="">Selecciona una zona</option>');
+			$('#zona_ide').append('<option value="">Selecciona una zona</option>');
                 for (var zona in objJSON) {
 					// if (cont < 1)
 					// 	updateByZona(objJSON[zona]['id']);
@@ -154,6 +157,11 @@ function cambiaEstado(estado_id) {
 
 					console.log(objJSON[zona]['nombre']);
                     zonas.append(
+                        $('<option>', {
+                        value: objJSON[zona]['id']
+                        }).text(objJSON[zona]['nombre'])
+					);
+					zonase.append(
                         $('<option>', {
                         value: objJSON[zona]['id']
                         }).text(objJSON[zona]['nombre'])

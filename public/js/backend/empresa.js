@@ -70,7 +70,7 @@ function validaRegistro()
 	}
 }
 
-function cambiaEstado(id)
+function cambiaEstado2(id)
 {
 	if (id != '') {
 		$.ajax({
@@ -80,9 +80,9 @@ function cambiaEstado(id)
 			success: function(res){
 				$('#municipio_id').html(res);
 
-				if ($('#muni').val() != '') {
-			        $('#municipio_id').val($('#muni').val());
-				}		
+				// if ($('#muni').val() != '') {
+			    //     $('#municipio_id').val($('#muni').val());
+				// }		
 			}
 		});
 	}
@@ -178,6 +178,39 @@ function cambiaEstado(estado_id) {
                         }).text(objJSON[zona]['nombre'])
                     );
                     // $('#zona_id').append('<option value=' + objJSON[zona]['id'] + '>' + objJSON[zona]['nombre'] + '</option>');
+                }
+            }
+		});
+	}
+}
+
+function cambiaEstadoMuni(estado_id2) {
+	console.log("estado seleccionado muni: "+estado_id2.value);
+	var estado2 = estado_id2.value;
+
+	// updateByEstado(estado);
+
+	if (estado2 != '') {
+		$.ajax({
+			url: '/backend/empresa/on-change-estado-muni',
+			type: 'POST',
+			data: {estado2: estado2},
+			success: function(res2){
+	console.log('estado cambiado munis '+ typeof objJSON2);
+                var objJSON2 = eval("(function(){return " + res2 + ";})()");
+                // var response = $.parseJSON(res);
+                // console.log("sucess " + objJSON[0].nombre_municipio);
+			var municipios = $('#municipio_id');
+			municipios.empty();
+			municipios.append('<option value="">Selecciona un municipio</option>');
+                for (var muni in objJSON2) {
+                    console.log(objJSON2[muni]['nombre_municipio']);
+                    municipios.append(
+                        $('<option>', {
+                        value: objJSON2[muni]['id_municipio']
+                        }).text(objJSON2[muni]['nombre_municipio'])
+					);
+                    // $('#municipio_id').append('<option value=' + objJSON[muni]['id_municipio'] + '>' + objJSON[muni]['nombre_municipio'] + '</option>');
                 }
             }
 		});

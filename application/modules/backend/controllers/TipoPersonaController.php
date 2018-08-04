@@ -115,6 +115,8 @@ class Backend_TipoPersonaController extends Zend_Controller_Action{
     public function agregarAction(){
         $this->_helper->layout->disableLayout();
         $this->view->llave = My_Comun::aleatorio(20);
+        $this->view->estados = Usuario::obtieneestadosZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+
 
 //        $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', ' WHERE status = 1', ' nombre asc');
         //$this->view->empresas = My_Comun::obtenerFiltroSQL('empresa', ' WHERE status = 1', ' nombre asc');
@@ -170,6 +172,15 @@ class Backend_TipoPersonaController extends Zend_Controller_Action{
     public function guardarAction(){
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(TRUE);
+
+        
+
+
+    $_POST['zona_id'] = $_POST['zona_ide'];
+    
+
+        unset($_POST['estado_id']);
+        unset($_POST['zona_ide']);
 		
         	$bitacora = array();
         	$bitacora[0]["modelo"] = "Tipo-persona";
