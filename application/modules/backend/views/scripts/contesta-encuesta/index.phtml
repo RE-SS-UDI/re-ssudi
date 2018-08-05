@@ -54,17 +54,23 @@
 	          <li><a href="#c" data-toggle="tab">Twee</a></li> -->
 
 					</ul>
+					
 
 					<div class="tab-content">
 						
 						<?php $contador2 = 0; ?>
 						<?php foreach ($encuestasZonas as $encuesta): ?>
-						<div class="tab-pane <?php echo (($contador2 == $this->num_encuesta)?'active':''); ?>" id="_<?php echo $encuesta->id; ?>_<?php echo$zname->id;?>_<?php echo$encuesta->tipo_persona_id;?>">
-							<form name="frmEncuesta<?php echo $encuesta->id; ?>_<?php echo$zname->id;?>_<?php echo$encuesta->tipo_persona_id;?>" id="frmEncuesta<?php echo $encuesta->id; ?>_<?php echo$zname->id;?>_<?php echo$encuesta->tipo_persona_id;?>"
+						<div class="tab-pane <?php echo (($contador2 == $this->num_encuesta)?'active':''); ?>" id="_<?php echo $encuesta->id; ?>_<?php echo$zname->id;?>_<?php echo$encuesta->tipo_persona_id;?>">	
+						<form name="frmEncuesta<?php echo $encuesta->id; ?>_<?php echo$zname->id;?>_<?php echo$encuesta->tipo_persona_id;?>" id="frmEncuesta<?php echo $encuesta->id; ?>_<?php echo$zname->id;?>_<?php echo$encuesta->tipo_persona_id;?>"
 							    role="form" method="POST" action="/backend/contesta-encuesta/guardar" class="form-horizontal">
 								<input type="hidden" name="zona_ID" id="zona_ID" value="<?php echo $zname->id;?>">
 								<input type="hidden" name="tipo_persona_id" id="tipo_persona_id" value="<?php echo $encuesta->tipo_persona_id;?>">
 								<div class="col-xs-10 cuerpo-encuesta">
+									<div class="col-md-12 text-right">
+										<a class="btn btn-sm btn-success "  target="#" href="/backend/contesta-encuesta/exportar?zona=<?php echo $zname->id; ?>" > 
+											<i class="fa fa-file-excel-o fa-lg"></i>&nbsp;Exportar
+										</a>
+									</div>
 									<h3 class="col-xs-12 text-center">
 										<?php echo $encuesta->nombre; ?> -
 										<?php echo $encuesta->tipo_persona; ?> 

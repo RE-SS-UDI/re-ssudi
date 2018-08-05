@@ -22,18 +22,18 @@ public static function obtenersiguienteId(){
 }
 
 
-public static function obtenerFiltroSQLMensajes($idPer){
+public static function obtenerFiltroSQLMensajes($isUser,$idPer){
 		$conec = new Conexion;
         $conexion = $conec->abreConexion();
 		$sql = "
-				if exists(select permisos from usuario where id = ".$idPer."
+				if exists(select permisos from usuario where id = ".$isUser."
 				and permisos like '%VER_INICIO%')
 				select u.usuario, m.id, m.persona_origen_id, 
 				m.persona_destino_id, m.mensaje, m.status, m.asunto, 
 				m.duedate_at, m.created_at, m.updated_at from mensaje m 
 				join usuario u on m.persona_origen_id = u.id 
-				where GETDATE() <= duedate_at and m.status=1 
-				and (persona_destino_id= ".$idPer." or persona_destino_id = 0)
+				where CAST(GETDATE() as DATE) <= CAST(duedate_at AS DATE) and m.status=1 
+				and (persona_destino_id= ".$idPer.")
 				order by m.created_at desc";
 		$stmt = sqlsrv_query( $conexion, $sql);
 		$datos = array();

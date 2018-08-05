@@ -34,12 +34,19 @@ class Backend_ConcentradoProyController extends Zend_Controller_Action
         $idPer = Zend_Auth::getInstance()->getIdentity()->persona_id;
         $this->view->tipo_usuario = Zend_Auth::getInstance()->getIdentity()->tipo_usuario;
 
-        $this->view->zonaUser = My_Comun::obtenerZonas($idPer);
+        // $this->view->zonaUser = My_Comun::obtenerZonas($idPer);
+        $this->view->zonaUser = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+
+
+
 
         //Verificamos el tipo d usurio
         if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario == 3){     // es root
             $this->view->areaproyectos = My_Comun::obtenerFiltroSQL("area_proyecto", "where status = 1 and zona_id =".$this->view->zonaUser[0]->id, "descripcion asc");
             $this->view->empresas = My_Comun::obtenerFiltroSQL("empresa",$filtro_nombre.$filtro_zona, "nombre asc");
+
+            echo "<script>console.log( 'Debug zona: " .  $this->view->zonaUser[0]->id. "' );</script>";
+            echo "<script>console.log( 'Debug zona_empresa: " .  $filtro_zona . "' );</script>";
         }
         //new code 
         else if (Zend_Auth::getInstance()->getIdentity()->tipo_usuario == 6)    // es empresa 
