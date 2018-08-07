@@ -26,14 +26,13 @@ public static function obtenerFiltroSQLMensajes($isUser,$idPer){
 		$conec = new Conexion;
         $conexion = $conec->abreConexion();
 		$sql = "
-				if exists(select permisos from usuario where id = ".$isUser."
-				and permisos like '%VER_INICIO%')
+				
 				select u.usuario, m.id, m.persona_origen_id, 
 				m.persona_destino_id, m.mensaje, m.status, m.asunto, 
 				m.duedate_at, m.created_at, m.updated_at from mensaje m 
 				join usuario u on m.persona_origen_id = u.id 
 				where CAST(GETDATE() as DATE) <= CAST(duedate_at AS DATE) and m.status=1 
-				and (persona_destino_id= ".$idPer.")
+				and (persona_destino_id= ".$idPer." or persona_destino_id = 0)
 				order by m.created_at desc";
 		$stmt = sqlsrv_query( $conexion, $sql);
 		$datos = array();
@@ -183,7 +182,7 @@ public static function obtenerFiltroSQLConcentradoEncuestas($filtro_zona,$filtro
         }
 		return $datos;
 	}
-	public static function obtenerFiltroSQLConcentrado($filtro_zona,$filtro_nombre,$filtro_estado,$filtro_tipo,$filtro_categoria_per){
+	public static function obtenerFiltroSQLConcentrado($filtro_zona,$filtro_tipo,$filtro_categoria_per){
 		$conec = new Conexion;
         $conexion = $conec->abreConexion();
 		// $sql = "
@@ -667,6 +666,53 @@ public static function obtenerFiltroSQLZonasAdmin(){
 
 		return $q->execute();
 	}
+
+	
+	public static function obtenerMunisEstado($id_estado){
+
+		$conec = new Conexion;
+        $conexion = $conec->abreConexion();
+		$sql = "SELECT id_municipio, estado_id, nombre_municipio FROM municipios where estado_id = ".$id_estado;
+		$sql.=" ORDER BY nombre_municipio asc";
+
+		$stmt = sqlsrv_query( $conexion, $sql);
+		$datos = array();
+
+// print_r($stmt);
+
+		// if ($stmt){
+		// 	// echo "<script>console.log( 'Debug Objects: " . $err . "' );</script>";
+		// 	print_r($stmt);
+		// }
+
+        while( $obj = sqlsrv_fetch_object($stmt, AQLSRV_FETCH_ASSOC)) {
+			$datos[] =  $obj;       
+
+        }
+        return $datos;
+	}
+
+	public static function obtenerPersonas()
+    {
+        $conec = new Conexion;
+        $conexion = $conec->abreConexion();
+
+        $sql = "SELECT p.id, p.nombre, p.apellido_pat, p.apellido_mat 
+                  FROM persona p
+                  WHERE id not in(
+                    SELECT p.id
+                    FROM persona p
+                    inner join usuario u
+                    on u.persona_id = p.id
+                  )";
+        $stmt = sqlsrv_query( $conexion, $sql);
+        $datos = array();
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+        
+            $datos[] =  $obj;       
+        }
+        return $datos;
+    }
 
 	public static function obtenerFiltroSQL($modelo, $filtro, $orden = ""){
 

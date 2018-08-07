@@ -247,21 +247,24 @@ class Backend_EmpresaController extends Zend_Controller_Action{
         echo json_encode($zonas);
     }
 
-    public function onChangeEstadoMuniAction(){
+    public function onChangeMuniAction(){
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(TRUE);
-        // $estado = $_POST["estado2"];
-  
-        $estado1=$this->_getParam('estado2');
-        $filtro1 = "";
-          
-        if($estado1!='')
+        // $estado = $_POST["estado"];
+        $filtro = "1 = 1";
+        $estado=$this->_getParam('estado');
+
+        if($estado!='')
         {
-            $filtro1.=" WHERE estado_id = $estado1 ";
+            $filtro.=" AND (estado_id = $estado) ";
         }
-        // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
-        $munis = My_Comun::obtenerFiltroSQL('municipios', $filtro1, ' nombre_municipio asc');
-        echo json_encode($munis);
+          
+        $munisipio = My_Comun::obtenerFiltroSQL('municipios', $filtro, ' nombre_municipio asc');
+        // $munis = My_Comun::obtenerMunisEstado($estado);
+        // $munis = Empresa::obiteneMunicipios($estado);
+
+        // echo $munis;
+        echo json_encode($munisipio);
     }
 
     public function onChangeZonaAction(){

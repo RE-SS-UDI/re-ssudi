@@ -58,7 +58,7 @@
     <div class="col-xs-12 form-group"> 
         <label for="estado_id" class="col-xs-2 control-label"><span class="naranja">*</span>Estado:</label>
         <div class="col-xs-4">
-            <select name="estado_id" class="form-control required" id="estado_id" onchange="cambiaEstado(this); cambiaEstadoMuni(this);">
+            <select name="estado_id" class="form-control required" id="estado_id" onchange="cambiaEstado(this); cambiaEstado2(this);">
                 <option value="" selected>Escoge un estado</option>
                 <?php foreach ($this->estados as $estado): ?>
                     <option value="<?php echo $estado->id_estado ?>" <?php echo (($this->registro->estado_id==$estado->id_estado)?'selected':'') ?>><?php echo utf8_encode($estado->estado) ?></option>
@@ -70,9 +70,9 @@
         <div class="col-xs-4">
             <select name="municipio_id" class="form-control required" id="municipio_id">
                 <option value="" selected>Escoge un municipio</option>
-                <?php if (is_object($this->muni)): ?>
+                <!-- <?php if (is_object($this->muni)): ?>
                     <option value="<?php echo $this->muni->id_municipio; ?>" selected><?php echo $this->muni->nombre_municipio; ?></option>
-                <?php endif ?>
+                <?php endif ?> -->
                 
             </select>
         </div>

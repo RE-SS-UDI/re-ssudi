@@ -72,11 +72,11 @@ function validaRegistro()
 
 function cambiaEstado2(id)
 {
-	if (id != '') {
+	if (id.value != '') {
 		$.ajax({
 			url: '/backend/empresa/obtiene-municipios',
 			type: 'POST',
-			data: {id: id},
+			data: {id: id.value},
 			success: function(res){
 				$('#municipio_id').html(res);
 
@@ -154,7 +154,7 @@ function cambiaEstado(estado_id) {
 			type: 'POST',
 			data: {estado: estado},
 			success: function(res){
-				console.log('estado cambiado');
+				console.log('estado cambiado' + res);
                 var objJSON = eval("(function(){return " + res + ";})()");
                 // var response = $.parseJSON(res);
                 // console.log("sucess " + objJSON[0].nombre);
@@ -178,9 +178,11 @@ function cambiaEstado(estado_id) {
                         }).text(objJSON[zona]['nombre'])
                     );
                     // $('#zona_id').append('<option value=' + objJSON[zona]['id'] + '>' + objJSON[zona]['nombre'] + '</option>');
-                }
+				}
+				
             }
 		});
+
 	}
 }
 
@@ -191,15 +193,13 @@ function cambiaEstadoMuni(estado_id2) {
 	// updateByEstado(estado);
 
 	if (estado2 != '') {
-		$.ajax({
-			url: '/backend/empresa/on-change-estado-muni',
+		$.ajax({ 
+			url: '/backend/empresa/on-change-estado-municipio',
 			type: 'POST',
-			data: {estado2: estado2},
+			data: {estado: estado2},
 			success: function(res2){
-	console.log('estado cambiado munis '+ typeof objJSON2);
-                var objJSON2 = eval("(function(){return " + res2 + ";})()");
-                // var response = $.parseJSON(res);
-                // console.log("sucess " + objJSON[0].nombre_municipio);
+				console.log('estado '+ res2);
+				var objJSON2 = eval("(function(){return " + res2 + ";})()");
 			var municipios = $('#municipio_id');
 			municipios.empty();
 			municipios.append('<option value="">Selecciona un municipio</option>');
@@ -212,9 +212,12 @@ function cambiaEstadoMuni(estado_id2) {
 					);
                     // $('#municipio_id').append('<option value=' + objJSON[muni]['id_municipio'] + '>' + objJSON[muni]['nombre_municipio'] + '</option>');
                 }
-            }
+			}
 		});
 	}
+
+	// cambiaEstado(estado_id2);
+
 }
 
 function cambiaZona(zona_id){

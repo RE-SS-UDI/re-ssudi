@@ -24,7 +24,37 @@ class Empresa
         	$datos[] = $obj;		     
         }
 		return $datos;
-	}   
+	}
+	
+	public static function obiteneMunicipios($estado_id)
+    {
+        $conec = new Conexion;
+        $conexion = $conec->abreConexion();
+
+        $sql = "  SELECT *
+        FROM municipios 
+        WHERE estado_id = '".$estado_id."'
+      ";
+        //print_r($sql);
+		//exit;
+		
+        // $stmt = sqlsrv_query( $conexion, $sql);
+        // $datos = '';
+        // while( $obj = sqlsrv_fetch_object($stmt)) {
+        
+        //     $datos =  $obj;       
+        // }
+		// return $datos;
+		
+		$stmt = sqlsrv_query( $conexion, $sql);
+        $datos = array();
+        while( $obj = sqlsrv_fetch_object($stmt)) {
+        
+            $datos[] =  $obj;       
+        }
+        return $datos;
+	}//funcion
+	
 
 }
 
