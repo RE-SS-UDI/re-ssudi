@@ -29,9 +29,9 @@ class Backend_ConcentradoProyController extends Zend_Controller_Action
 
         if($nombre!='')
             {
-                $filtro_nombre = " where nombre LIKE '%".$nombre."%'";
+                $filtro_nombre = " where status = 1 AND nombre LIKE '%".$nombre."%'";
             }else{
-                $filtro_zona .= " WHERE 1=1 ";
+                $filtro_zona .= " WHERE status = 1 ";
             }
 
         // $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->persona_id);
@@ -62,7 +62,7 @@ class Backend_ConcentradoProyController extends Zend_Controller_Action
 
         //Verificamos el tipo d usurio
         if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario == 3){     // es root
-            $filtro = '';
+            $filtro = 'WHERE status = 1';
             // $filtro = $filtro_nombre.$filtro_zona;
             $this->view->areaproyectos = My_Comun::obtenerFiltroSQL("area_proyecto", "where status = 1 and (1=2 ".$filtro_zonaUser. ")", "descripcion asc");
             $this->view->empresas = My_Comun::obtenerFiltroSQL("empresa",$filtro, "nombre asc");
