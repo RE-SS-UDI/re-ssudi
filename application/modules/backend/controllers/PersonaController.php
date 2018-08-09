@@ -445,6 +445,8 @@ class Backend_PersonaController extends Zend_Controller_Action{
     public function onChangeEstadoAction(){
         $this->_helper->layout->disableLayout();
         $this->_helper->viewRenderer->setNoRender(TRUE);
+
+
         // $estado = $_POST["estado"];
   
         $estado=$this->_getParam('estado');
@@ -455,7 +457,13 @@ class Backend_PersonaController extends Zend_Controller_Action{
             $filtro.=" AND (estado_id = $estado) ";
         }
         // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
-        $zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+
+        if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario == 3){
+            $zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        }else {
+            $zonas = Usuario::obtieneZonasXususarioXestado(Zend_Auth::getInstance()->getIdentity()->persona_id, $estado);
+        } 
+
         echo json_encode($zonas);
     }
 
@@ -490,7 +498,15 @@ class Backend_PersonaController extends Zend_Controller_Action{
             $filtro.=" AND (zona_id = $zona) ";
         }
         // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
-        $tipo_Pregistro = My_Comun::obtenerFiltroSQL('tipo_persona',$filtro, ' descripcion asc');
+        if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario == 3){
+
+            $tipo_Pregistro = My_Comun::obtenerFiltroSQL('tipo_persona', $filtro, ' descripcion asc');
+
+        }else {
+
+            $tipo_Pregistro = Usuario::obtieneZonasTiposXususarioXestado(Zend_Auth::getInstance()->getIdentity()->persona_id, $zona);
+        }
+        
         echo json_encode($tipo_Pregistro);
     }
 

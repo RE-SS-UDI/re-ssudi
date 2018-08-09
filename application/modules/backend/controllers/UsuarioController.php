@@ -188,7 +188,7 @@ class backend_UsuarioController extends Zend_Controller_Action{
             $this->view->tipos = My_Comun::obtenerFiltroSQL('tipo_usuario', ' WHERE status = 1 ', ' descripcion asc');
         }else {
 
-            $this->view->tipos = My_Comun::obtenerFiltroSQL('tipo_usuario', ' WHERE id = 5 or id = 6  ', ' descripcion asc');
+            $this->view->tipos = My_Comun::obtenerFiltroSQL('tipo_usuario', ' WHERE id = 5 or id = 6 ', ' descripcion asc');
         } 
 
 
@@ -234,7 +234,7 @@ class backend_UsuarioController extends Zend_Controller_Action{
             $this->view->tipos = My_Comun::obtenerFiltroSQL('tipo_usuario', ' WHERE status = 1 ', ' descripcion asc');
         }else {
 
-            $this->view->tipos = My_Comun::obtenerFiltroSQL('tipo_usuario', ' WHERE id = 5 or id = 6  ', ' descripcion asc');
+            $this->view->tipos = My_Comun::obtenerFiltroSQL('tipo_usuario', ' WHERE id = 5 or id = 6 or id = 4  ', ' descripcion asc');
         } 
 
 
@@ -633,7 +633,7 @@ class backend_UsuarioController extends Zend_Controller_Action{
 
             <br />
 
-            <p>A continuacion, usuario y contrase&ntilde;a:</p>
+            <p>A continuación, usuario y contrase&ntilde;a:</p>
 
             
             <strong>Usuario:</strong>&nbsp;".$usuario->usuario."
@@ -666,7 +666,14 @@ class backend_UsuarioController extends Zend_Controller_Action{
             $filtro.=" AND (estado_id = $estado) ";
         }
         // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
-        $zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        // $zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+
+        if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario == 3){
+            $zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        }else {
+            $zonas = Usuario::obtieneZonasXususarioXestado(Zend_Auth::getInstance()->getIdentity()->persona_id, $estado);
+        } 
+
         echo json_encode($zonas);
     }
 
@@ -683,8 +690,19 @@ class backend_UsuarioController extends Zend_Controller_Action{
             $filtro.=" AND (zona_id = $zona) ";
         }
         // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
-        $zonas = My_Comun::obtenerFiltroSQL('tipo_persona', $filtro, ' descripcion asc');
-        echo json_encode($zonas);
+
+        if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario == 3){
+
+            $tipos = My_Comun::obtenerFiltroSQL('tipo_persona', $filtro, ' descripcion asc');
+
+        }else {
+
+            $tipos = Usuario::obtieneZonasTiposXususarioXestado(Zend_Auth::getInstance()->getIdentity()->persona_id, $zona);
+        }
+
+
+
+        echo json_encode($tipos);
     }
 
 

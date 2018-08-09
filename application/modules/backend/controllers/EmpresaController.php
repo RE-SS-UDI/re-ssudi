@@ -138,7 +138,9 @@ class Backend_EmpresaController extends Zend_Controller_Action{
         $this->_helper->layout->disableLayout();
         $this->view->llave = My_Comun::aleatorio(20);
         
-        $this->view->estados = My_Comun::obtenerFiltroSQL('estados', ' where status = 1 ', ' estado asc');
+        // $this->view->estados = My_Comun::obtenerFiltroSQL('estados', ' where status = 1 ', ' estado asc');
+        $this->view->estados = Usuario::obtieneestadosZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+
         //$this->view->zonas = My_Comun::obtenerFiltroSQL('zona', ' where status = 1 ', ' nombre asc');
 
 
@@ -151,20 +153,21 @@ class Backend_EmpresaController extends Zend_Controller_Action{
 
 
 
-        if($this->view->tipoUser[0]->tipo_usuario == 3){
+        // if($this->view->tipoUser[0]->tipo_usuario == 3){
 
-            $this->view->zonasFiltro = My_Comun::obtenerFiltroSQLZonasAdmin();
-        }else {
+        //     $this->view->zonasFiltro = My_Comun::obtenerFiltroSQLZonasAdmin();
+        // }else {
 
-            $this->view->zonasFiltro = My_Comun::obtenerFiltroSQLZonas($this->view->zon[0]->id);
-        }        
+        //     $this->view->zonasFiltro = My_Comun::obtenerFiltroSQLZonas($this->view->zon[0]->id);
+        // }        
 
 
 
-        if($_POST["id"]!="0"){
+        if($_POST["id"]!="0"){            
             $this->view->registro=My_Comun::obtenerSQL("empresa", "id", $_POST["id"]);
+            $this->view->zonasFiltro = My_Comun::obtenerFiltroSQLZonas($this->view->registro->zona_id);
             $this->view->muni = My_Comun::obtenerSQL("municipios",'id_municipio',$this->view->registro->municipio_id);
-//            print_r($this->view->muni); exit; 
+        //    print_r($this->view->registro->zona_id); exit; 
         }
     }//function
 
@@ -173,7 +176,7 @@ class Backend_EmpresaController extends Zend_Controller_Action{
         $this->_helper->viewRenderer->setNoRender(TRUE);
 
         $municipios = My_Comun::obtenerFiltroSQL('municipios', ' where estado_id = '.$_POST['id'],' nombre_municipio asc');
-        $opciones = '<option value="">Escoge un municipio--</option>';
+        $opciones = '<option value="">Selecciona un municipio</option>';
         
         foreach ($municipios as $municipio) {
             if ($municipio->nombre_municipio != '') {
@@ -243,7 +246,13 @@ class Backend_EmpresaController extends Zend_Controller_Action{
             $filtro.=" AND (estado_id = $estado) ";
         }
         // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
-        $zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        
+        if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario == 3){
+            $zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        }else {
+            $zonas = Usuario::obtieneZonasXususarioXestado(Zend_Auth::getInstance()->getIdentity()->persona_id, $estado);
+        } 
+
         echo json_encode($zonas);
     }
 
@@ -280,7 +289,16 @@ class Backend_EmpresaController extends Zend_Controller_Action{
             $filtro.=" AND (zona_id = $zona) ";
         }
         // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
-        $zonas = My_Comun::obtenerFiltroSQL('tipo_persona', $filtro, ' descripcion asc');
+
+        if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario == 3){
+
+            $zonas = My_Comun::obtenerFiltroSQL('tipo_persona', $filtro, ' descripcion asc');
+
+        }else {
+
+            $zonas = Usuario::obtieneZonasTiposXususarioXestado(Zend_Auth::getInstance()->getIdentity()->persona_id, $zona);
+        }
+
         echo json_encode($zonas);
     }
 

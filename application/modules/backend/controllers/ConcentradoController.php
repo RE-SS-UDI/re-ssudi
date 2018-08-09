@@ -313,7 +313,13 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
             $filtro.=" AND (estado_id = $estado) ";
         }
         // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
-        $zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+
+        if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario == 3){
+            $zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        }else {
+            $zonas = Usuario::obtieneZonasXususarioXestado(Zend_Auth::getInstance()->getIdentity()->persona_id, $estado);
+        } 
+
         echo json_encode($zonas);
     }
 
@@ -330,7 +336,13 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
             $filtro.=" AND (zona_id = $zona) ";
         }
         // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
-        $zonas = My_Comun::obtenerFiltroSQL('tipo_persona', $filtro, ' descripcion asc');
+
+        if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario == 3){
+            $zonas = My_Comun::obtenerFiltroSQL('tipo_persona', $filtro, ' descripcion asc');
+        }else {
+            $zonas = Usuario::obtieneZonasTiposXususarioXestado(Zend_Auth::getInstance()->getIdentity()->persona_id, $zona);
+        }
+
         echo json_encode($zonas);
     }
 
@@ -344,7 +356,7 @@ class Backend_ConcentradoController extends Zend_Controller_Action{
         $filtro = "WHERE status = 1";
           
         // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
-        $categorias = My_Comun::obtenerCategoriasXzonaXtipo($zona,$tipo);
+        $categorias = My_Comun::obtenerCategoriasXzonaXtipoI($zona,$tipo);
         echo json_encode($categorias);
     }
 

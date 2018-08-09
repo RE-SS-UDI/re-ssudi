@@ -98,6 +98,46 @@ class Usuario{
          return $datos;
     }
 
+    public static function obtieneZonasXususarioXestado($persona_id, $estado_id)
+    {
+        $conec = new Conexion;
+        $conexion = $conec->abreConexion();
+        $sql = "SELECT distinct zo.*
+                FROM persona_zona z
+                INNER JOIN tipo_persona tp
+                on tp.id = z.tipo_id
+                INNER JOIN zona zo
+                on zo.id = tp.zona_id
+                WHERE z.persona_id = ".$persona_id." AND zo.estado_id = ".$estado_id." AND zo.status = 1 order by zo.nombre asc";
+         $stmt = sqlsrv_query( $conexion, $sql);
+         $datos = array();
+         while( $obj = sqlsrv_fetch_object($stmt)) {
+         
+             $datos[] =  $obj;       
+         }
+         return $datos;
+    }
+
+    public static function obtieneZonasTiposXususarioXestado($persona_id, $estado_id)
+    {
+        $conec = new Conexion;
+        $conexion = $conec->abreConexion();
+        $sql = "SELECT distinct tp.*
+                FROM persona_zona z
+                INNER JOIN zona zo
+                on zo.id = z.zona_id
+                INNER JOIN tipo_persona tp
+                on tp.id = z.tipo_id
+                WHERE z.persona_id = ".$persona_id." AND z.zona_id = ".$estado_id." AND zo.status = 1 order by tp.descripcion asc";
+         $stmt = sqlsrv_query( $conexion, $sql);
+         $datos = array();
+         while( $obj = sqlsrv_fetch_object($stmt)) {
+         
+             $datos[] =  $obj;       
+         }
+         return $datos;
+    }
+
     public static function obtieneZonasTiposXususario($persona_id)
     {
         $conec = new Conexion;

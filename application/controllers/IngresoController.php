@@ -63,7 +63,7 @@ class IngresoController extends Zend_Controller_Action
 
             <br />
 
-            <p>A continuacion, usuario y contrase&ntilde;a:</p>
+            <p>A continuación, usuario y contrase&ntilde;a:</p>
 
             
             <strong>Usuario:</strong>&nbsp;".$usuario->usuario."

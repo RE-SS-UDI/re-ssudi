@@ -1,5 +1,6 @@
 <thead>
     <tr class="">
+        <th class="text-center ancho-celda" style="text-align: left;">#</th>
         <th class="text-center ancho-celda" style="text-align: left;">Empresa</th>
         <th class="text-center ancho-celda" style="text-align: left;">Encuestado</th>
         
@@ -10,9 +11,12 @@
     </tr>
 </thead>
 <tbody>
+<?php $count = 0; ?>
     <?php foreach ($this->personas as $persona): ?>
+        <?php $count++ ?>
         <tr>
         <?php $contador = 0; ?>
+        <td ><?php echo $count ; ?></td> 
             <td ><?php echo $persona->empresa ; ?></td>  
             <td><?php echo $persona->nombre.' '.$persona->apellido_pat.' '.$persona->apellido_mat   ;?></td>
             <?php foreach ($this->encuestas as $encuesta): ?>

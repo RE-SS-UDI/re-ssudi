@@ -25,11 +25,27 @@ class Backend_ConcentradoProyController extends Zend_Controller_Action
 
         $filtro_nombre = '';
         $filtro_zona = '';
+        $filtro_zonaUser = '';
 
-        
-        $filtro_nombre = " where nombre LIKE '%".$nombre."%'";
-        $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->persona_id);
-        $filtro_zona .= " and zona_id = ".$zona->id." ";
+        if($nombre!='')
+            {
+                $filtro_nombre = " where nombre LIKE '%".$nombre."%'";
+            }else{
+                $filtro_zona .= " WHERE 1=1 ";
+            }
+
+        // $zona = Usuario::obtieneZonaUsuario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+        // $filtro_zona .= " AND zona_id = ".$zona->id." ";
+
+        $zona = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
+        $filtro_zona .= " AND ( 1=2 ";
+
+        foreach($zona as $zonas)
+        {
+            $filtro_zona .= " OR zona_id = ".$zonas->id." ";
+        }
+        $filtro_zona .= " ) ";
+
         
         $idPer = Zend_Auth::getInstance()->getIdentity()->persona_id;
         $this->view->tipo_usuario = Zend_Auth::getInstance()->getIdentity()->tipo_usuario;
@@ -37,16 +53,22 @@ class Backend_ConcentradoProyController extends Zend_Controller_Action
         // $this->view->zonaUser = My_Comun::obtenerZonas($idPer);
         $this->view->zonaUser = Usuario::obtieneZonasXususario(Zend_Auth::getInstance()->getIdentity()->persona_id);
 
+        foreach($this->view->zonaUser as $zonasU)
+        {
+            $filtro_zonaUser .= " OR zona_id = ".$zonasU->id." ";
+        }
 
 
 
         //Verificamos el tipo d usurio
         if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario == 3){     // es root
-            $this->view->areaproyectos = My_Comun::obtenerFiltroSQL("area_proyecto", "where status = 1 and zona_id =".$this->view->zonaUser[0]->id, "descripcion asc");
-            $this->view->empresas = My_Comun::obtenerFiltroSQL("empresa",$filtro_nombre.$filtro_zona, "nombre asc");
+            $filtro = '';
+            // $filtro = $filtro_nombre.$filtro_zona;
+            $this->view->areaproyectos = My_Comun::obtenerFiltroSQL("area_proyecto", "where status = 1 and (1=2 ".$filtro_zonaUser. ")", "descripcion asc");
+            $this->view->empresas = My_Comun::obtenerFiltroSQL("empresa",$filtro, "nombre asc");
 
-            echo "<script>console.log( 'Debug zona: " .  $this->view->zonaUser[0]->id. "' );</script>";
-            echo "<script>console.log( 'Debug zona_empresa: " .  $filtro_zona . "' );</script>";
+            echo "<script>console.log( 'Debug zona: " .  $filtro_zonaUser. "' );</script>";
+            echo "<script>console.log( 'Debug empresas: " .  $filtro_nombre.$filtro_zona . "' );</script>";
         }
         //new code 
         else if (Zend_Auth::getInstance()->getIdentity()->tipo_usuario == 6)    // es empresa 
@@ -63,8 +85,11 @@ class Backend_ConcentradoProyController extends Zend_Controller_Action
         else 
         {
 
-            $this->view->areaproyectos = My_Comun::obtenerFiltroSQL("area_proyecto", "where status = 1 and zona_id =".$this->view->zonaUser[0]->id, "descripcion asc");
+            $this->view->areaproyectos = My_Comun::obtenerFiltroSQL("area_proyecto", "where status = 1 and (1=2 ".$filtro_zonaUser. ")", "descripcion asc");
             $this->view->empresas = My_Comun::obtenerFiltroSQL("empresa",$filtro_nombre.$filtro_zona, "nombre asc");
+
+            echo "<script>console.log( 'Debug zona: " .  $filtro_zonaUser. "' );</script>";
+            echo "<script>console.log( 'Debug empresas: " .  $filtro_nombre.$filtro_zona . "' );</script>";
         }
 
         $this->view->proyectos_empresas = My_Comun::obtenerFiltroSQL("empresa",$filtro_nombre.$filtro_zona, "nombre asc");

@@ -245,8 +245,14 @@ class Backend_TipoPersonaController extends Zend_Controller_Action{
         {
             $filtro.=" AND (estado_id = $estado) ";
         }
+        
         // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
-        $zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario == 3){
+            $zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        }else {
+            $zonas = Usuario::obtieneZonasXususarioXestado(Zend_Auth::getInstance()->getIdentity()->persona_id, $estado);
+        } 
+        
         echo json_encode($zonas);
     }
     

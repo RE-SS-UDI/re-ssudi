@@ -257,7 +257,7 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
             $pre = My_Comun::eliminarSQL("pre_registro", $_POST["id"], $bitacora);
 
             $titulo = 'Bienvenido a Ressudi';
-            $cuerpo = 'Ha sido aceptado en el sistema de "Ressudi", podrá aceder al sistema con la siguiente información:<br>';
+            $cuerpo = 'Ha sido aceptado en el sistema de "Ressudi", podrá acceder al sistema con la siguiente información:<br>';
             $cuerpo .= 'Usuario: '.$usu;
             $cuerpo .= '<br>Password: '.$pass;
             $cuerpo .= '<br><a href=\"http://ca02.utj.edu.mx/\">http://ca02.utj.edu.mx/</a>';
@@ -332,7 +332,13 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
             $filtro.=" AND (estado_id = $estado) ";
         }
         // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
-        $zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+
+        if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario == 3){
+            $zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
+        }else {
+            $zonas = Usuario::obtieneZonasXususarioXestado(Zend_Auth::getInstance()->getIdentity()->persona_id, $estado);
+        }       
+          
         echo json_encode($zonas);
     }
 
@@ -349,7 +355,16 @@ class Backend_PreRegistroController extends Zend_Controller_Action{
             $filtro.=" AND (zona_id = $zona) ";
         }
         // $this->view->zonas = My_Comun::obtenerFiltroSQL('zona', $filtro, ' nombre asc');
-        $tipo_Pregistro = My_Comun::obtenerFiltroSQL('tipo_persona',$filtro, ' descripcion asc');
+
+        if(Zend_Auth::getInstance()->getIdentity()->tipo_usuario == 3){
+
+            $tipo_Pregistro = My_Comun::obtenerFiltroSQL('tipo_persona', $filtro, ' descripcion asc');
+
+        }else {
+
+            $tipo_Pregistro = Usuario::obtieneZonasTiposXususarioXestado(Zend_Auth::getInstance()->getIdentity()->persona_id, $zona);
+        }
+
         echo json_encode($tipo_Pregistro);
     }
 
